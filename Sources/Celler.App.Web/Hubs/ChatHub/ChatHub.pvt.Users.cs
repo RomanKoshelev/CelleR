@@ -4,7 +4,7 @@
 
 using System.Threading.Tasks;
 
-namespace Celler.App.Web.Hubs
+namespace Celler.App.Web.Hubs.ChatHub
 {
     public partial class ChatHub
     {

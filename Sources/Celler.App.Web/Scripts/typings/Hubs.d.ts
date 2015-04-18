@@ -14,7 +14,7 @@
 interface SignalR {
  
     /**
-      * The hub implemented by Celler.App.Web.Hubs.ChatHub
+      * The hub implemented by Celler.App.Web.Hubs.ChatHub.ChatHub
       */
     chatHub : ChatHub;
 }
@@ -76,7 +76,7 @@ interface ChatHubClient
  
  
 /**
-  * Data contract for Celler.App.Web.Hubs.ChatMessage
+  * Data contract for Celler.App.Web.Hubs.ChatHub.ChatMessage
   */
 interface ChatMessage {
     Name : string;

@@ -10,6 +10,16 @@ namespace Celler.App.Web.Controllers
     {
         public ActionResult Index()
         {
+            return RedirectToAction( "Game" );
+        }
+
+        public ActionResult Game()
+        {
+            return View();
+        }
+
+        public ActionResult Chat()
+        {
             return View();
         }
 

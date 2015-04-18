@@ -2,7 +2,7 @@
 // Celler.App.Web
 // IChatHubClient.cs
 
-namespace Celler.App.Web.Hubs
+namespace Celler.App.Web.Hubs.ChatHub
 {
     public interface IChatHubClient
     {

@@ -5,7 +5,7 @@
 using Microsoft.AspNet.SignalR;
 using NLog;
 
-namespace Celler.App.Web.Hubs
+namespace Celler.App.Web.Hubs.ChatHub
 {
     public partial class ChatHub : Hub
     {

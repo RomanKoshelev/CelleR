@@ -5,7 +5,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Celler.App.Web.Hubs
+namespace Celler.App.Web.Hubs.ChatHub
 {
     public class ConnectionMapping<T>
     {
