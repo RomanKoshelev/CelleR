@@ -3,12 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{E0525FC8-42C4-4D63-9605-2A7BF6442424}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Celler.App.Web", "Sources\Celler.App.Web\Celler.App.Web.csproj", "{6FF15764-87AC-4B6B-AAF1-EC6393066BED}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{9A228F97-E238-4524-98C4-4F247392613E}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Celler.App.Web", "Sources\Celler.App.Web\Celler.App.Web.csproj", "{6FF15764-87AC-4B6B-AAF1-EC6393066BED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
