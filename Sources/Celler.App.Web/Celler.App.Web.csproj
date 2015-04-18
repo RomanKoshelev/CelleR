@@ -189,6 +189,8 @@
     <Compile Include="Hubs\ChatHub\ChatMessage.cs" />
     <Compile Include="Hubs\ChatHub\ConnectionMapping.cs" />
     <Compile Include="Hubs\ChatHub\IChatHubClient.cs" />
+    <Compile Include="Hubs\GameHub\GameHub.cs" />
+    <Compile Include="Hubs\GameHub\IGameHubClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

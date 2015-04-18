@@ -16,7 +16,7 @@ namespace Celler.App.Web.Hubs.ChatHub
             Logger.Trace( "ChatHub ctor" );
         }
 
-        public void Send( ChatMessage msg )
+        public void send( ChatMessage msg )
         {
             Logger.Trace( "Send( {0} )", msg.Message );
             Clients.All.addNewMessageToPage( msg );
