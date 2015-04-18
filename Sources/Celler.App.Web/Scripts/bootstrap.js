@@ -1512,7 +1512,7 @@ if (!jQuery) { throw new Error("Bootstrap requires jQuery") }
   })
 
 
-  // NOTE: POPOVER EXTENDS tooltip.js
+  // _NOTE: POPOVER EXTENDS tooltip.js
   // ================================
 
   Popover.prototype = $.extend({}, $.fn.tooltip.Constructor.prototype)

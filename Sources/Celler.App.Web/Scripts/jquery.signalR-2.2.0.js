@@ -515,7 +515,7 @@
                 connection.log("Auto detected cross domain url.");
 
                 if (config.transport === "auto") {
-                    // TODO: Support XDM with foreverFrame
+                    // _TODO: Support XDM with foreverFrame
                     config.transport = ["webSockets", "serverSentEvents", "longPolling"];
                 }
 
