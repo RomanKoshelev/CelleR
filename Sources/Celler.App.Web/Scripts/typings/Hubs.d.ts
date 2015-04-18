@@ -96,7 +96,7 @@ interface GameHubServer {
       */
     toServer(msg : string) : JQueryPromise<void>;
 }
- 
+
 interface GameHubClient
 {
  
