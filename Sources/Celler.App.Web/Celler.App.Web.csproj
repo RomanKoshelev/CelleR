@@ -12,8 +12,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Research.Signalr.Typescript</RootNamespace>
-    <AssemblyName>Research.Signalr.Typescript</AssemblyName>
+    <RootNamespace>Celler.App.Web</RootNamespace>
+    <AssemblyName>Celler.App.Web</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
@@ -209,8 +209,7 @@
       <LastGenOutput>Hubs.d.ts</LastGenOutput>
     </Content>
     <Content Include="NLog.config" />
-    <None Include="Properties\PublishProfiles\crd-test-002.pubxml" />
-    <None Include="Properties\PublishProfiles\crd-test-003.pubxml" />
+    <None Include="Properties\PublishProfiles\celler.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

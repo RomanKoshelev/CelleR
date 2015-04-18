@@ -1,11 +1,11 @@
-// Crimenuts (c) 2015 Crocodev
-// Research.Signalr.Typescript
+// Celler (c) 2015 Krokodev
+// Celler.App.Web
 // ConnectionMapping.cs
 
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Research.Signalr.Typescript.Hubs
+namespace Celler.App.Web.Hubs
 {
     public class ConnectionMapping<T>
     {

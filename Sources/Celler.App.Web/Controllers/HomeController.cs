@@ -1,11 +1,10 @@
-﻿// Crimenuts (c) 2015 Crocodev
-// Research.Signalr.Typescript
+﻿// Celler (c) 2015 Krokodev
+// Celler.App.Web
 // HomeController.cs
-// Roman, 2015-03-29 7:27 PM
 
 using System.Web.Mvc;
 
-namespace Research.Signalr.Typescript.Controllers
+namespace Celler.App.Web.Controllers
 {
     public class HomeController : Controller
     {

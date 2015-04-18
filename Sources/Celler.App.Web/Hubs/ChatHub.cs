@@ -1,13 +1,11 @@
-﻿// Crimenuts (c) 2015 Crocodev
-// Research.Signalr.Typescript
+﻿// Celler (c) 2015 Krokodev
+// Celler.App.Web
 // ChatHub.cs
 
-using System;
-using System.Globalization;
 using Microsoft.AspNet.SignalR;
 using NLog;
 
-namespace Research.Signalr.Typescript.Hubs
+namespace Celler.App.Web.Hubs
 {
     public partial class ChatHub : Hub
     {
@@ -23,6 +21,5 @@ namespace Research.Signalr.Typescript.Hubs
             Logger.Trace( "Send( {0} )", msg.Message );
             Clients.All.addNewMessageToPage( msg );
         }
-
     }
 }

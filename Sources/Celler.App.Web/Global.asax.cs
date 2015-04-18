@@ -1,5 +1,5 @@
-﻿// Crimenuts (c) 2015 Crocodev
-// Research.Signalr.Typescript
+﻿// Celler (c) 2015 Krokodev
+// Celler.App.Web
 // Global.asax.cs
 
 using System;
@@ -9,7 +9,7 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using NLog;
 
-namespace Research.Signalr.Typescript
+namespace Celler.App.Web
 {
     public class MvcApplication : HttpApplication
     {

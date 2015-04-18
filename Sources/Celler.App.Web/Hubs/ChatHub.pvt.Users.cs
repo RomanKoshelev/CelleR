@@ -1,10 +1,10 @@
-﻿// Crimenuts (c) 2015 Crocodev
-// Research.Signalr.Typescript
+﻿// Celler (c) 2015 Krokodev
+// Celler.App.Web
 // ChatHub.pvt.Users.cs
 
 using System.Threading.Tasks;
 
-namespace Research.Signalr.Typescript.Hubs
+namespace Celler.App.Web.Hubs
 {
     public partial class ChatHub
     {

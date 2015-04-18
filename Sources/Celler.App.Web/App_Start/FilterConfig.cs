@@ -1,13 +1,16 @@
-﻿using System.Web;
+﻿// Celler (c) 2015 Krokodev
+// Celler.App.Web
+// FilterConfig.cs
+
 using System.Web.Mvc;
 
-namespace Research.Signalr.Typescript
+namespace Celler.App.Web
 {
     public class FilterConfig
     {
-        public static void RegisterGlobalFilters(GlobalFilterCollection filters)
+        public static void RegisterGlobalFilters( GlobalFilterCollection filters )
         {
-            filters.Add(new HandleErrorAttribute());
+            filters.Add( new HandleErrorAttribute() );
         }
     }
 }

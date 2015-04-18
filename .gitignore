@@ -9,12 +9,9 @@ password.*
 *.[Ss]ecret.config
 !*.[Ss]ample.config
 [Ss]ecret/
-[Pp]ublish[Pp]rofiles/
 
 # Nuget
 packages/
-# Enable "build/" folder in the NuGet Packages folder since NuGet packages use it for MSBuild targets
-!packages/*/build/
 
 # User-specific files
 *.suo
