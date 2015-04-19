@@ -1,4 +1,4 @@
-﻿// Code: Here: TS | GameApp.ts
+﻿// Here: TS | GameApp.ts
 
 module Celler {
     var gameHub: GameHub;
@@ -10,6 +10,6 @@ module Celler {
     }
 }
 
-$( () => {
+window.onload = () => {
     Celler.initApp();
-} );
+};

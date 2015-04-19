@@ -19,7 +19,7 @@ namespace Celler.App.Web.Game.Server.GameHub
         public void ToServer( string msg )
         {
             Logger.Trace( "SendToClients( {0} )", msg );
-            Clients.All.fromServer( msg );
+            Clients.All.fromServer( msg.ToUpper() );
         }
     }
 }

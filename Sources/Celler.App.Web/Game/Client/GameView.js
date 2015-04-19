@@ -3,13 +3,13 @@ var Celler;
 (function (Celler) {
     var GameView = (function () {
         function GameView() {
-            this.game = new Phaser.Game(800, 600, Phaser.AUTO, "content", {
+            this.game = new Phaser.Game(800, 800, Phaser.AUTO, "celler-playground", {
                 preload: this.preload,
                 create: this.create
             });
         }
         GameView.prototype.preload = function () {
-            this.game.load.image("logo", "Game-Sample.png");
+            this.game.load.image("logo", "/Game/Sprites/Phaser-Logo-Small.png").image("sample", "/Game/Sprites/Sample.png");
         };
         GameView.prototype.create = function () {
             var logo = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, "logo");

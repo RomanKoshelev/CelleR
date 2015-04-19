@@ -1,4 +1,4 @@
-// Code: Here: TS | GameApp.ts
+// Here: TS | GameApp.ts
 var Celler;
 (function (Celler) {
     var gameHub;
@@ -9,7 +9,7 @@ var Celler;
     }
     Celler.initApp = initApp;
 })(Celler || (Celler = {}));
-$(function () {
+window.onload = function () {
     Celler.initApp();
-});
+};
 //# sourceMappingURL=GameApp.js.map

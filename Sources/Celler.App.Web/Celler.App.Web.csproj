@@ -195,11 +195,12 @@
     <Content Include="App_Data\Logs\.gitignore" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Game-Sample.png" />
+    <Content Include="Game\Sprites\Sample.png" />
     <Content Include="favicon.ico" />
     <Content Include="Fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Game\Sprites\Phaser-Logo-Small.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\phaser.js" />
@@ -283,7 +284,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1656</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:2314/</IISUrl>
+          <IISUrl>http://localhost:2315/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
