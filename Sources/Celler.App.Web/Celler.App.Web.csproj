@@ -250,6 +250,7 @@
     <Content Include="Views\Log\Trace.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Game\Client\Assets\Assets.ts" />
     <TypeScriptCompile Include="Game\Client\Entities\Playground.ts" />
     <TypeScriptCompile Include="Game\Client\Entities\Sight.ts" />
     <TypeScriptCompile Include="Game\Client\States\PlayState.ts" />

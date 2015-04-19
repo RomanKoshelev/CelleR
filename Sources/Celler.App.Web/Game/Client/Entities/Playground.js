@@ -9,9 +9,9 @@ var Celler;
     var Playground = (function (_super) {
         __extends(Playground, _super);
         function Playground(game) {
-            _super.call(this, game, game.world.width / 2, game.world.height / 2, "ground");
+            _super.call(this, game, game.world.width / 2, game.world.height / 2, Celler.Assets.Sprites.playground);
             this.anchor.setTo(0.5, 0.5);
-            this.scale.setTo(0.2, 0.2);
+            this.scale.setTo(0.95, 0.95);
             this.game.add.tween(this.scale).to({ x: 1, y: 1 }, 2000, Phaser.Easing.Bounce.Out, true);
         }
         return Playground;
