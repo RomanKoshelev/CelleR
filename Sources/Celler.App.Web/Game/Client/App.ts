@@ -1,4 +1,4 @@
-﻿module Game {
+﻿module Celler {
     export class App {
 
         game: Phaser.Game;
@@ -12,7 +12,8 @@
         }
 
         create() {
-            this.game.state.add( "PlayState", PlayState, true );
+            this.game.stage.backgroundColor = "#6aa84f";
+            this.game.state.add( "PlayState", GameplayState, true );
         }
     }
 
@@ -24,5 +25,5 @@
 }
 
 window.onload = () => {
-    Game.initApp();
+    Celler.initApp();
 };

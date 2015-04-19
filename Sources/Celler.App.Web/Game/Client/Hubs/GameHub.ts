@@ -1,4 +1,4 @@
-﻿module Game  {
+﻿module Celler  {
     export class GameHub {
         private discussion = $( "#discussion" );
         private displayName = $( "#displayname" );

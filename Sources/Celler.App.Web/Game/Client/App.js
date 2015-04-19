@@ -1,25 +1,26 @@
-var Game;
-(function (Game) {
+var Celler;
+(function (Celler) {
     var App = (function () {
         function App() {
             this.game = new Phaser.Game(610, 610, Phaser.AUTO, "celler-playground", {
                 create: this.create
             });
-            this.hub = new Game.GameHub();
+            this.hub = new Celler.GameHub();
         }
         App.prototype.create = function () {
-            this.game.state.add("PlayState", Game.PlayState, true);
+            this.game.stage.backgroundColor = "#6aa84f";
+            this.game.state.add("PlayState", Celler.GameplayState, true);
         };
         return App;
     })();
-    Game.App = App;
+    Celler.App = App;
     var gameView;
     function initApp() {
         gameView = new App();
     }
-    Game.initApp = initApp;
-})(Game || (Game = {}));
+    Celler.initApp = initApp;
+})(Celler || (Celler = {}));
 window.onload = function () {
-    Game.initApp();
+    Celler.initApp();
 };
 //# sourceMappingURL=App.js.map

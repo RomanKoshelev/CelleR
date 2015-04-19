@@ -4,22 +4,23 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var Game;
-(function (Game) {
-    var PlayState = (function (_super) {
-        __extends(PlayState, _super);
-        function PlayState() {
+var Celler;
+(function (Celler) {
+    var GameplayState = (function (_super) {
+        __extends(GameplayState, _super);
+        function GameplayState() {
             _super.call(this);
         }
-        PlayState.prototype.preload = function () {
+        GameplayState.prototype.preload = function () {
             this.game.load.image("ground", "/Game/Client/Assets/Sprites/ground.png");
+            this.game.load.image("sight", "/Game/Client/Assets/Sprites/sight.png");
         };
-        PlayState.prototype.create = function () {
-            this.playground = new Game.Playground(this.game);
-            this.game.add.existing(this.playground);
+        GameplayState.prototype.create = function () {
+            this.game.add.existing(new Celler.Playground(this.game));
+            this.game.add.existing(new Celler.Sight(this.game));
         };
-        return PlayState;
+        return GameplayState;
     })(Phaser.State);
-    Game.PlayState = PlayState;
-})(Game || (Game = {}));
+    Celler.GameplayState = GameplayState;
+})(Celler || (Celler = {}));
 //# sourceMappingURL=PlayState.js.map

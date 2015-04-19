@@ -1,5 +1,5 @@
-var Game;
-(function (Game) {
+var Celler;
+(function (Celler) {
     var GameHub = (function () {
         function GameHub() {
             this.discussion = $("#discussion");
@@ -33,6 +33,6 @@ var Game;
         };
         return GameHub;
     })();
-    Game.GameHub = GameHub;
-})(Game || (Game = {}));
+    Celler.GameHub = GameHub;
+})(Celler || (Celler = {}));
 //# sourceMappingURL=GameHub.js.map
