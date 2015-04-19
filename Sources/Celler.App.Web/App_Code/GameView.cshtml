@@ -1,0 +1,32 @@
+﻿@using System.Web.Mvc
+@functions{
+    // Code: Here: App_Code: GameView
+
+    private new static HtmlHelper< object > Html
+    {
+        get { return ( ( WebViewPage ) WebPageContext.Current.Page ).Html; }
+    }
+
+    private static UrlHelper Url
+    {
+        get { return ( ( WebViewPage ) WebPageContext.Current.Page ).Url; }
+    }
+
+    public static MvcHtmlString BuildLink( string linkText, string linkClass, string linkUrl )
+    {
+        return new MvcHtmlString( string.Format( "<a class='{0}' href='{1}'>{2}</a>", linkClass, linkUrl, linkText ) );
+    }
+
+}
+
+
+@helper GameChat()
+{
+    <h3>Hub test</h3>
+    <div class="container">
+        <input type="text" id="message"/>
+        <input type="button" id="sendmessage" value="Send"/>
+        <input type="hidden" id="displayname"/>
+        <ul id="discussion"></ul>
+    </div>
+}

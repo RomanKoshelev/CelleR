@@ -211,6 +211,7 @@
       <LastGenOutput>Hubs.d.ts</LastGenOutput>
     </Content>
     <Content Include="NLog.config" />
+    <Content Include="App_Code\GameView.cshtml" />
     <None Include="Properties\PublishProfiles\celler.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
