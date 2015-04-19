@@ -27,9 +27,9 @@ namespace Celler.App.Web
         {
             var exception = Server.GetLastError();
 
-            Response.Write( "<h2>SB: Global Page Error</h2>\n" );
+            Response.Write( "<h2>Global Page Error</h2>\n" );
             Response.Write( "<p>" + exception.Message + "</p>\n" );
-            Response.Write( "<p><pre>" + exception.StackTrace + "</pre></p>\n" );
+            Response.Write( "<p><pre><code>" + exception.StackTrace + "</code></pre></p>\n" );
 
             Logger.ErrorException( exception.Message, exception );
 

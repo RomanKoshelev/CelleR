@@ -182,16 +182,12 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Hubs\ChatHub\ChatHub.pvt.Users.cs" />
-    <Compile Include="Hubs\ChatHub\ChatHub.cs" />
-    <Compile Include="Hubs\ChatHub\ChatMessage.cs" />
-    <Compile Include="Hubs\ChatHub\ConnectionMapping.cs" />
-    <Compile Include="Hubs\ChatHub\IChatHubClient.cs" />
-    <Compile Include="Hubs\GameHub\GameHub.cs" />
-    <Compile Include="Hubs\GameHub\IGameHubClient.cs" />
+    <Compile Include="Game\Server\GameHub\GameHub.cs" />
+    <Compile Include="Game\Server\GameHub\IGameHubClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -199,8 +195,7 @@
     <Content Include="App_Data\Logs\.gitignore" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\Game.Sample.png" />
-    <Content Include="Content\Phaser-Logo-Small.png" />
+    <Content Include="Game-Sample.png" />
     <Content Include="favicon.ico" />
     <Content Include="Fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -241,14 +236,15 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Sources.cshtml" />
-    <Content Include="Views\Home\Chat.cshtml" />
-    <Content Include="Views\Game\Index.cshtml" />
+    <Content Include="Views\Game\Play.cshtml" />
+    <Content Include="Views\Log\Error.cshtml" />
+    <Content Include="Views\Log\Trace.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Scripts\phaser\p2.d.ts" />
-    <TypeScriptCompile Include="Scripts\phaser\phaser.d.ts" />
-    <TypeScriptCompile Include="Scripts\phaser\pixi.d.ts" />
-    <TypeScriptCompile Include="TypeScripts\ChatHub\ChatHub.ts" />
+    <TypeScriptCompile Include="Game\Client\GameApp.ts" />
+    <TypeScriptCompile Include="Scripts\typings\phaser\p2.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\phaser\phaser.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\phaser\pixi.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\Hubs.d.ts">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -256,8 +252,8 @@
     </TypeScriptCompile>
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\signalr\signalr.d.ts" />
-    <TypeScriptCompile Include="TypeScripts\GameHub\GameView.ts" />
-    <TypeScriptCompile Include="TypeScripts\GameHub\GameHub.ts" />
+    <TypeScriptCompile Include="Game\Client\GameView.ts" />
+    <TypeScriptCompile Include="Game\Client\GameHub.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Fonts\glyphicons-halflings-regular.woff" />

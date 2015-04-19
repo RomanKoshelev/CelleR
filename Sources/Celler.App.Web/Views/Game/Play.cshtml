@@ -1,0 +1,18 @@
+﻿@{
+    // Code: Here: View | Game.Play.schtml
+    ViewBag.Title = "Game";
+}
+
+@section scripts {
+    <script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
+    <script src="~/Scripts/phaser.js"></script>
+    <script src="~/signalr/hubs"></script>
+    
+    <script src="~/Game/Client/GameView.js"></script>
+    <script src="~/Game/Client/GameHub.js"></script>
+    <script src="~/Game/Client/GameApp.js"></script>
+}
+
+@GameView.GameChat()
+
+<div id="content"></div>

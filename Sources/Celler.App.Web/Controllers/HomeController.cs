@@ -4,7 +4,7 @@
 
 using System.Web.Mvc;
 
-// Here: Controller : Home 
+// Here: Controller | Home 
 
 namespace Celler.App.Web.Controllers
 {
@@ -12,12 +12,7 @@ namespace Celler.App.Web.Controllers
     {
         public ActionResult Index()
         {
-            return RedirectToAction( "Index", "Game" );
-        }
-
-        public ActionResult Chat()
-        {
-            return View();
+            return RedirectToAction( "Play", "Game" );
         }
 
         public ActionResult Rules()

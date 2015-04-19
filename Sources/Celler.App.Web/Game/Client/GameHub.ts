@@ -1,8 +1,8 @@
 ﻿/// <reference path="../../Scripts/typings/jquery/jquery.d.ts" />
 /// <reference path="../../Scripts/typings/signalr/signalr.d.ts" />
-module App {
-
-    export class GameView {
+module Celler  {
+    // Code: Here: TS | GameHub.ts
+    export class GameHub {
         private discussion = $( "#discussion" );
         private displayName = $( "#displayname" );
         private message = $( "#message" );
@@ -38,15 +38,4 @@ module App {
             return $( "<div />" ).text( value ).html();
         }
     }
-
-    var gameView: GameView;
-
-    export function initGame() {
-        gameView = new GameView();
-    }
 }
-
-
-$( () => {
-    App.initGame();
-} );

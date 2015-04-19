@@ -5,7 +5,7 @@
 using Microsoft.AspNet.SignalR;
 using NLog;
 
-namespace Celler.App.Web.Hubs.GameHub
+namespace Celler.App.Web.Game.Server.GameHub
 {
     public class GameHub : Hub
     {

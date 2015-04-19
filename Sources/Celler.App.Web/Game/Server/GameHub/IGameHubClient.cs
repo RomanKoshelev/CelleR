@@ -2,7 +2,7 @@
 // Celler.App.Web
 // IGameHubClient.cs
 
-namespace Celler.App.Web.Hubs.GameHub
+namespace Celler.App.Web.Game.Server.GameHub
 {
     public interface IGameHubClient
     {
