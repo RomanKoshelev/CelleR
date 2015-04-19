@@ -14,7 +14,7 @@
 interface SignalR {
  
     /**
-      * The hub implemented by Celler.App.Web.Hubs.GameHub.GameHub
+      * The hub implemented by Celler.App.Web.Game.Server.GameHub.GameHub
       */
     gameHub : GameHub;
 }

@@ -1,7 +1,5 @@
-﻿/// <reference path="../../Scripts/typings/jquery/jquery.d.ts" />
-/// <reference path="../../Scripts/typings/signalr/signalr.d.ts" />
-module Celler  {
-    // Code: Here: TS | GameHub.ts
+﻿// Code: Here: TS | GameHub.ts
+module Game  {
     export class GameHub {
         private discussion = $( "#discussion" );
         private displayName = $( "#displayname" );

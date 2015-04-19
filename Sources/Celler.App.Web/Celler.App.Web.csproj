@@ -175,7 +175,9 @@
       <HintPath>..\..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Game\Client\States\" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -195,12 +197,20 @@
     <Content Include="App_Data\Logs\.gitignore" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Game\Sprites\Sample.png" />
+    <Content Include="Game\Client\Assets\Sprites\blue\body.png" />
+    <Content Include="Game\Client\Assets\Sprites\blue\eye.png" />
+    <Content Include="Game\Client\Assets\Sprites\blue\home.png" />
+    <Content Include="Game\Client\Assets\Sprites\blue\loot.png" />
+    <Content Include="Game\Client\Assets\Sprites\ground.png" />
+    <Content Include="Game\Client\Assets\Sprites\red\home.png" />
+    <Content Include="Game\Client\Assets\Sprites\red\loot.png" />
+    <Content Include="Game\Client\Assets\Sprites\sight.png" />
+    <Content Include="Game\Client\Assets\Sprites\red\eye.png" />
+    <Content Include="Game\Client\Assets\Sprites\red\body.png" />
     <Content Include="favicon.ico" />
     <Content Include="Fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Game\Sprites\Phaser-Logo-Small.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\phaser.js" />
@@ -242,7 +252,7 @@
     <Content Include="Views\Log\Trace.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Game\Client\GameApp.ts" />
+    <TypeScriptCompile Include="Game\Client\GameObjects\Cell.ts" />
     <TypeScriptCompile Include="Scripts\typings\phaser\p2.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\phaser\phaser.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\phaser\pixi.d.ts" />
@@ -253,8 +263,8 @@
     </TypeScriptCompile>
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\signalr\signalr.d.ts" />
-    <TypeScriptCompile Include="Game\Client\GameView.ts" />
-    <TypeScriptCompile Include="Game\Client\GameHub.ts" />
+    <TypeScriptCompile Include="Game\Client\App.ts" />
+    <TypeScriptCompile Include="Game\Client\Hubs\GameHub.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Fonts\glyphicons-halflings-regular.woff" />

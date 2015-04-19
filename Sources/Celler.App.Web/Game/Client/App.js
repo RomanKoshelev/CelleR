@@ -7,7 +7,7 @@ var Game;
                 preload: this.preload,
                 create: this.create
             });
-            //            this.hub = new CellerHub;
+            this.hub = new Game.GameHub();
         }
         App.prototype.preload = function () {
             this.game.load.image("ground", "/Game/Client/Assets/Sprites/ground.png");
@@ -31,4 +31,4 @@ var Game;
 window.onload = function () {
     Game.initApp();
 };
-//# sourceMappingURL=GameView.js.map
+//# sourceMappingURL=App.js.map
