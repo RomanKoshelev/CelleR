@@ -1,5 +1,5 @@
-﻿module Celler {
-    export class Cell {
+﻿module Game {
+    export class Sight {
 
         constructor() {
         }

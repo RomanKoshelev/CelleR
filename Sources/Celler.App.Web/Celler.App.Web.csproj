@@ -251,7 +251,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Game\Client\Entities\Playground.ts" />
-    <TypeScriptCompile Include="Game\Client\Entities\Cell.ts" />
+    <TypeScriptCompile Include="Game\Client\Entities\Sight.ts" />
     <TypeScriptCompile Include="Game\Client\States\PlayState.ts" />
     <TypeScriptCompile Include="Scripts\typings\phaser\p2.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\phaser\phaser.d.ts" />
