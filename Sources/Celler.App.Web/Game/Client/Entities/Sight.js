@@ -9,11 +9,22 @@ var Celler;
     var Sight = (function (_super) {
         __extends(Sight, _super);
         function Sight(game) {
-            _super.call(this, game, game.world.width / 2, game.world.height / 2, Celler.Assets.Sprites.sight);
-            var scale = 0.1;
+            _super.call(this, game, game.world.width / 2, game.world.height / 2, Celler.Assets.Sprites.Sight);
+            this.alpha = 0.5;
+            var scale = 0.15;
             this.anchor.setTo(0.5, 0.5);
             this.game.add.tween(this.scale).to({ x: scale, y: scale }, 2000, Phaser.Easing.Bounce.Out, true);
+            this.inputEnabled = true;
+            this.input.enableDrag();
         }
+        Sight.prototype.update = function () {
+            var msg = this.position.toString();
+            this.game.debug.text(msg, 10, 20);
+            if (this.position.distance(this.previousPosition) > 10) {
+                Celler.gameApp.connector.toServer(msg);
+            }
+            _super.prototype.update.call(this);
+        };
         return Sight;
     })(Phaser.Sprite);
     Celler.Sight = Sight;

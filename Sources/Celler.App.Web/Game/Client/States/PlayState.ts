@@ -5,8 +5,8 @@
         }
 
         preload() {
-            this.game.load.image( Assets.Sprites.playground, "/Game/Client/Assets/Sprites/ground.png" );
-            this.game.load.image( Assets.Sprites.sight , "/Game/Client/Assets/Sprites/sight.png" );
+            this.game.load.image( Assets.Sprites.Playground, "/Game/Client/Assets/Sprites/ground.png" );
+            this.game.load.image( Assets.Sprites.Sight , "/Game/Client/Assets/Sprites/sight.png" );
         }
 
         create() {

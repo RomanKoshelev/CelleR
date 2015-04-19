@@ -1,17 +1,21 @@
 ﻿module Celler  {
-    export class GameHub {
+    export class GameConnector {
         private discussion = $( "#discussion" );
         private displayName = $( "#displayname" );
         private message = $( "#message" );
         private sendmessage = $( "#sendmessage" );
-        private gameHub = $.connection.gameHub;
+        private hub = $.connection.gameHub;
 
         constructor() {
             this.init();
         }
 
+        toServer(msg: string): void {
+            this.hub.server.toServer( msg );
+        }
+
         private init(): void {
-            this.gameHub.client.fromServer = ( msg: string ) => { this.addNewMessageToPage( msg ); };
+            this.hub.client.fromServer = ( msg: string ) => { this.addNewMessageToPage( msg ); };
             $.connection.hub.start().done( () => this.onChatHubStarted() );
         }
 
@@ -21,9 +25,10 @@
 
         private onSendMessageClicked(): void {
             var msg = this.message.val();
-            this.gameHub.server.toServer( msg );
+            this.hub.server.toServer( msg );
             this.message.val( "" ).focus();
         }
+
 
         private addNewMessageToPage( message: string ): void {
             this.discussion.append(

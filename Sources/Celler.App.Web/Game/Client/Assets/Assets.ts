@@ -1,8 +1,8 @@
 ﻿module Celler {
     export module Assets {
         export class Sprites {
-            static sight = "sight";
-            static playground = "playground";
+            static Sight = "sight";
+            static Playground = "playground";
         }
         
     }

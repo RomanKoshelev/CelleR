@@ -5,8 +5,8 @@ var Celler;
         var Sprites = (function () {
             function Sprites() {
             }
-            Sprites.sight = "sight";
-            Sprites.playground = "playground";
+            Sprites.Sight = "sight";
+            Sprites.Playground = "playground";
             return Sprites;
         })();
         Assets.Sprites = Sprites;

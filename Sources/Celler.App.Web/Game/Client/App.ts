@@ -2,13 +2,13 @@
     export class App {
 
         game: Phaser.Game;
-        hub: GameHub;
+        connector: GameConnector;
 
         constructor() {
             this.game = new Phaser.Game( 610, 610, Phaser.AUTO, "celler-playground", {
                 create: this.create
             } );
-            this.hub = new GameHub();
+            this.connector = new GameConnector();
         }
 
         create() {
@@ -17,10 +17,10 @@
         }
     }
 
-    var gameView: App;
+    export var gameApp: App;
 
     export function initApp() {
-        gameView = new App();
+        gameApp = new App();
     }
 }
 

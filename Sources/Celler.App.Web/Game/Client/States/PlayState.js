@@ -12,8 +12,8 @@ var Celler;
             _super.call(this);
         }
         GameplayState.prototype.preload = function () {
-            this.game.load.image(Celler.Assets.Sprites.playground, "/Game/Client/Assets/Sprites/ground.png");
-            this.game.load.image(Celler.Assets.Sprites.sight, "/Game/Client/Assets/Sprites/sight.png");
+            this.game.load.image(Celler.Assets.Sprites.Playground, "/Game/Client/Assets/Sprites/ground.png");
+            this.game.load.image(Celler.Assets.Sprites.Sight, "/Game/Client/Assets/Sprites/sight.png");
         };
         GameplayState.prototype.create = function () {
             this.game.add.existing(new Celler.Playground(this.game));

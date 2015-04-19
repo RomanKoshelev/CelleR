@@ -265,7 +265,7 @@
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\signalr\signalr.d.ts" />
     <TypeScriptCompile Include="Game\Client\App.ts" />
-    <TypeScriptCompile Include="Game\Client\Hubs\GameHub.ts" />
+    <TypeScriptCompile Include="Game\Client\Hubs\GameConnector.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Fonts\glyphicons-halflings-regular.woff" />
