@@ -200,12 +200,15 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Game.Sample.png" />
+    <Content Include="Content\Phaser-Logo-Small.png" />
     <Content Include="favicon.ico" />
     <Content Include="Fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\phaser.js" />
+    <Content Include="Scripts\phaser.min.js" />
     <Content Include="Scripts\typings\Hubs.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Hubs.d.ts</LastGenOutput>
@@ -242,6 +245,9 @@
     <Content Include="Views\Game\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Scripts\phaser\p2.d.ts" />
+    <TypeScriptCompile Include="Scripts\phaser\phaser.d.ts" />
+    <TypeScriptCompile Include="Scripts\phaser\pixi.d.ts" />
     <TypeScriptCompile Include="TypeScripts\ChatHub\ChatHub.ts" />
     <TypeScriptCompile Include="Scripts\typings\Hubs.d.ts">
       <AutoGen>True</AutoGen>
@@ -250,6 +256,7 @@
     </TypeScriptCompile>
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\signalr\signalr.d.ts" />
+    <TypeScriptCompile Include="TypeScripts\GameHub\GameView.ts" />
     <TypeScriptCompile Include="TypeScripts\GameHub\GameHub.ts" />
   </ItemGroup>
   <ItemGroup>
