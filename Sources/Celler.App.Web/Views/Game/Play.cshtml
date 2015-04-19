@@ -1,5 +1,5 @@
 ﻿@{
-    // Code: Here: View | Game.Play.schtml
+    // Code: Play.cshtml
     ViewBag.Title = "Game";
 }
 
@@ -7,11 +7,15 @@
     <script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
     <script src="~/Scripts/phaser.js"></script>
     <script src="~/signalr/hubs"></script>
-    
+
     <script src="~/Game/Client/Hubs/GameHub.js"></script>
+    <script src="~/Game/Client/Entities/Playground.js"></script>
+    <script src="~/Game/Client/States/PlayState.js"></script>
     <script src="~/Game/Client/App.js"></script>
 }
+
 <br/>
 <div id="celler-playground"></div>
-<br />
+
+<br/>
 @GameView.GameChat()

@@ -1,5 +1,4 @@
-﻿// Code: Here: TS | GameView.ts
-module Celler {
+﻿module Celler {
     export class Cell {
 
         constructor() {

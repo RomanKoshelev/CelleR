@@ -1,4 +1,3 @@
-// Code: Here: TS | GameView.ts
 var Celler;
 (function (Celler) {
     var Cell = (function () {

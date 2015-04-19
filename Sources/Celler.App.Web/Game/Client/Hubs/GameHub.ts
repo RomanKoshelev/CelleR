@@ -1,5 +1,4 @@
-﻿// Code: Here: TS | GameHub.ts
-module Game  {
+﻿module Game  {
     export class GameHub {
         private discussion = $( "#discussion" );
         private displayName = $( "#displayname" );

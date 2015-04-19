@@ -175,9 +175,7 @@
       <HintPath>..\..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Game\Client\States\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -215,7 +213,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\phaser.js" />
     <Content Include="Scripts\phaser.min.js" />
-    <Content Include="Scripts\typings\Hubs.tt">
+    <Content Include="Game\Client\Hubs\Hubs.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Hubs.d.ts</LastGenOutput>
     </Content>
@@ -252,11 +250,13 @@
     <Content Include="Views\Log\Trace.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Game\Client\GameObjects\Cell.ts" />
+    <TypeScriptCompile Include="Game\Client\Entities\Playground.ts" />
+    <TypeScriptCompile Include="Game\Client\Entities\Cell.ts" />
+    <TypeScriptCompile Include="Game\Client\States\PlayState.ts" />
     <TypeScriptCompile Include="Scripts\typings\phaser\p2.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\phaser\phaser.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\phaser\pixi.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\Hubs.d.ts">
+    <TypeScriptCompile Include="Game\Client\Hubs\Hubs.d.ts">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Hubs.tt</DependentUpon>
