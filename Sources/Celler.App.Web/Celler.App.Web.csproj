@@ -251,7 +251,9 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Game\Client\Assets\Assets.ts" />
+    <TypeScriptCompile Include="Game\Client\Entities\Suit.ts" />
     <TypeScriptCompile Include="Game\Client\Entities\Playground.ts" />
+    <TypeScriptCompile Include="Game\Client\Entities\Cell.ts" />
     <TypeScriptCompile Include="Game\Client\Entities\Sight.ts" />
     <TypeScriptCompile Include="Game\Client\States\PlayState.ts" />
     <TypeScriptCompile Include="Scripts\typings\phaser\p2.d.ts" />
@@ -295,7 +297,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1656</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:2315/</IISUrl>
+          <IISUrl>http://localhost:2316/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

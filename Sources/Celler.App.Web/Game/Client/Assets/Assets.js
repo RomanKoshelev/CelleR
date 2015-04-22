@@ -5,8 +5,10 @@ var Celler;
         var Sprites = (function () {
             function Sprites() {
             }
-            Sprites.Sight = "sight";
-            Sprites.Playground = "playground";
+            Sprites.sight = "sight";
+            Sprites.playground = "playground";
+            Sprites.redBody = "red-cell-body";
+            Sprites.redEye = "red-cell-eye";
             return Sprites;
         })();
         Assets.Sprites = Sprites;
