@@ -10,7 +10,6 @@ var Celler;
         __extends(Sight, _super);
         function Sight(game) {
             _super.call(this, game, 0, 0, Celler.Assets.Sprites.sight);
-            this.onUpdateCoords = new Phaser.Signal();
             this.prevUpdatePosition = new Phaser.Point(0, 0);
             this.init();
         }
@@ -29,7 +28,7 @@ var Celler;
         Sight.prototype.doUpdate = function () {
             if (this.position.distance(this.prevUpdatePosition) > 10) {
                 this.prevUpdatePosition = this.position.clone();
-                this.onUpdateCoords.dispatch(this.position);
+                Celler.gameApp.server.updateSightCoords(this.position.x, this.position.y);
             }
             _super.prototype.update.call(this);
         };

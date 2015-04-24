@@ -2,8 +2,6 @@
 
     export class Sight extends Phaser.Sprite {
 
-        onUpdateCoords = new Phaser.Signal();
-
         constructor( game: Phaser.Game ) {
             super( game, 0, 0, Assets.Sprites.sight );
             this.init();
@@ -29,7 +27,7 @@
         private doUpdate() {
             if( this.position.distance( this.prevUpdatePosition ) > 10 ) {
                 this.prevUpdatePosition = this.position.clone();
-                this.onUpdateCoords.dispatch( this.position );
+                gameApp.server.updateSightCoords( this.position.x, this.position.y );
             }
             super.update();
         }

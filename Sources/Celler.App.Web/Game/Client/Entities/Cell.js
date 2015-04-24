@@ -42,14 +42,18 @@ var Celler;
         __extends(Cell, _super);
         function Cell(game, suit) {
             _super.call(this, game);
+            this.init(suit);
+            Celler.gameApp.server.onSightCoordsUpdated.add(this.onSightCoordsUpdated, this);
+        }
+        Cell.prototype.init = function (suit) {
             this.suit = suit;
             this.addChild(this.body = new Celler.CellParts.Body(this));
             this.body.visible = true;
             this.visible = true;
             this.position = new Phaser.Point(300, 400);
-        }
-        Cell.prototype.showCoordsMessage = function (msg) {
-            this.game.debug.text(msg, 10, 20);
+        };
+        Cell.prototype.onSightCoordsUpdated = function (x, y) {
+            this.game.debug.text("x:" + x + ", y:" + y, 10, 20);
         };
         return Cell;
     })(Phaser.Group);

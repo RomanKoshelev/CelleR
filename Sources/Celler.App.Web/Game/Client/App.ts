@@ -2,13 +2,13 @@
     export class App {
 
         game: Phaser.Game;
-        connector: GameConnector;
+        server: GameConnector;
 
         constructor() {
             this.game = new Phaser.Game( 610, 610, Phaser.AUTO, "celler-playground", {
                 create: this.create
             } );
-            this.connector = new GameConnector();
+            this.server = new GameConnector();
         }
 
         create() {

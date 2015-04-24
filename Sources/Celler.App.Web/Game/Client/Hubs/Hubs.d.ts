@@ -43,24 +43,26 @@ interface GameHub {
 interface GameHubServer {
  
     /** 
-      * Sends a "toServer" message to the GameHub hub.
+      * Sends a "updateSightCoords" message to the GameHub hub.
       * Contract Documentation: ---
-      * @param msg {string} 
+      * @param x {number} 
+      * @param y {number} 
       * @return {JQueryPromise of void}
       */
-    toServer(msg : string) : JQueryPromise<void>;
+    updateSightCoords(x : number, y : number) : JQueryPromise<void>;
 }
  
 interface GameHubClient
 {
  
     /**
-      * Set this function with a "function(msg : string){}" to receive the "fromServer" message from the GameHub hub.
+      * Set this function with a "function(x : number, y : number){}" to receive the "sightCoordsUpdated" message from the GameHub hub.
       * Contract Documentation: ---
-      * @param msg {string} 
+      * @param x {number} 
+      * @param y {number} 
       * @return {void}
       */
-    fromServer : (msg : string) => void;
+    sightCoordsUpdated : (x : number, y : number) => void;
 }
  
 //#endregion GameHub hub

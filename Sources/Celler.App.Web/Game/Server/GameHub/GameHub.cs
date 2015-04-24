@@ -16,10 +16,10 @@ namespace Celler.App.Web.Game.Server.GameHub
             Logger.Trace( "GameHub ctor" );
         }
 
-        public void ToServer( string msg )
+        public void UpdateSightCoords( int x, int y )
         {
-            Logger.Trace( "SendToClients( {0} )", msg );
-            Clients.All.fromServer( msg.ToUpper() );
+            Logger.Trace( "UpdateSightCoords( {0}, {1} )", x,y);
+            Clients.All.SightCoordsUpdated( x, y );
         }
     }
 }

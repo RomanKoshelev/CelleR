@@ -21,11 +21,6 @@ var Celler;
             this.game.add.existing(new Celler.Playground(this.game));
             this.game.add.existing(this.cell = new Celler.Cell(this.game, 1 /* Red */));
             this.game.add.existing(this.sight = new Celler.Sight(this.game));
-            this.sight.onUpdateCoords.add(this.sendSightCoordsToServer, this);
-            Celler.gameApp.connector.onFromServer.add(this.cell.showCoordsMessage, this.cell);
-        };
-        GameplayState.prototype.sendSightCoordsToServer = function (coords) {
-            Celler.gameApp.connector.sendMessageToServer(coords.toString());
         };
         return GameplayState;
     })(Phaser.State);

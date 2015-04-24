@@ -1,28 +1,31 @@
 ﻿module Celler {
     export class GameConnector {
 
-        onFromServer = new Phaser.Signal();
+        onSightCoordsUpdated = new Phaser.Signal();
 
         constructor() {
             this.init();
         }
 
-        sendMessageToServer( msg: string ): void {
-            this.server.toServer( msg );
+        updateSightCoords( x, y: number ): void {
+            if( this.ready ) {
+                this.server.updateSightCoords( x, y );
+            }
         }
 
         private client = $.connection.gameHub.client;
         private server = $.connection.gameHub.server;
+        private ready = false;
 
         private init() {
-            this.client.fromServer = ( msg: string ) => {
-                this.dispatchSignalOnFromServer( msg );
+            this.client.sightCoordsUpdated = ( x,y : number ) => {
+                this.sightCoordsUpdated( x, y );
             };
-            $.connection.hub.start();
+            $.connection.hub.start().done( () => { this.ready = true; } );
         }
 
-        private dispatchSignalOnFromServer( msg: string ) {
-            this.onFromServer.dispatch( msg );
+        private sightCoordsUpdated( x,y : number ) {
+            this.onSightCoordsUpdated.dispatch( x,y );
         }
     }
 }

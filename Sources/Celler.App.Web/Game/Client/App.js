@@ -5,7 +5,7 @@ var Celler;
             this.game = new Phaser.Game(610, 610, Phaser.AUTO, "celler-playground", {
                 create: this.create
             });
-            this.connector = new Celler.GameConnector();
+            this.server = new Celler.GameConnector();
         }
         App.prototype.create = function () {
             this.game.stage.backgroundColor = "#6aa84f";

@@ -2,23 +2,28 @@ var Celler;
 (function (Celler) {
     var GameConnector = (function () {
         function GameConnector() {
-            this.onFromServer = new Phaser.Signal();
+            this.onSightCoordsUpdated = new Phaser.Signal();
             this.client = $.connection.gameHub.client;
             this.server = $.connection.gameHub.server;
+            this.ready = false;
             this.init();
         }
-        GameConnector.prototype.sendMessageToServer = function (msg) {
-            this.server.toServer(msg);
+        GameConnector.prototype.updateSightCoords = function (x, y) {
+            if (this.ready) {
+                this.server.updateSightCoords(x, y);
+            }
         };
         GameConnector.prototype.init = function () {
             var _this = this;
-            this.client.fromServer = function (msg) {
-                _this.dispatchSignalOnFromServer(msg);
+            this.client.sightCoordsUpdated = function (x, y) {
+                _this.sightCoordsUpdated(x, y);
             };
-            $.connection.hub.start();
+            $.connection.hub.start().done(function () {
+                _this.ready = true;
+            });
         };
-        GameConnector.prototype.dispatchSignalOnFromServer = function (msg) {
-            this.onFromServer.dispatch(msg);
+        GameConnector.prototype.sightCoordsUpdated = function (x, y) {
+            this.onSightCoordsUpdated.dispatch(x, y);
         };
         return GameConnector;
     })();

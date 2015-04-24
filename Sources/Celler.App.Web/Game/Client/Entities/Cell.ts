@@ -31,10 +31,16 @@ module Celler {
     export class Cell extends Phaser.Group {
 
         suit: Suit;
-        private body: CellParts.Body;
 
         constructor( game: Phaser.Game, suit: Suit ) {
             super( game );
+            this.init( suit );
+            gameApp.server.onSightCoordsUpdated.add( this.onSightCoordsUpdated, this);
+        }
+
+        private body: CellParts.Body;
+
+        private init( suit: Suit ) {
             this.suit = suit;
             this.addChild( this.body = new CellParts.Body( this ) );
 
@@ -43,8 +49,8 @@ module Celler {
             this.position = new Phaser.Point ( 300, 400 );
         }
 
-        showCoordsMessage( msg: string ) {
-            this.game.debug.text( msg, 10, 20 );
+        private onSightCoordsUpdated( x,y: number ) {
+            this.game.debug.text( `x:${x}, y:${y}`, 10, 20 );
         }
     }
 }
