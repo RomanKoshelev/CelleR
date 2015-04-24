@@ -27,7 +27,7 @@
         private doUpdate() {
             if( this.position.distance( this.prevUpdatePosition ) > 10 ) {
                 this.prevUpdatePosition = this.position.clone();
-                gameApp.server.updateSightCoords( this.position.x, this.position.y );
+                app.server.updateSightCoords( this.position.x, this.position.y );
             }
             super.update();
         }

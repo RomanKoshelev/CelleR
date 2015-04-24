@@ -11,14 +11,10 @@
             this.game.load.image( Assets.Sprites.redEye, "/Game/Client/Assets/Sprites/red/eye.png" );
         }
 
-
-        private sight: Sight;
-        private cell: Cell;
-
         create() {
             this.game.add.existing( new Playground( this.game ) );
-            this.game.add.existing( this.cell = new Cell( this.game, Suit.Red ) );
-            this.game.add.existing( this.sight = new Sight( this.game ) );
+            this.game.add.existing( new Cell( this.game, Suit.Red ) );
+            this.game.add.existing( new Sight( this.game ) );
         }
     }
 }

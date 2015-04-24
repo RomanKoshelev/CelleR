@@ -28,7 +28,7 @@ var Celler;
         Sight.prototype.doUpdate = function () {
             if (this.position.distance(this.prevUpdatePosition) > 10) {
                 this.prevUpdatePosition = this.position.clone();
-                Celler.gameApp.server.updateSightCoords(this.position.x, this.position.y);
+                Celler.app.server.updateSightCoords(this.position.x, this.position.y);
             }
             _super.prototype.update.call(this);
         };

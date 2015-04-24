@@ -35,7 +35,7 @@ module Celler {
         constructor( game: Phaser.Game, suit: Suit ) {
             super( game );
             this.init( suit );
-            gameApp.server.onSightCoordsUpdated.add( this.onSightCoordsUpdated, this);
+            app.server.onSightCoordsUpdated.add( this.onSightCoordsUpdated, this);
         }
 
         private body: CellParts.Body;
@@ -51,6 +51,7 @@ module Celler {
 
         private onSightCoordsUpdated( x,y: number ) {
             this.game.debug.text( `x:${x}, y:${y}`, 10, 20 );
+            this.position.setTo( x, y );
         }
     }
 }

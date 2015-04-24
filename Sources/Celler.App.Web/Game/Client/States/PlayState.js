@@ -19,8 +19,8 @@ var Celler;
         };
         GameplayState.prototype.create = function () {
             this.game.add.existing(new Celler.Playground(this.game));
-            this.game.add.existing(this.cell = new Celler.Cell(this.game, 1 /* Red */));
-            this.game.add.existing(this.sight = new Celler.Sight(this.game));
+            this.game.add.existing(new Celler.Cell(this.game, 1 /* Red */));
+            this.game.add.existing(new Celler.Sight(this.game));
         };
         return GameplayState;
     })(Phaser.State);

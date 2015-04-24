@@ -43,7 +43,7 @@ var Celler;
         function Cell(game, suit) {
             _super.call(this, game);
             this.init(suit);
-            Celler.gameApp.server.onSightCoordsUpdated.add(this.onSightCoordsUpdated, this);
+            Celler.app.server.onSightCoordsUpdated.add(this.onSightCoordsUpdated, this);
         }
         Cell.prototype.init = function (suit) {
             this.suit = suit;
@@ -54,6 +54,7 @@ var Celler;
         };
         Cell.prototype.onSightCoordsUpdated = function (x, y) {
             this.game.debug.text("x:" + x + ", y:" + y, 10, 20);
+            this.position.setTo(x, y);
         };
         return Cell;
     })(Phaser.Group);

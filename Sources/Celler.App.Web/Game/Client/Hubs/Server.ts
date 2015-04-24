@@ -1,5 +1,5 @@
 ﻿module Celler {
-    export class GameConnector {
+    export class Server {
 
         onSightCoordsUpdated = new Phaser.Signal();
 
@@ -7,7 +7,7 @@
             this.init();
         }
 
-        updateSightCoords( x, y: number ): void {
+        updateSightCoords( x, y: number ) {
             if( this.ready ) {
                 this.server.updateSightCoords( x, y );
             }
@@ -18,14 +18,14 @@
         private ready = false;
 
         private init() {
-            this.client.sightCoordsUpdated = ( x,y : number ) => {
+            this.client.sightCoordsUpdated = ( x, y: number ) => {
                 this.sightCoordsUpdated( x, y );
             };
             $.connection.hub.start().done( () => { this.ready = true; } );
         }
 
-        private sightCoordsUpdated( x,y : number ) {
-            this.onSightCoordsUpdated.dispatch( x,y );
+        private sightCoordsUpdated( x, y: number ) {
+            this.onSightCoordsUpdated.dispatch( x, y );
         }
     }
 }
