@@ -30,7 +30,6 @@ var Celler;
                 this.prevUpdatePosition = this.position.clone();
                 Celler.app.server.updateSightCoords(this.position.x, this.position.y);
             }
-            _super.prototype.update.call(this);
         };
         return Sight;
     })(Phaser.Sprite);

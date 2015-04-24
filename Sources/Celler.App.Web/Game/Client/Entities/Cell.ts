@@ -7,6 +7,7 @@
 
     export class Part extends Phaser.Sprite {
         partType: PartType;
+
         constructor( cell: Cell, partType: PartType, x: number, y: number, scale: number ) {
             this.parent = cell;
             this.partType = partType;
@@ -35,7 +36,7 @@ module Celler {
         constructor( game: Phaser.Game, suit: Suit ) {
             super( game );
             this.init( suit );
-            app.server.onSightCoordsUpdated.add( this.onSightCoordsUpdated, this);
+            app.server.onSightCoordsUpdated.add( this.onSightCoordsUpdated, this );
         }
 
         private body: CellParts.Body;
@@ -46,10 +47,10 @@ module Celler {
 
             this.body.visible = true;
             this.visible = true;
-            this.position = new Phaser.Point ( 300, 400 );
+            this.position = new Phaser.Point( 300, 400 );
         }
 
-        private onSightCoordsUpdated( x,y: number ) {
+        private onSightCoordsUpdated( x, y: number ) {
             this.game.debug.text( `x:${x}, y:${y}`, 10, 20 );
             this.position.setTo( x, y );
         }

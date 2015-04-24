@@ -29,7 +29,6 @@
                 this.prevUpdatePosition = this.position.clone();
                 app.server.updateSightCoords( this.position.x, this.position.y );
             }
-            super.update();
         }
     }
 }

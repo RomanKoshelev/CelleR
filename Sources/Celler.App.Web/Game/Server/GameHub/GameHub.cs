@@ -18,7 +18,7 @@ namespace Celler.App.Web.Game.Server.GameHub
 
         public void UpdateSightCoords( int x, int y )
         {
-            Logger.Trace( "UpdateSightCoords( {0}, {1} )", x,y);
+            Logger.Trace( "UpdateSightCoords( {0}, {1} )", x, y );
             Clients.All.SightCoordsUpdated( x, y );
         }
     }

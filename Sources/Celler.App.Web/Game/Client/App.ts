@@ -5,10 +5,10 @@
         server: Server;
 
         constructor() {
+            this.server = new Server();
             this.game = new Phaser.Game( 610, 610, Phaser.AUTO, "celler-playground", {
                 create: this.create
             } );
-            this.server = new Server();
         }
 
         create() {
