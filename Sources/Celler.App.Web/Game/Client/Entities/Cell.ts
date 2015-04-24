@@ -25,8 +25,6 @@
             this.anchor.setTo( 0.5, 0.5 );
         }
     }
-
-
 }
 
 module Celler {

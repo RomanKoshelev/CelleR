@@ -11,16 +11,27 @@
 
             this.inputEnabled = true;
             this.input.enableDrag();
+
+            this.onUpdateCoords.add( this.showCoordsMessage, this );
         }
+
+        onUpdateCoords = new Phaser.Signal();
+
+        prevUpdatePosition = new Phaser.Point( 0, 0 );
 
         update() {
             var msg = this.position.toString();
-            this.game.debug.text( msg, 10, 20 );
 
-            if( this.position.distance( this.previousPosition ) > 10 ) {
+            if( this.position.distance( this.prevUpdatePosition ) > 10 ) {
                 gameApp.connector.toServer( msg );
+                this.prevUpdatePosition = this.position.clone();
+                this.onUpdateCoords.dispatch( msg );
             }
             super.update();
+        }
+
+        showCoordsMessage( msg: string ) {
+            this.game.debug.text( msg, 10, 20 );
         }
     }
 }
