@@ -43,5 +43,8 @@ module Celler {
             this.position = new Phaser.Point ( 300, 400 );
         }
 
+        showCoordsMessage( msg: string ) {
+            this.game.debug.text( msg, 10, 20 );
+        }
     }
 }

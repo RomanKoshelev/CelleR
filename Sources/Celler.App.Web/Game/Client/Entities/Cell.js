@@ -48,6 +48,9 @@ var Celler;
             this.visible = true;
             this.position = new Phaser.Point(300, 400);
         }
+        Cell.prototype.showCoordsMessage = function (msg) {
+            this.game.debug.text(msg, 10, 20);
+        };
         return Cell;
     })(Phaser.Group);
     Celler.Cell = Cell;
