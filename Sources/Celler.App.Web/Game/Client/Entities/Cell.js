@@ -52,9 +52,9 @@ var Celler;
             this.visible = true;
             this.position = new Phaser.Point(300, 400);
         };
-        Cell.prototype.onSightCoordsUpdated = function (x, y) {
-            this.game.debug.text("x:" + x + ", y:" + y, 10, 20);
-            this.position.setTo(x, y);
+        Cell.prototype.onSightCoordsUpdated = function (sight) {
+            this.game.debug.text(sight.toString(), 10, 20);
+            this.position.setTo(sight.X, sight.Y);
         };
         return Cell;
     })(Phaser.Group);

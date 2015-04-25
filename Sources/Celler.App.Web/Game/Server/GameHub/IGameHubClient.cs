@@ -6,6 +6,6 @@ namespace Celler.App.Web.Game.Server.GameHub
 {
     public interface IGameHubClient
     {
-        void SightCoordsUpdated( int x, int y );
+        void SightCoordsUpdated( SightModel sight );
     }
 }

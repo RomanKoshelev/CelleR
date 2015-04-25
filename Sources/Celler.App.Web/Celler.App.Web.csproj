@@ -183,6 +183,7 @@
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LogController.cs" />
+    <Compile Include="Game\Server\GameHub\SightModel.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -269,7 +270,7 @@
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\signalr\signalr.d.ts" />
     <TypeScriptCompile Include="Game\Client\App.ts" />
-    <TypeScriptCompile Include="Game\Client\Hubs\Server.ts" />
+    <TypeScriptCompile Include="Game\Client\Hubs\ServerAdapter.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Fonts\glyphicons-halflings-regular.woff" />
@@ -299,7 +300,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1656</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:2316/</IISUrl>
+          <IISUrl>http://localhost:2317/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

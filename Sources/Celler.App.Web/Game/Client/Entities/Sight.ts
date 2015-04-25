@@ -27,7 +27,11 @@
         private doUpdate() {
             if( this.position.distance( this.prevUpdatePosition ) > 10 ) {
                 this.prevUpdatePosition = this.position.clone();
-                app.server.updateSightCoords( this.position.x, this.position.y );
+                app.server.updateSightCoords( {
+                    Suit: "Red",
+                    X: this.position.x,
+                    Y: this.position.y
+                } );
             }
         }
     }

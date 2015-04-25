@@ -1,11 +1,12 @@
 ﻿module Celler {
+
     export class App {
 
         game: Phaser.Game;
-        server: Server;
+        server: ServerAdapter;
 
         constructor() {
-            this.server = new Server();
+            this.server = new ServerAdapter();
             this.game = new Phaser.Game( 610, 610, Phaser.AUTO, "celler-playground", {
                 create: this.create
             } );

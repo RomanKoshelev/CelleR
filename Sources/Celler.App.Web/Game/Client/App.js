@@ -2,7 +2,7 @@ var Celler;
 (function (Celler) {
     var App = (function () {
         function App() {
-            this.server = new Celler.Server();
+            this.server = new Celler.ServerAdapter();
             this.game = new Phaser.Game(610, 610, Phaser.AUTO, "celler-playground", {
                 create: this.create
             });

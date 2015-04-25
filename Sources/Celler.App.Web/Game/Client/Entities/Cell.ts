@@ -50,9 +50,9 @@ module Celler {
             this.position = new Phaser.Point( 300, 400 );
         }
 
-        private onSightCoordsUpdated( x, y: number ) {
-            this.game.debug.text( `x:${x}, y:${y}`, 10, 20 );
-            this.position.setTo( x, y );
+        private onSightCoordsUpdated( sight: SightModel ) {
+            this.game.debug.text( sight.toString(), 10, 20 );
+            this.position.setTo( sight.X, sight.Y );
         }
     }
 }

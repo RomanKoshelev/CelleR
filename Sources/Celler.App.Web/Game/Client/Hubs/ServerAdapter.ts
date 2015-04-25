@@ -1,5 +1,6 @@
 ﻿module Celler {
-    export class Server {
+
+    export class ServerAdapter {
 
         onSightCoordsUpdated = new Phaser.Signal();
 
@@ -7,9 +8,9 @@
             this.init();
         }
 
-        updateSightCoords( x, y: number ) {
+        updateSightCoords( sight: SightModel ) {
             if( this.ready ) {
-                this.server.updateSightCoords( x, y );
+                this.server.updateSightCoords( sight );
             }
         }
 
@@ -18,14 +19,14 @@
         private ready = false;
 
         private init() {
-            this.client.sightCoordsUpdated = ( x, y: number ) => {
-                this.sightCoordsUpdated( x, y );
+            this.client.sightCoordsUpdated = ( sight: SightModel ) => {
+                this.sightCoordsUpdated( sight );
             };
             $.connection.hub.start().done( () => { this.ready = true; } );
         }
 
-        private sightCoordsUpdated( x, y: number ) {
-            this.onSightCoordsUpdated.dispatch( x, y );
+        private sightCoordsUpdated( sight: SightModel ) {
+            this.onSightCoordsUpdated.dispatch( sight );
         }
     }
 }
