@@ -8,18 +8,14 @@ var Celler;
 (function (Celler) {
     var CellParts;
     (function (CellParts) {
-        (function (PartType) {
-            PartType[PartType["Body"] = 0] = "Body";
-            PartType[PartType["Eye"] = 1] = "Eye";
-        })(CellParts.PartType || (CellParts.PartType = {}));
-        var PartType = CellParts.PartType;
         var Part = (function (_super) {
             __extends(Part, _super);
-            function Part(cell, partType, x, y, scale) {
+            function Part(cell, assetType, scale, x, y) {
+                if (scale === void 0) { scale = 1; }
+                if (x === void 0) { x = 0; }
+                if (y === void 0) { y = 0; }
                 this.parent = cell;
-                this.partType = partType;
-                var spriteName = Celler.Assets.Sprites.redBody;
-                _super.call(this, cell.game, x, y, spriteName);
+                _super.call(this, cell.game, x, y, Celler.Assets.Sprites.getSpriteKey(assetType, cell.suit));
                 this.scale.setTo(scale, scale);
             }
             return Part;
@@ -28,7 +24,7 @@ var Celler;
         var Body = (function (_super) {
             __extends(Body, _super);
             function Body(cell) {
-                _super.call(this, cell, 0 /* Body */, 0, 0, 0.125);
+                _super.call(this, cell, 0 /* CellBody */, 0.125);
                 this.anchor.setTo(0.5, 0.5);
             }
             return Body;

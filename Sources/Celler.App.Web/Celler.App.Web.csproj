@@ -196,16 +196,17 @@
     <Content Include="App_Data\Logs\.gitignore" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Game\Client\Assets\Sprites\blue\body.png" />
-    <Content Include="Game\Client\Assets\Sprites\blue\eye.png" />
+    <Content Include="Game\Client\Assets\Sprites\blue\cellbody.png" />
+    <Content Include="Game\Client\Assets\Sprites\blue\celleye.png" />
     <Content Include="Game\Client\Assets\Sprites\blue\home.png" />
     <Content Include="Game\Client\Assets\Sprites\blue\loot.png" />
-    <Content Include="Game\Client\Assets\Sprites\ground.png" />
+    <Content Include="Game\Client\Assets\Sprites\blue\sight.png" />
+    <Content Include="Game\Client\Assets\Sprites\common\playground.png" />
     <Content Include="Game\Client\Assets\Sprites\red\home.png" />
     <Content Include="Game\Client\Assets\Sprites\red\loot.png" />
-    <Content Include="Game\Client\Assets\Sprites\sight.png" />
-    <Content Include="Game\Client\Assets\Sprites\red\eye.png" />
-    <Content Include="Game\Client\Assets\Sprites\red\body.png" />
+    <Content Include="Game\Client\Assets\Sprites\red\sight.png" />
+    <Content Include="Game\Client\Assets\Sprites\red\celleye.png" />
+    <Content Include="Game\Client\Assets\Sprites\red\cellbody.png" />
     <Content Include="favicon.ico" />
     <Content Include="Fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -231,6 +232,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\typescript.output.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -286,6 +288,9 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptOutFile>$(ProjectDir)\Scriptstypescript.output.js</TypeScriptOutFile>
+  </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />

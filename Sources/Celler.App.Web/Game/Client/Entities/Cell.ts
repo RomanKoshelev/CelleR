@@ -1,28 +1,16 @@
 ﻿module Celler.CellParts {
 
-    export enum PartType {
-        Body,
-        Eye
-    }
-
     export class Part extends Phaser.Sprite {
-        partType: PartType;
-
-        constructor( cell: Cell, partType: PartType, x: number, y: number, scale: number ) {
+        constructor( cell: Cell, assetType: Assets.Type, scale: number=1, x: number=0, y: number=0) {
             this.parent = cell;
-            this.partType = partType;
-
-            var spriteName = Assets.Sprites.redBody;
-
-            super( cell.game, x, y, spriteName );
-
+            super( cell.game, x, y, Assets.Sprites.getSpriteKey( cell.suit, assetType ) );
             this.scale.setTo( scale, scale );
         }
     }
 
     export class Body extends Part {
         constructor( cell: Cell ) {
-            super( cell, PartType.Body, 0, 0, 0.125 );
+            super( cell, Assets.Type.CellBody, 0.125 );
             this.anchor.setTo( 0.5, 0.5 );
         }
     }
