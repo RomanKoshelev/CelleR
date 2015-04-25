@@ -21,26 +21,26 @@ module Celler {
 
         suit: Suit;
 
-        constructor( game: Phaser.Game, suit: Suit ) {
+        constructor( game: Phaser.Game, suit: Suit, position: Phaser.Point ) {
             super( game );
-            this.init( suit );
+            this.init( suit, position );
             app.server.onSightCoordsUpdated.add( this.onSightCoordsUpdated, this );
         }
 
         private body: CellParts.Body;
 
-        private init( suit: Suit ) {
+        private init( suit: Suit, position: Phaser.Point ) {
             this.suit = suit;
             this.addChild( this.body = new CellParts.Body( this ) );
 
             this.body.visible = true;
             this.visible = true;
-            this.position = new Phaser.Point( 300, 400 );
+            this.position = position.clone();
         }
 
         private onSightCoordsUpdated( sight: SightModel ) {
-            this.game.debug.text( sight.toString(), 10, 20 );
-            this.position.setTo( sight.X, sight.Y );
+            this.game.debug.text( `x=${sight.X}, y=${sight.Y}`, 10, 20 );
+            //this.position.setTo( sight.X, sight.Y );
         }
     }
 }

@@ -84,21 +84,21 @@ var Celler;
 (function (Celler) {
     var Cell = (function (_super) {
         __extends(Cell, _super);
-        function Cell(game, suit) {
+        function Cell(game, suit, position) {
             _super.call(this, game);
-            this.init(suit);
+            this.init(suit, position);
             Celler.app.server.onSightCoordsUpdated.add(this.onSightCoordsUpdated, this);
         }
-        Cell.prototype.init = function (suit) {
+        Cell.prototype.init = function (suit, position) {
             this.suit = suit;
             this.addChild(this.body = new Celler.CellParts.Body(this));
             this.body.visible = true;
             this.visible = true;
-            this.position = new Phaser.Point(300, 400);
+            this.position = position.clone();
         };
         Cell.prototype.onSightCoordsUpdated = function (sight) {
-            this.game.debug.text(sight.toString(), 10, 20);
-            this.position.setTo(sight.X, sight.Y);
+            this.game.debug.text("x=" + sight.X + ", y=" + sight.Y, 10, 20);
+            //this.position.setTo( sight.X, sight.Y );
         };
         return Cell;
     })(Phaser.Group);
@@ -207,16 +207,30 @@ var Celler;
             this.loadSprite(0 /* Common */, 0 /* Playground */);
             this.loadSprite(2 /* Red */, 1 /* CellBody */);
             this.loadSprite(2 /* Red */, 3 /* Sight */);
+            this.loadSprite(1 /* Blue */, 1 /* CellBody */);
+            this.loadSprite(1 /* Blue */, 3 /* Sight */);
         };
         GameplayState.prototype.create = function () {
             this.game.add.existing(new Celler.Playground(this.game));
-            this.game.add.existing(new Celler.Cell(this.game, 2 /* Red */));
+            this.game.add.existing(new Celler.Cell(this.game, 2 /* Red */, this.getSpawnCoords(2 /* Red */)));
+            this.game.add.existing(new Celler.Cell(this.game, 1 /* Blue */, this.getSpawnCoords(1 /* Blue */)));
             this.game.add.existing(new Celler.Sight(this.game, 2 /* Red */));
+            this.game.add.existing(new Celler.Sight(this.game, 1 /* Blue */));
         };
         GameplayState.prototype.loadSprite = function (suit, assetType) {
             var typeName = Celler.Assets.Type[assetType].toLowerCase();
             var suitName = Celler.Suit[suit].toLowerCase();
             this.game.load.image(Celler.Assets.Sprites.getSpriteKey(suit, assetType), "" + Celler.Assets.Sprites.path + "/" + suitName + "/" + typeName + ".png");
+        };
+        GameplayState.prototype.getSpawnCoords = function (suit) {
+            var cellSize = 20;
+            switch (suit) {
+                case 1 /* Blue */:
+                    return new Phaser.Point(this.game.world.width - cellSize, cellSize);
+                case 2 /* Red */:
+                    return new Phaser.Point(cellSize, this.game.world.width - cellSize);
+            }
+            throw new Error("wrong suit");
         };
         return GameplayState;
     })(Phaser.State);

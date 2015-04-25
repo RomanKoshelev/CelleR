@@ -1,18 +1,17 @@
-﻿module Celler {
-    export module Assets {
-        export enum Type {
-            Playground,
-            CellBody,
-            CellEye,
-            Sight
-        }
+﻿module Celler.Assets {
 
-        export class Sprites {
-            static path = "/Game/Client/Assets/Sprites";
+    export enum Type {
+        Playground,
+        CellBody,
+        CellEye,
+        Sight
+    }
 
-            static getSpriteKey( suit: Suit, assetType: Type ): string {
-                return `${assetType}-${suit}`;
-            }
+    export class Sprites {
+        static path = "/Game/Client/Assets/Sprites";
+
+        static getSpriteKey( suit: Suit, assetType: Type ): string {
+            return `${assetType}-${suit}`;
         }
     }
 }
