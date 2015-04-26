@@ -21,9 +21,6 @@
             super( cell, Assets.Type.CellEye );
             this.anchor.set( 0.5 );
         }
-        setSize( size: number ) {
-            this.scale.set( 1 );//size / this.texture.width );
-        }
     }
 }
 

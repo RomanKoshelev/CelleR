@@ -77,9 +77,6 @@ var Celler;
                 _super.call(this, cell, 1 /* CellEye */);
                 this.anchor.set(0.5);
             }
-            Eye.prototype.setSize = function (size) {
-                this.scale.set(1); //size / this.texture.width );
-            };
             return Eye;
         })(Part);
         CellParts.Eye = Eye;
