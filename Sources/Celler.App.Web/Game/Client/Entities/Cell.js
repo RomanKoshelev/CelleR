@@ -10,13 +10,10 @@ var Celler;
     (function (CellParts) {
         var Part = (function (_super) {
             __extends(Part, _super);
-            function Part(cell, assetType, scale, x, y) {
-                if (scale === void 0) { scale = 1; }
-                if (x === void 0) { x = 0; }
-                if (y === void 0) { y = 0; }
+            function Part(cell, assetType) {
                 this.parent = cell;
-                _super.call(this, cell.game, x, y, Celler.Assets.Sprites.getSpriteKey(cell.suit, assetType));
-                this.scale.setTo(scale, scale);
+                _super.call(this, cell.game, 0, 0, Celler.Assets.Sprites.getSpriteKey(cell.suit, assetType));
+                this.parent = cell;
             }
             return Part;
         })(Phaser.Sprite);
@@ -24,34 +21,44 @@ var Celler;
         var Body = (function (_super) {
             __extends(Body, _super);
             function Body(cell) {
-                _super.call(this, cell, 1 /* CellBody */, 0.125);
-                this.anchor.setTo(0.5, 0.5);
+                _super.call(this, cell, 0 /* CellBody */);
+                this.anchor.set(0.5);
             }
             return Body;
         })(Part);
         CellParts.Body = Body;
+        var Eye = (function (_super) {
+            __extends(Eye, _super);
+            function Eye(cell) {
+                _super.call(this, cell, 1 /* CellEye */);
+                this.anchor.set(0.5);
+                this.scale.set(0.75);
+            }
+            return Eye;
+        })(Part);
+        CellParts.Eye = Eye;
     })(CellParts = Celler.CellParts || (Celler.CellParts = {}));
 })(Celler || (Celler = {}));
 var Celler;
 (function (Celler) {
     var Cell = (function (_super) {
         __extends(Cell, _super);
-        function Cell(game, suit, position) {
+        function Cell(game, suit, size) {
             _super.call(this, game);
-            this.init(suit, position);
+            this.init(suit, size);
             Celler.app.server.onSightCoordsUpdated.add(this.onSightCoordsUpdated, this);
         }
-        Cell.prototype.init = function (suit, position) {
+        Cell.prototype.init = function (suit, size) {
             this.suit = suit;
             this.addChild(this.body = new Celler.CellParts.Body(this));
-            this.body.visible = true;
-            this.visible = true;
-            this.position = position.clone();
+            this.addChild(this.eye = new Celler.CellParts.Eye(this));
+            this.scale.set(size / this.width);
         };
-        Cell.prototype.onSightCoordsUpdated = function (sight) {
-            //this.game.debug.text( "xxx", 10, 20 );
-            //this.game.debug.text( `x=${sight.X}, y=${sight.Y}`, 10, 20 );
-            //this.position.setTo( sight.X, sight.Y );
+        Cell.prototype.onSightCoordsUpdated = function (model) {
+            if (Celler.Suit[model.Suit] === this.suit) {
+                this.game.debug.text("x=" + model.X + ", y=" + model.Y, 10, 20);
+                this.position.setTo(model.X, model.Y);
+            }
         };
         return Cell;
     })(Phaser.Group);

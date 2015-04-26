@@ -3,13 +3,13 @@ var Celler;
     var App = (function () {
         function App() {
             this.server = new Celler.ServerAdapter();
-            this.game = new Phaser.Game(610, 610, Phaser.AUTO, "celler-playground", {
+            this.game = new Phaser.Game(600, 600, Phaser.AUTO, "celler-playground", {
                 create: this.create
-            });
+            }, false, true, null);
         }
         App.prototype.create = function () {
             this.game.stage.backgroundColor = "#6aa84f";
-            this.game.state.add("PlayState", Celler.GameplayState, true);
+            this.game.state.add("PlayState", Celler.PlayState, true);
         };
         return App;
     })();

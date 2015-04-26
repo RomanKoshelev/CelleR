@@ -6,46 +6,58 @@ var __extends = this.__extends || function (d, b) {
 };
 var Celler;
 (function (Celler) {
-    var GameplayState = (function (_super) {
-        __extends(GameplayState, _super);
-        function GameplayState() {
+    var PlayState = (function (_super) {
+        __extends(PlayState, _super);
+        function PlayState() {
             _super.call(this);
         }
-        GameplayState.prototype.preload = function () {
-            this.loadSprite(0 /* Common */, 0 /* Playground */);
-            this.loadSprite(2 /* Red */, 1 /* CellBody */);
-            this.loadSprite(2 /* Red */, 3 /* Sight */);
-            /*
-                        this.loadSprite( Suit.Blue, Assets.Type.CellBody );
-                        this.loadSprite( Suit.Blue, Assets.Type.Sight );
-            */
+        PlayState.prototype.preload = function () {
+            this.loadSprite(1 /* Red */, 3 /* Home */);
+            this.loadSprite(1 /* Red */, 0 /* CellBody */);
+            this.loadSprite(1 /* Red */, 1 /* CellEye */);
+            this.loadSprite(1 /* Red */, 2 /* Sight */);
+            this.loadSprite(0 /* Blue */, 3 /* Home */);
+            this.loadSprite(0 /* Blue */, 0 /* CellBody */);
+            this.loadSprite(0 /* Blue */, 1 /* CellEye */);
+            this.loadSprite(0 /* Blue */, 2 /* Sight */);
         };
-        GameplayState.prototype.create = function () {
-            this.game.add.existing(new Celler.Playground(this.game));
-            this.game.add.existing(new Celler.Cell(this.game, 2 /* Red */, this.getSpawnCoords(2 /* Red */)));
-            this.game.add.existing(new Celler.Sight(this.game, 2 /* Red */));
-            /*
-                        this.game.add.existing( new Cell( this.game, Suit.Blue, this.getSpawnCoords( Suit.Blue ) ) );
-                        this.game.add.existing( new Sight( this.game, Suit.Blue ) );
-            */
+        PlayState.prototype.create = function () {
+            this.createSuitObjects(1 /* Red */);
+            this.createSuitObjects(0 /* Blue */);
         };
-        GameplayState.prototype.loadSprite = function (suit, assetType) {
+        PlayState.prototype.loadSprite = function (suit, assetType) {
             var typeName = Celler.Assets.Type[assetType].toLowerCase();
             var suitName = Celler.Suit[suit].toLowerCase();
             this.game.load.image(Celler.Assets.Sprites.getSpriteKey(suit, assetType), "" + Celler.Assets.Sprites.path + "/" + suitName + "/" + typeName + ".png");
         };
-        GameplayState.prototype.getSpawnCoords = function (suit) {
-            var cellSize = 20;
+        PlayState.prototype.getCornerCoords = function (suit, indent) {
             switch (suit) {
-                case 1 /* Blue */:
-                    return new Phaser.Point(this.game.world.width - cellSize, cellSize);
-                case 2 /* Red */:
-                    return new Phaser.Point(cellSize, this.game.world.width - cellSize);
+                case 0 /* Blue */:
+                    return new Phaser.Point(this.game.world.width - indent, indent);
+                case 1 /* Red */:
+                    return new Phaser.Point(indent, this.game.world.width - indent);
             }
             throw new Error("wrong suit");
         };
-        return GameplayState;
+        PlayState.prototype.createSuitObjects = function (suit) {
+            var sight = new Celler.Sight(this.game, suit, PlayState.sightSize);
+            var home = new Celler.Home(this.game, suit, PlayState.homeSize);
+            var cell = new Celler.Cell(this.game, suit, PlayState.cellSize);
+            this.game.add.existing(home);
+            this.game.add.existing(sight);
+            this.game.add.existing(cell);
+            home.position = this.getCornerCoords(suit, home.width / 2);
+            cell.position = home.position.clone();
+            sight.position = cell.position.clone();
+            this.game.world.sendToBack(sight);
+            this.game.world.sendToBack(cell);
+            this.game.world.sendToBack(home);
+        };
+        PlayState.cellSize = 60;
+        PlayState.sightSize = 80;
+        PlayState.homeSize = 100;
+        return PlayState;
     })(Phaser.State);
-    Celler.GameplayState = GameplayState;
+    Celler.PlayState = PlayState;
 })(Celler || (Celler = {}));
 //# sourceMappingURL=PlayState.js.map

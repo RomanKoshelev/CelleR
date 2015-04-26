@@ -3,10 +3,10 @@ var Celler;
     var Assets;
     (function (Assets) {
         (function (Type) {
-            Type[Type["Playground"] = 0] = "Playground";
-            Type[Type["CellBody"] = 1] = "CellBody";
-            Type[Type["CellEye"] = 2] = "CellEye";
-            Type[Type["Sight"] = 3] = "Sight";
+            Type[Type["CellBody"] = 0] = "CellBody";
+            Type[Type["CellEye"] = 1] = "CellEye";
+            Type[Type["Sight"] = 2] = "Sight";
+            Type[Type["Home"] = 3] = "Home";
         })(Assets.Type || (Assets.Type = {}));
         var Type = Assets.Type;
         var Sprites = (function () {

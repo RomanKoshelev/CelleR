@@ -76,8 +76,10 @@ var Celler;
             function Eye(cell) {
                 _super.call(this, cell, 1 /* CellEye */);
                 this.anchor.set(0.5);
-                this.scale.set(0.75);
             }
+            Eye.prototype.setSize = function (size) {
+                this.scale.set(1); //size / this.texture.width );
+            };
             return Eye;
         })(Part);
         CellParts.Eye = Eye;
@@ -97,12 +99,32 @@ var Celler;
             this.addChild(this.body = new Celler.CellParts.Body(this));
             this.addChild(this.eye = new Celler.CellParts.Eye(this));
             this.scale.set(size / this.width);
+            this.eyeScale = this.calcEyeScale();
+            this.setEyeScale(this.eyeScale);
         };
         Cell.prototype.onSightCoordsUpdated = function (model) {
             if (Celler.Suit[model.Suit] === this.suit) {
-                this.game.debug.text("x=" + model.X + ", y=" + model.Y, 10, 20);
-                this.position.setTo(model.X, model.Y);
+                this.lookAt(new Phaser.Point(model.X, model.Y));
             }
+        };
+        Cell.prototype.lookAt = function (p) {
+            var base = this.position;
+            var r = this.width / 4;
+            var d = Phaser.Point.distance(base, p);
+            var cs = this.width;
+            var es = cs * this.eyeScale;
+            var k = (cs - es) / 2;
+            var m = k / this.scale.x;
+            p = Phaser.Point.subtract(p, base);
+            p = p.normalize();
+            p = p.multiply(m, m);
+            this.eye.position = d > r ? p : new Phaser.Point();
+        };
+        Cell.prototype.calcEyeScale = function () {
+            return 0.75;
+        };
+        Cell.prototype.setEyeScale = function (eyeScale) {
+            this.eye.scale.set(eyeScale);
         };
         return Cell;
     })(Phaser.Group);
