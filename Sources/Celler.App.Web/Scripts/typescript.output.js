@@ -1,5 +1,30 @@
 var Celler;
 (function (Celler) {
+    var App = (function () {
+        function App() {
+            this.server = new Celler.ServerAdapter();
+            this.game = new Phaser.Game(600, 600, Phaser.AUTO, "celler-playground", {
+                create: this.create
+            }, false, true, null);
+        }
+        App.prototype.create = function () {
+            this.game.stage.backgroundColor = "#6aa84f";
+            this.game.state.add("PlayState", Celler.PlayState, true);
+        };
+        return App;
+    })();
+    Celler.App = App;
+    Celler.app;
+    function initApp() {
+        Celler.app = new App();
+    }
+    Celler.initApp = initApp;
+})(Celler || (Celler = {}));
+window.onload = function () {
+    Celler.initApp();
+};
+var Celler;
+(function (Celler) {
     var Assets;
     (function (Assets) {
         (function (Type) {
@@ -29,61 +54,16 @@ var __extends = this.__extends || function (d, b) {
 };
 var Celler;
 (function (Celler) {
-    var Home = (function (_super) {
-        __extends(Home, _super);
-        function Home(game, suit, size) {
-            _super.call(this, game, 0, 0, Celler.Assets.Sprites.getSpriteKey(suit, 3 /* Home */));
-            this.scale.set(size / this.width);
+    var CellPart = (function (_super) {
+        __extends(CellPart, _super);
+        function CellPart(cell, assetType) {
+            this.parent = cell;
+            _super.call(this, cell.game, 0, 0, Celler.Assets.Sprites.getSpriteKey(cell.suit, assetType));
             this.anchor.set(0.5);
+            this.parent = cell;
         }
-        return Home;
+        return CellPart;
     })(Phaser.Sprite);
-    Celler.Home = Home;
-})(Celler || (Celler = {}));
-var Celler;
-(function (Celler) {
-    (function (Suit) {
-        Suit[Suit["Blue"] = 0] = "Blue";
-        Suit[Suit["Red"] = 1] = "Red";
-    })(Celler.Suit || (Celler.Suit = {}));
-    var Suit = Celler.Suit;
-})(Celler || (Celler = {}));
-var Celler;
-(function (Celler) {
-    var CellParts;
-    (function (CellParts) {
-        var Part = (function (_super) {
-            __extends(Part, _super);
-            function Part(cell, assetType) {
-                this.parent = cell;
-                _super.call(this, cell.game, 0, 0, Celler.Assets.Sprites.getSpriteKey(cell.suit, assetType));
-                this.parent = cell;
-            }
-            return Part;
-        })(Phaser.Sprite);
-        CellParts.Part = Part;
-        var Body = (function (_super) {
-            __extends(Body, _super);
-            function Body(cell) {
-                _super.call(this, cell, 0 /* CellBody */);
-                this.anchor.set(0.5);
-            }
-            return Body;
-        })(Part);
-        CellParts.Body = Body;
-        var Eye = (function (_super) {
-            __extends(Eye, _super);
-            function Eye(cell) {
-                _super.call(this, cell, 1 /* CellEye */);
-                this.anchor.set(0.5);
-            }
-            return Eye;
-        })(Part);
-        CellParts.Eye = Eye;
-    })(CellParts = Celler.CellParts || (Celler.CellParts = {}));
-})(Celler || (Celler = {}));
-var Celler;
-(function (Celler) {
     var Cell = (function (_super) {
         __extends(Cell, _super);
         function Cell(game, suit, size) {
@@ -93,8 +73,8 @@ var Celler;
         }
         Cell.prototype.init = function (suit, size) {
             this.suit = suit;
-            this.addChild(this.body = new Celler.CellParts.Body(this));
-            this.addChild(this.eye = new Celler.CellParts.Eye(this));
+            this.addChild(this.body = new CellPart(this, 0 /* CellBody */));
+            this.addChild(this.eye = new CellPart(this, 1 /* CellEye */));
             this.scale.set(size / this.width);
             this.eyeScale = this.calcEyeScale();
             this.setEyeScale(this.eyeScale);
@@ -105,17 +85,16 @@ var Celler;
             }
         };
         Cell.prototype.lookAt = function (p) {
-            var base = this.position;
             var r = this.width / 4;
-            var d = Phaser.Point.distance(base, p);
-            var cs = this.width;
-            var es = cs * this.eyeScale;
-            var k = (cs - es) / 2;
-            var m = k / this.scale.x;
-            p = Phaser.Point.subtract(p, base);
+            var l = Phaser.Point.distance(this.position, p);
+            var c = this.width;
+            var e = c * this.eyeScale;
+            var d = (c - e) / 2;
+            var m = d / this.scale.x;
+            p = Phaser.Point.subtract(p, this.position);
             p = p.normalize();
             p = p.multiply(m, m);
-            this.eye.position = d > r ? p : new Phaser.Point();
+            this.eye.position = l > r ? p : new Phaser.Point();
         };
         Cell.prototype.calcEyeScale = function () {
             return 0.75;
@@ -126,6 +105,19 @@ var Celler;
         return Cell;
     })(Phaser.Group);
     Celler.Cell = Cell;
+})(Celler || (Celler = {}));
+var Celler;
+(function (Celler) {
+    var Home = (function (_super) {
+        __extends(Home, _super);
+        function Home(game, suit, size) {
+            _super.call(this, game, 0, 0, Celler.Assets.Sprites.getSpriteKey(suit, 3 /* Home */));
+            this.scale.set(size / this.width);
+            this.anchor.set(0.5);
+        }
+        return Home;
+    })(Phaser.Sprite);
+    Celler.Home = Home;
 })(Celler || (Celler = {}));
 var Celler;
 (function (Celler) {
@@ -163,6 +155,45 @@ var Celler;
         return Sight;
     })(Phaser.Sprite);
     Celler.Sight = Sight;
+})(Celler || (Celler = {}));
+var Celler;
+(function (Celler) {
+    (function (Suit) {
+        Suit[Suit["Blue"] = 0] = "Blue";
+        Suit[Suit["Red"] = 1] = "Red";
+    })(Celler.Suit || (Celler.Suit = {}));
+    var Suit = Celler.Suit;
+})(Celler || (Celler = {}));
+var Celler;
+(function (Celler) {
+    var ServerAdapter = (function () {
+        function ServerAdapter() {
+            this.onSightCoordsUpdated = new Phaser.Signal();
+            this.client = $.connection.gameHub.client;
+            this.server = $.connection.gameHub.server;
+            this.ready = false;
+            this.init();
+        }
+        ServerAdapter.prototype.updateSightCoords = function (sight) {
+            if (this.ready) {
+                this.server.updateSightCoords(sight);
+            }
+        };
+        ServerAdapter.prototype.init = function () {
+            var _this = this;
+            this.client.sightCoordsUpdated = function (sight) {
+                _this.sightCoordsUpdated(sight);
+            };
+            $.connection.hub.start().done(function () {
+                _this.ready = true;
+            });
+        };
+        ServerAdapter.prototype.sightCoordsUpdated = function (sight) {
+            this.onSightCoordsUpdated.dispatch(sight);
+        };
+        return ServerAdapter;
+    })();
+    Celler.ServerAdapter = ServerAdapter;
 })(Celler || (Celler = {}));
 var Celler;
 (function (Celler) {
@@ -219,61 +250,5 @@ var Celler;
         return PlayState;
     })(Phaser.State);
     Celler.PlayState = PlayState;
-})(Celler || (Celler = {}));
-var Celler;
-(function (Celler) {
-    var App = (function () {
-        function App() {
-            this.server = new Celler.ServerAdapter();
-            this.game = new Phaser.Game(600, 600, Phaser.AUTO, "celler-playground", {
-                create: this.create
-            }, false, true, null);
-        }
-        App.prototype.create = function () {
-            this.game.stage.backgroundColor = "#6aa84f";
-            this.game.state.add("PlayState", Celler.PlayState, true);
-        };
-        return App;
-    })();
-    Celler.App = App;
-    Celler.app;
-    function initApp() {
-        Celler.app = new App();
-    }
-    Celler.initApp = initApp;
-})(Celler || (Celler = {}));
-window.onload = function () {
-    Celler.initApp();
-};
-var Celler;
-(function (Celler) {
-    var ServerAdapter = (function () {
-        function ServerAdapter() {
-            this.onSightCoordsUpdated = new Phaser.Signal();
-            this.client = $.connection.gameHub.client;
-            this.server = $.connection.gameHub.server;
-            this.ready = false;
-            this.init();
-        }
-        ServerAdapter.prototype.updateSightCoords = function (sight) {
-            if (this.ready) {
-                this.server.updateSightCoords(sight);
-            }
-        };
-        ServerAdapter.prototype.init = function () {
-            var _this = this;
-            this.client.sightCoordsUpdated = function (sight) {
-                _this.sightCoordsUpdated(sight);
-            };
-            $.connection.hub.start().done(function () {
-                _this.ready = true;
-            });
-        };
-        ServerAdapter.prototype.sightCoordsUpdated = function (sight) {
-            this.onSightCoordsUpdated.dispatch(sight);
-        };
-        return ServerAdapter;
-    })();
-    Celler.ServerAdapter = ServerAdapter;
 })(Celler || (Celler = {}));
 //# sourceMappingURL=typescript.output.js.map

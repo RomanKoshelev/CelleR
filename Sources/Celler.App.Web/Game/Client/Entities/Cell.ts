@@ -1,30 +1,14 @@
-﻿module Celler.CellParts {
+﻿module Celler {
 
-    export class Part extends Phaser.Sprite {
+    class CellPart extends Phaser.Sprite {
 
         constructor( cell: Cell, assetType: Assets.Type ) {
             this.parent = cell;
             super( cell.game, 0, 0, Assets.Sprites.getSpriteKey( cell.suit, assetType ) );
+            this.anchor.set( 0.5 );
             this.parent = cell;
         }
     }
-
-    export class Body extends Part {
-        constructor( cell: Cell ) {
-            super( cell, Assets.Type.CellBody );
-            this.anchor.set( 0.5 );
-        }
-    }
-
-    export class Eye extends Part {
-        constructor( cell: Cell ) {
-            super( cell, Assets.Type.CellEye );
-            this.anchor.set( 0.5 );
-        }
-    }
-}
-
-module Celler {
 
     export class Cell extends Phaser.Group {
 
@@ -36,14 +20,14 @@ module Celler {
             app.server.onSightCoordsUpdated.add( this.onSightCoordsUpdated, this );
         }
 
-        private body: CellParts.Body;
-        private eye: CellParts.Eye;
+        private body: CellPart;
+        private eye: CellPart;
         private eyeScale: number;
 
         private init( suit: Suit, size: number ) {
             this.suit = suit;
-            this.addChild( this.body = new CellParts.Body( this ) );
-            this.addChild( this.eye = new CellParts.Eye( this ) );
+            this.addChild( this.body = new CellPart( this, Assets.Type.CellBody ) );
+            this.addChild( this.eye = new CellPart( this, Assets.Type.CellEye ) );
             this.scale.set( size / this.width );
 
             this.eyeScale = this.calcEyeScale();
@@ -57,19 +41,18 @@ module Celler {
         }
 
         private lookAt( p: Phaser.Point ) {
-            var base = this.position;
             var r = this.width/4;
-            var d = Phaser.Point.distance( base, p );
-            var cs = this.width;
-            var es = cs * this.eyeScale;
-            var k = (cs - es)/2;
-            var m = k / this.scale.x;
+            var l = Phaser.Point.distance( this.position, p );
+            var c = this.width;
+            var e = c * this.eyeScale;
+            var d = (c - e)/2;
+            var m = d / this.scale.x;
 
-            p = Phaser.Point.subtract( p, base );
+            p = Phaser.Point.subtract( p, this.position );
             p = p.normalize();
             p = p.multiply( m, m );
 
-            this.eye.position = d>r? p : new Phaser.Point();
+            this.eye.position = l>r? p : new Phaser.Point();
         }
 
         calcEyeScale(): number {
