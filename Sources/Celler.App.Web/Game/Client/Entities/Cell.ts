@@ -15,6 +15,14 @@
             this.anchor.set( 0.5 );
         }
     }
+
+    export class Eye extends Part {
+        constructor( cell: Cell ) {
+            super( cell, Assets.Type.CellEye );
+            this.anchor.set( 0.5 );
+            this.scale.set( 0.75 );
+        }
+    }
 }
 
 module Celler {
@@ -30,10 +38,12 @@ module Celler {
         }
 
         private body: CellParts.Body;
+        private eye: CellParts.Body;
 
         private init( suit: Suit, size: number ) {
             this.suit = suit;
             this.addChild( this.body = new CellParts.Body( this ) );
+            this.addChild( this.eye = new CellParts.Eye( this ) );
             this.scale.set( size / this.width );
         }
 

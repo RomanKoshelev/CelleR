@@ -1,5 +1,5 @@
 ﻿module Celler {
-    export class Play extends Phaser.State {
+    export class PlayState extends Phaser.State {
         constructor() {
             super();
         }
@@ -7,16 +7,16 @@
         static cellSize = 60;
         static sightSize = 80;
         static homeSize = 100;
-        static eyeMinSize = 10;
-        static eyeMaxSize = 50;
 
         preload() {
             this.loadSprite( Suit.Red, Assets.Type.Home );
             this.loadSprite( Suit.Red, Assets.Type.CellBody );
+            this.loadSprite( Suit.Red, Assets.Type.CellEye );
             this.loadSprite( Suit.Red, Assets.Type.Sight );
 
             this.loadSprite( Suit.Blue, Assets.Type.Home );
             this.loadSprite( Suit.Blue, Assets.Type.CellBody );
+            this.loadSprite( Suit.Blue, Assets.Type.CellEye );
             this.loadSprite( Suit.Blue, Assets.Type.Sight );
         }
 
@@ -45,9 +45,9 @@
 
 
         createSuitObjects( suit: Suit ) {
-            var sight = new Sight( this.game, suit, Play.sightSize );
-            var home = new Home( this.game, suit, Play.homeSize );
-            var cell = new Cell( this.game, suit, Play.cellSize );
+            var sight = new Sight( this.game, suit, PlayState.sightSize );
+            var home = new Home( this.game, suit, PlayState.homeSize );
+            var cell = new Cell( this.game, suit, PlayState.cellSize );
 
             this.game.add.existing( home );
             this.game.add.existing( sight );
