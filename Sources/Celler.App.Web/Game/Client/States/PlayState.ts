@@ -1,12 +1,14 @@
 ﻿module Celler {
-    export class GameplayState extends Phaser.State {
+    export class Play extends Phaser.State {
         constructor() {
             super();
         }
 
         static cellSize = 60;
         static sightSize = 80;
-        static homeSize = 80;
+        static homeSize = 100;
+        static eyeMinSize = 10;
+        static eyeMaxSize = 50;
 
         preload() {
             this.loadSprite( Suit.Red, Assets.Type.Home );
@@ -19,9 +21,8 @@
         }
 
         create() {
-
-            this.createSuitObjects(Suit.Red);
-            this.createSuitObjects(Suit.Blue);
+            this.createSuitObjects( Suit.Red );
+            this.createSuitObjects( Suit.Blue );
         }
 
         private loadSprite( suit: Suit, assetType: Assets.Type ) {
@@ -39,18 +40,26 @@
             case Suit.Red:
                 return new Phaser.Point( indent, this.game.world.width - indent );
             }
-
             throw new Error( "wrong suit" );
         }
 
 
         createSuitObjects( suit: Suit ) {
-            var home = new Home( this.game, suit, GameplayState.homeSize );
-            var cell = new Cell( this.game, suit, GameplayState.cellSize );
-            var sight = new Sight( this.game, suit, GameplayState.sightSize );
-            this.game.add.existing( home ).position = this.getCornerCoords(suit, home.width/2);
-            this.game.add.existing( cell ).position = home.position.clone();
-            this.game.add.existing( sight ).position = cell.position.clone();
+            var sight = new Sight( this.game, suit, Play.sightSize );
+            var home = new Home( this.game, suit, Play.homeSize );
+            var cell = new Cell( this.game, suit, Play.cellSize );
+
+            this.game.add.existing( home );
+            this.game.add.existing( sight );
+            this.game.add.existing( cell );
+
+            home.position = this.getCornerCoords( suit, home.width / 2 );
+            cell.position = home.position.clone();
+            sight.position = cell.position.clone();
+
+            this.game.world.sendToBack( sight );
+            this.game.world.sendToBack( cell );
+            this.game.world.sendToBack( home );
         }
     }
 }

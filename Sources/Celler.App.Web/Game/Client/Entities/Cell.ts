@@ -5,6 +5,7 @@
         constructor( cell: Cell, assetType: Assets.Type) {
             this.parent = cell;
             super( cell.game, 0, 0, Assets.Sprites.getSpriteKey( cell.suit, assetType ) );
+            this.parent = cell;
         }
     }
 
