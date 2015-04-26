@@ -7,9 +7,17 @@
 
         constructor() {
             this.server = new ServerAdapter();
-            this.game = new Phaser.Game( 610, 610, Phaser.AUTO, "celler-playground", {
-                create: this.create
-            } );
+            this.game = new Phaser.Game(
+                600, 600,
+                Phaser.AUTO,
+                "celler-playground",
+                {
+                    create: this.create
+                },
+                false,
+                true,
+                null
+            );
         }
 
         create() {

@@ -1,10 +1,10 @@
 ﻿module Celler.Assets {
 
     export enum Type {
-        Playground,
         CellBody,
         CellEye,
-        Sight
+        Sight,
+        Home
     }
 
     export class Sprites {
