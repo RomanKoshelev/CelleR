@@ -1,6 +1,8 @@
 ﻿module Celler {
     export class Sight extends SuitSprite {
 
+        static minHintDistance = 4;
+
         constructor( game: Phaser.Game, suit: Suit, size: number ) {
             super( game, suit, Assets.Type.Sight, size );
 
@@ -11,13 +13,8 @@
             app.server.onSightMoved.add( this.onSightMoved, this );
         }
 
-        private prevUpdatePosition = new Phaser.Point( 0, 0 );
-
         update() {
-            if( !this.inAnimation && this.position.distance( this.prevUpdatePosition ) > 1 ) {
-                this.prevUpdatePosition = this.position.clone();
-                app.server.hintSightPosition( this.toSuitPositionModel() );
-            }
+            this.serverHintSightPosition();
             super.update();
         }
 
@@ -26,7 +23,7 @@
             app.server.moveCell( this.toSuitPositionModel() );
         }
 
-        inAnimation: boolean = false;
+        private inAnimation = false;
 
         private onSightMoved( position: SuitPositonModel ) {
             if( Suit[ position.Suit ] === this.suit ) {
@@ -49,6 +46,15 @@
                     Y: this.position.y
                 }
             };
+        }
+
+        private prevUpdatePosition = new Phaser.Point( 0, 0 );
+
+        private serverHintSightPosition() {
+            if( !this.inAnimation && this.position.distance( this.prevUpdatePosition ) > Sight.minHintDistance ) {
+                this.prevUpdatePosition = this.position.clone();
+                app.server.hintSightPosition( this.toSuitPositionModel() );
+            }
         }
     }
 }

@@ -35,7 +35,7 @@ var Celler;
             _super.call(this);
         }
         Room.prototype.init = function () {
-            this.game.stage.backgroundColor = "#004400";
+            this.game.stage.backgroundColor = Room.background;
         };
         Room.prototype.preload = function () {
             this.loadSuitSprites(0 /* Blue */);
@@ -48,14 +48,14 @@ var Celler;
         Room.prototype.update = function () {
             this.game.debug.text(Celler.app.playerId, 10, 20);
         };
-        Room.prototype.getCornerCoords = function (suit, indent) {
+        Room.prototype.getCornerCoords = function (suit, margin) {
             switch (suit) {
                 case 0 /* Blue */:
-                    return new Phaser.Point(indent, this.game.world.width - indent);
+                    return new Phaser.Point(margin, this.game.world.width - margin);
                 case 1 /* Red */:
-                    return new Phaser.Point(this.game.world.width - indent, indent);
+                    return new Phaser.Point(this.game.world.width - margin, margin);
             }
-            throw new Error("wrong suit");
+            throw new Error("Unsupported suit " + Celler.Suit[suit]);
         };
         Room.prototype.createObjects = function (suit) {
             var sight = new Celler.Sight(this.game, suit, Room.sightSize);
@@ -85,6 +85,7 @@ var Celler;
         Room.cellSize = 65;
         Room.sightSize = 100;
         Room.homeSize = 150;
+        Room.background = "#004400";
         return Room;
     })(Phaser.State);
     Celler.Room = Room;
@@ -137,6 +138,7 @@ var Celler;
         }
         Cell.prototype.update = function () {
             this.lookAtSigtPoint();
+            _super.prototype.update.call(this);
         };
         Cell.prototype.init = function (suit, size) {
             this.addChild(this.body = new Celler.SuitSprite(this.game, suit, 0 /* CellBody */));
@@ -187,18 +189,15 @@ var Celler;
         __extends(Sight, _super);
         function Sight(game, suit, size) {
             _super.call(this, game, suit, 2 /* Sight */, size);
-            this.prevUpdatePosition = new Phaser.Point(0, 0);
             this.inAnimation = false;
+            this.prevUpdatePosition = new Phaser.Point(0, 0);
             this.inputEnabled = true;
             this.input.enableDrag();
             this.events.onDragStop.add(this.onDragStop, this);
             Celler.app.server.onSightMoved.add(this.onSightMoved, this);
         }
         Sight.prototype.update = function () {
-            if (!this.inAnimation && this.position.distance(this.prevUpdatePosition) > 1) {
-                this.prevUpdatePosition = this.position.clone();
-                Celler.app.server.hintSightPosition(this.toSuitPositionModel());
-            }
+            this.serverHintSightPosition();
             _super.prototype.update.call(this);
         };
         Sight.prototype.onDragStop = function () {
@@ -223,6 +222,13 @@ var Celler;
                 }
             };
         };
+        Sight.prototype.serverHintSightPosition = function () {
+            if (!this.inAnimation && this.position.distance(this.prevUpdatePosition) > Sight.minHintDistance) {
+                this.prevUpdatePosition = this.position.clone();
+                Celler.app.server.hintSightPosition(this.toSuitPositionModel());
+            }
+        };
+        Sight.minHintDistance = 4;
         return Sight;
     })(Celler.SuitSprite);
     Celler.Sight = Sight;

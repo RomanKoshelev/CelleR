@@ -4,13 +4,14 @@
         static cellSize = 65;
         static sightSize = 100;
         static homeSize = 150;
+        static background = "#004400";
 
         constructor() {
             super();
         }
 
         init() {
-            this.game.stage.backgroundColor = "#004400";
+            this.game.stage.backgroundColor = Room.background;
         }
 
         preload() {
@@ -27,14 +28,14 @@
             this.game.debug.text( app.playerId, 10, 20);
         } 
 
-        private getCornerCoords( suit: Suit, indent: number ): Phaser.Point {
+        private getCornerCoords( suit: Suit, margin: number ): Phaser.Point {
             switch( suit ) {
             case Suit.Blue:
-                return new Phaser.Point( indent, this.game.world.width - indent );
+                return new Phaser.Point( margin, this.game.world.width - margin );
             case Suit.Red:
-                return new Phaser.Point( this.game.world.width - indent, indent );
+                return new Phaser.Point( this.game.world.width - margin, margin );
             }
-            throw new Error( "wrong suit" );
+            throw new Error( `Unsupported suit ${Suit[suit]}` );
         }
 
         private createObjects( suit: Suit ) {
