@@ -2,12 +2,17 @@
     export class Cell extends Phaser.Group {
 
         suit: Suit;
+        sight: SuitSprite;
 
         constructor( game: Phaser.Game, suit: Suit, size: number ) {
             super( game );
             this.init( suit, size );
-            app.server.onSightCoordsUpdated.add( this.onSightCoordsUpdated, this );
             app.server.onCellCoordsUpdated.add( this.onCellCoordsUpdated, this );
+        }
+
+        update() {
+            this.lookAt( this.sight.position );
+            super.update();
         }
 
         private body: SuitSprite;
@@ -24,15 +29,9 @@
             this.updateEyeSize();
         }
 
-        private onSightCoordsUpdated( model: SightModel ) {
-            if( Suit[ model.Suit ] === this.suit ) {
-                this.lookAt( new Phaser.Point( model.Position.X, model.Position.Y ) );
-            }
-        }
-
         private onCellCoordsUpdated( model: CellModel ) {
             if( Suit[ model.Suit ] === this.suit ) {
-                this.position = new Phaser.Point( model.Position.X, model.Position.Y );
+                this.jumpTo( new Phaser.Point( model.Position.X, model.Position.Y ) )
             }
         }
 
@@ -58,6 +57,10 @@
         private updateEyeSize() {
             this.eyeRate = this.calcEyeRate();
             this.eye.scale.set( this.eyeRate );
+        }
+
+        private jumpTo( p: Phaser.Point ) {
+            var tween = this.game.add.tween( this ).to( { x: p.x, y: p.y }, 1000, Phaser.Easing.Cubic.InOut, true );
         }
     }
 }

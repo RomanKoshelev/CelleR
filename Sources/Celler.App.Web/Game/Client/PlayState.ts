@@ -45,6 +45,7 @@
             home.position = this.getCornerCoords( suit, home.width / 2 );
             cell.position = home.position.clone();
             sight.position = cell.position.clone();
+            cell.sight = sight;
 
             this.game.world.sendToBack( sight );
             this.game.world.sendToBack( cell );

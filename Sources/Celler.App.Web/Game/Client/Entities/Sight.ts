@@ -4,6 +4,7 @@
         constructor( game: Phaser.Game, suit: Suit, size: number ) {
             super( game, suit, Assets.Type.Sight, size );
             this.init();
+            app.server.onSightCoordsUpdated.add( this.onSightCoordsUpdated, this );
         }
 
         update() {
@@ -14,6 +15,7 @@
         private init() {
             this.inputEnabled = true;
             this.input.enableDrag();
+            this.events.onDragStart.add( this.onDragStart, this );
             this.events.onDragStop.add( this.onDragStop, this );
         }
 
@@ -26,8 +28,14 @@
             }
         }
 
+        private onDragStart() {
+            this.inDragMode = true;
+            app.server.moveCell( Suit[this.suit], this.toPointModel() );
+        }
+
         private onDragStop() {
-            app.server.moveCell( Suit[ this.suit ], this.toPointModel() );
+            this.inDragMode = false;
+            app.server.moveCell( Suit[this.suit], this.toPointModel() );
         }
 
         private toSightModel(): SightModel {
@@ -43,5 +51,13 @@
                 Y: this.position.y
             };
         }
+
+        private onSightCoordsUpdated( model: SightModel ) {
+            if( Suit[ model.Suit ] === this.suit && !this.inDragMode ) {
+                this.position = new Phaser.Point( model.Position.X, model.Position.Y );
+            }
+        }
+
+        private inDragMode: boolean;
     }
 }

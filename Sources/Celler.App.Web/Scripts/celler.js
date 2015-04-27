@@ -70,9 +70,12 @@ var Celler;
         function Cell(game, suit, size) {
             _super.call(this, game);
             this.init(suit, size);
-            Celler.app.server.onSightCoordsUpdated.add(this.onSightCoordsUpdated, this);
             Celler.app.server.onCellCoordsUpdated.add(this.onCellCoordsUpdated, this);
         }
+        Cell.prototype.update = function () {
+            this.lookAt(this.sight.position);
+            _super.prototype.update.call(this);
+        };
         Cell.prototype.init = function (suit, size) {
             this.addChild(this.body = new Celler.SuitSprite(this.game, suit, 0 /* CellBody */));
             this.addChild(this.eye = new Celler.SuitSprite(this.game, suit, 1 /* CellEye */));
@@ -80,14 +83,9 @@ var Celler;
             this.scale.set(size / this.width);
             this.updateEyeSize();
         };
-        Cell.prototype.onSightCoordsUpdated = function (model) {
-            if (Celler.Suit[model.Suit] === this.suit) {
-                this.lookAt(new Phaser.Point(model.Position.X, model.Position.Y));
-            }
-        };
         Cell.prototype.onCellCoordsUpdated = function (model) {
             if (Celler.Suit[model.Suit] === this.suit) {
-                this.position = new Phaser.Point(model.Position.X, model.Position.Y);
+                this.jumpTo(new Phaser.Point(model.Position.X, model.Position.Y));
             }
         };
         Cell.prototype.lookAt = function (p) {
@@ -109,6 +107,9 @@ var Celler;
             this.eyeRate = this.calcEyeRate();
             this.eye.scale.set(this.eyeRate);
         };
+        Cell.prototype.jumpTo = function (p) {
+            var tween = this.game.add.tween(this).to({ x: p.x, y: p.y }, 1000, Phaser.Easing.Cubic.InOut, true);
+        };
         return Cell;
     })(Phaser.Group);
     Celler.Cell = Cell;
@@ -121,6 +122,7 @@ var Celler;
             _super.call(this, game, suit, 2 /* Sight */, size);
             this.prevUpdatePosition = new Phaser.Point(0, 0);
             this.init();
+            Celler.app.server.onSightCoordsUpdated.add(this.onSightCoordsUpdated, this);
         }
         Sight.prototype.update = function () {
             this.doUpdate();
@@ -129,6 +131,7 @@ var Celler;
         Sight.prototype.init = function () {
             this.inputEnabled = true;
             this.input.enableDrag();
+            this.events.onDragStart.add(this.onDragStart, this);
             this.events.onDragStop.add(this.onDragStop, this);
         };
         Sight.prototype.doUpdate = function () {
@@ -137,7 +140,12 @@ var Celler;
                 Celler.app.server.updateSightCoords(this.toSightModel());
             }
         };
+        Sight.prototype.onDragStart = function () {
+            this.inDragMode = true;
+            Celler.app.server.moveCell(Celler.Suit[this.suit], this.toPointModel());
+        };
         Sight.prototype.onDragStop = function () {
+            this.inDragMode = false;
             Celler.app.server.moveCell(Celler.Suit[this.suit], this.toPointModel());
         };
         Sight.prototype.toSightModel = function () {
@@ -151,6 +159,11 @@ var Celler;
                 X: this.position.x,
                 Y: this.position.y
             };
+        };
+        Sight.prototype.onSightCoordsUpdated = function (model) {
+            if (Celler.Suit[model.Suit] === this.suit && !this.inDragMode) {
+                this.position = new Phaser.Point(model.Position.X, model.Position.Y);
+            }
         };
         return Sight;
     })(Celler.SuitSprite);
@@ -193,6 +206,7 @@ var Celler;
             home.position = this.getCornerCoords(suit, home.width / 2);
             cell.position = home.position.clone();
             sight.position = cell.position.clone();
+            cell.sight = sight;
             this.game.world.sendToBack(sight);
             this.game.world.sendToBack(cell);
             this.game.world.sendToBack(home);
