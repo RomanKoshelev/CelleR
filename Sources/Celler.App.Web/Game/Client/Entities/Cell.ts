@@ -47,10 +47,10 @@
             if ( this.sightPoint == null ) return;
 
             var p = this.sightPoint.clone();
-            var r = this.width * 0.1;
             var l = Phaser.Point.distance( this.position, p );
             var c = this.width;
             var e = c * this.eyeRate;
+            var r = c * 0.1;
             var d = ( c - e ) / 2;
             var m = d / this.scale.x;
 
