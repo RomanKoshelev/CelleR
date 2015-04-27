@@ -30,15 +30,17 @@
         private doUpdate() {
             if( this.position.distance( this.prevUpdatePosition ) > 0 ) {
                 this.prevUpdatePosition = this.position.clone();
-//                app.server.updateSightCoords( this.toModel() );
+                app.server.updateSightCoords( this.toModel() );
             }
         }
 
         private toModel(): SightModel {
             return {
                 Suit: Suit[ this.suit ],
-                X: this.position.x,
-                Y: this.position.y
+                Position: {
+                    X: this.position.x,
+                    Y: this.position.y
+                }
             };
         }
 

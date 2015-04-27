@@ -183,7 +183,8 @@
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LogController.cs" />
-    <Compile Include="Game\Server\GameHub\SightModel.cs" />
+    <Compile Include="Game\Server\Models\PointModel.cs" />
+    <Compile Include="Game\Server\Models\SightModel.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -212,9 +213,10 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\celler.js" />
     <Content Include="Scripts\phaser.js" />
     <Content Include="Scripts\phaser.min.js" />
-    <Content Include="Game\Client\Hubs\Hubs.tt">
+    <Content Include="Game\Client\Hubs.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Hubs.d.ts</LastGenOutput>
     </Content>
@@ -231,7 +233,6 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Scripts\typescript.output.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -259,11 +260,11 @@
     <TypeScriptCompile Include="Game\Client\Entities\Suit.ts" />
     <TypeScriptCompile Include="Game\Client\Entities\Cell.ts" />
     <TypeScriptCompile Include="Game\Client\Entities\Sight.ts" />
-    <TypeScriptCompile Include="Game\Client\States\PlayState.ts" />
+    <TypeScriptCompile Include="Game\Client\PlayState.ts" />
     <TypeScriptCompile Include="Scripts\typings\phaser\p2.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\phaser\phaser.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\phaser\pixi.d.ts" />
-    <TypeScriptCompile Include="Game\Client\Hubs\Hubs.d.ts">
+    <TypeScriptCompile Include="Game\Client\Hubs.d.ts">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Hubs.tt</DependentUpon>
@@ -271,7 +272,7 @@
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\signalr\signalr.d.ts" />
     <TypeScriptCompile Include="Game\Client\App.ts" />
-    <TypeScriptCompile Include="Game\Client\Hubs\ServerAdapter.ts" />
+    <TypeScriptCompile Include="Game\Client\ServerAdapter.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Fonts\glyphicons-halflings-regular.woff" />
@@ -288,7 +289,8 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-    <TypeScriptOutFile>$(ProjectDir)\Scripts\typescript.output.js</TypeScriptOutFile>
+    <TypeScriptOutFile>$(ProjectDir)\Scripts\celler.js</TypeScriptOutFile>
+    <TypeScriptOutDir>$(ProjectDir)\Scripts\tmp\</TypeScriptOutDir>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

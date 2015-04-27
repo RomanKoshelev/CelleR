@@ -77,7 +77,7 @@ var Celler;
         };
         Cell.prototype.onSightCoordsUpdated = function (model) {
             if (Celler.Suit[model.Suit] === this.suit) {
-                this.lookAt(new Phaser.Point(model.X, model.Y));
+                this.lookAt(new Phaser.Point(model.Position.X, model.Position.Y));
             }
         };
         Cell.prototype.lookAt = function (p) {
@@ -126,13 +126,16 @@ var Celler;
         Sight.prototype.doUpdate = function () {
             if (this.position.distance(this.prevUpdatePosition) > 0) {
                 this.prevUpdatePosition = this.position.clone();
+                Celler.app.server.updateSightCoords(this.toModel());
             }
         };
         Sight.prototype.toModel = function () {
             return {
                 Suit: Celler.Suit[this.suit],
-                X: this.position.x,
-                Y: this.position.y
+                Position: {
+                    X: this.position.x,
+                    Y: this.position.y
+                }
             };
         };
         Sight.prototype.onDragStop = function () {
@@ -256,4 +259,4 @@ var Celler;
     })();
     Celler.ServerAdapter = ServerAdapter;
 })(Celler || (Celler = {}));
-//# sourceMappingURL=typescript.output.js.map
+//# sourceMappingURL=celler.js.map

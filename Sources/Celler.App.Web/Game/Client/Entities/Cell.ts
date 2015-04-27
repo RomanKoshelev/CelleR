@@ -36,7 +36,7 @@
 
         private onSightCoordsUpdated( model: SightModel ) {
             if( Suit[ model.Suit ] === this.suit ) {
-                this.lookAt( new Phaser.Point( model.X, model.Y ) );
+                this.lookAt( new Phaser.Point( model.Position.X, model.Position.Y ) );
             }
         }
 

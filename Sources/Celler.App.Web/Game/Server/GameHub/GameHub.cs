@@ -2,6 +2,7 @@
 // Celler.App.Web
 // GameHub.cs
 
+using Celler.App.Web.Game.Server.Models;
 using Microsoft.AspNet.SignalR;
 using NLog;
 
@@ -18,7 +19,7 @@ namespace Celler.App.Web.Game.Server.GameHub
 
         public void UpdateSightCoords( SightModel sight )
         {
-            Logger.Trace( "UpdateSightCoords( {0}: {1},{2} )", sight.Suit, sight.X, sight.Y );
+            Logger.Trace( "UpdateSightCoords( {0} )", sight.Suit );
             Clients.All.SightCoordsUpdated( sight );
         }
     }
