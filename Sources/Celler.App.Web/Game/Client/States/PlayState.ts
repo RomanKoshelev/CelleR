@@ -9,20 +9,14 @@
         static homeSize = 100;
 
         preload() {
-            this.loadSprite( Suit.Red, Assets.Type.Home );
-            this.loadSprite( Suit.Red, Assets.Type.CellBody );
-            this.loadSprite( Suit.Red, Assets.Type.CellEye );
-            this.loadSprite( Suit.Red, Assets.Type.Sight );
-
-            this.loadSprite( Suit.Blue, Assets.Type.Home );
-            this.loadSprite( Suit.Blue, Assets.Type.CellBody );
-            this.loadSprite( Suit.Blue, Assets.Type.CellEye );
-            this.loadSprite( Suit.Blue, Assets.Type.Sight );
+            this.loadSuitSprites( Suit.Blue );
+            this.loadSuitSprites( Suit.Red );
         }
 
         create() {
-            this.createSuitObjects( Suit.Red );
-            this.createSuitObjects( Suit.Blue );
+            this.game.stage.backgroundColor = "#005500";
+            this.createObjects( Suit.Blue );
+            this.createObjects( Suit.Red );
         }
 
         private loadSprite( suit: Suit, assetType: Assets.Type ) {
@@ -36,15 +30,15 @@
         private getCornerCoords( suit: Suit, indent: number ): Phaser.Point {
             switch( suit ) {
             case Suit.Blue:
-                return new Phaser.Point( this.game.world.width - indent, indent );
-            case Suit.Red:
                 return new Phaser.Point( indent, this.game.world.width - indent );
+            case Suit.Red:
+                return new Phaser.Point( this.game.world.width - indent, indent );
             }
             throw new Error( "wrong suit" );
         }
 
 
-        createSuitObjects( suit: Suit ) {
+        createObjects( suit: Suit ) {
             var sight = new Sight( this.game, suit, PlayState.sightSize );
             var home = new Home( this.game, suit, PlayState.homeSize );
             var cell = new Cell( this.game, suit, PlayState.cellSize );
@@ -60,6 +54,13 @@
             this.game.world.sendToBack( sight );
             this.game.world.sendToBack( cell );
             this.game.world.sendToBack( home );
+        }
+
+        loadSuitSprites( suit: Suit ) {
+            this.loadSprite( suit, Assets.Type.Home );
+            this.loadSprite( suit, Assets.Type.CellBody );
+            this.loadSprite( suit, Assets.Type.CellEye );
+            this.loadSprite( suit, Assets.Type.Sight );
         }
     }
 }

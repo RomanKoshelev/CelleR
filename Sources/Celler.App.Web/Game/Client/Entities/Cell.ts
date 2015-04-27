@@ -41,7 +41,7 @@
         }
 
         private lookAt( p: Phaser.Point ) {
-            var r = this.width/4;
+            var r = this.width*0.1;
             var l = Phaser.Point.distance( this.position, p );
             var c = this.width;
             var e = c * this.eyeScale;

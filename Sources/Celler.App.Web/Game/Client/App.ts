@@ -21,7 +21,6 @@
         }
 
         create() {
-            this.game.stage.backgroundColor = "#6aa84f";
             this.game.state.add( "PlayState", PlayState, true );
         }
     }

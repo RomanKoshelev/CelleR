@@ -1,30 +1,5 @@
 var Celler;
 (function (Celler) {
-    var App = (function () {
-        function App() {
-            this.server = new Celler.ServerAdapter();
-            this.game = new Phaser.Game(600, 600, Phaser.AUTO, "celler-playground", {
-                create: this.create
-            }, false, true, null);
-        }
-        App.prototype.create = function () {
-            this.game.stage.backgroundColor = "#6aa84f";
-            this.game.state.add("PlayState", Celler.PlayState, true);
-        };
-        return App;
-    })();
-    Celler.App = App;
-    Celler.app;
-    function initApp() {
-        Celler.app = new App();
-    }
-    Celler.initApp = initApp;
-})(Celler || (Celler = {}));
-window.onload = function () {
-    Celler.initApp();
-};
-var Celler;
-(function (Celler) {
     var Assets;
     (function (Assets) {
         (function (Type) {
@@ -52,6 +27,27 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
+var Celler;
+(function (Celler) {
+    var Home = (function (_super) {
+        __extends(Home, _super);
+        function Home(game, suit, size) {
+            _super.call(this, game, 0, 0, Celler.Assets.Sprites.getSpriteKey(suit, 3 /* Home */));
+            this.scale.set(size / this.width);
+            this.anchor.set(0.5);
+        }
+        return Home;
+    })(Phaser.Sprite);
+    Celler.Home = Home;
+})(Celler || (Celler = {}));
+var Celler;
+(function (Celler) {
+    (function (Suit) {
+        Suit[Suit["Blue"] = 0] = "Blue";
+        Suit[Suit["Red"] = 1] = "Red";
+    })(Celler.Suit || (Celler.Suit = {}));
+    var Suit = Celler.Suit;
+})(Celler || (Celler = {}));
 var Celler;
 (function (Celler) {
     var CellPart = (function (_super) {
@@ -85,7 +81,7 @@ var Celler;
             }
         };
         Cell.prototype.lookAt = function (p) {
-            var r = this.width / 4;
+            var r = this.width * 0.1;
             var l = Phaser.Point.distance(this.position, p);
             var c = this.width;
             var e = c * this.eyeScale;
@@ -105,19 +101,6 @@ var Celler;
         return Cell;
     })(Phaser.Group);
     Celler.Cell = Cell;
-})(Celler || (Celler = {}));
-var Celler;
-(function (Celler) {
-    var Home = (function (_super) {
-        __extends(Home, _super);
-        function Home(game, suit, size) {
-            _super.call(this, game, 0, 0, Celler.Assets.Sprites.getSpriteKey(suit, 3 /* Home */));
-            this.scale.set(size / this.width);
-            this.anchor.set(0.5);
-        }
-        return Home;
-    })(Phaser.Sprite);
-    Celler.Home = Home;
 })(Celler || (Celler = {}));
 var Celler;
 (function (Celler) {
@@ -158,12 +141,85 @@ var Celler;
 })(Celler || (Celler = {}));
 var Celler;
 (function (Celler) {
-    (function (Suit) {
-        Suit[Suit["Blue"] = 0] = "Blue";
-        Suit[Suit["Red"] = 1] = "Red";
-    })(Celler.Suit || (Celler.Suit = {}));
-    var Suit = Celler.Suit;
+    var PlayState = (function (_super) {
+        __extends(PlayState, _super);
+        function PlayState() {
+            _super.call(this);
+        }
+        PlayState.prototype.preload = function () {
+            this.loadSuitSprites(0 /* Blue */);
+            this.loadSuitSprites(1 /* Red */);
+        };
+        PlayState.prototype.create = function () {
+            this.game.stage.backgroundColor = "#005500";
+            this.createObjects(0 /* Blue */);
+            this.createObjects(1 /* Red */);
+        };
+        PlayState.prototype.loadSprite = function (suit, assetType) {
+            var typeName = Celler.Assets.Type[assetType].toLowerCase();
+            var suitName = Celler.Suit[suit].toLowerCase();
+            this.game.load.image(Celler.Assets.Sprites.getSpriteKey(suit, assetType), "" + Celler.Assets.Sprites.path + "/" + suitName + "/" + typeName + ".png");
+        };
+        PlayState.prototype.getCornerCoords = function (suit, indent) {
+            switch (suit) {
+                case 0 /* Blue */:
+                    return new Phaser.Point(indent, this.game.world.width - indent);
+                case 1 /* Red */:
+                    return new Phaser.Point(this.game.world.width - indent, indent);
+            }
+            throw new Error("wrong suit");
+        };
+        PlayState.prototype.createObjects = function (suit) {
+            var sight = new Celler.Sight(this.game, suit, PlayState.sightSize);
+            var home = new Celler.Home(this.game, suit, PlayState.homeSize);
+            var cell = new Celler.Cell(this.game, suit, PlayState.cellSize);
+            this.game.add.existing(home);
+            this.game.add.existing(sight);
+            this.game.add.existing(cell);
+            home.position = this.getCornerCoords(suit, home.width / 2);
+            cell.position = home.position.clone();
+            sight.position = cell.position.clone();
+            this.game.world.sendToBack(sight);
+            this.game.world.sendToBack(cell);
+            this.game.world.sendToBack(home);
+        };
+        PlayState.prototype.loadSuitSprites = function (suit) {
+            this.loadSprite(suit, 3 /* Home */);
+            this.loadSprite(suit, 0 /* CellBody */);
+            this.loadSprite(suit, 1 /* CellEye */);
+            this.loadSprite(suit, 2 /* Sight */);
+        };
+        PlayState.cellSize = 60;
+        PlayState.sightSize = 80;
+        PlayState.homeSize = 100;
+        return PlayState;
+    })(Phaser.State);
+    Celler.PlayState = PlayState;
 })(Celler || (Celler = {}));
+var Celler;
+(function (Celler) {
+    var App = (function () {
+        function App() {
+            this.server = new Celler.ServerAdapter();
+            this.game = new Phaser.Game(600, 600, Phaser.AUTO, "celler-playground", {
+                create: this.create
+            }, false, true, null);
+        }
+        App.prototype.create = function () {
+            this.game.state.add("PlayState", Celler.PlayState, true);
+        };
+        return App;
+    })();
+    Celler.App = App;
+    Celler.app;
+    function initApp() {
+        Celler.app = new App();
+    }
+    Celler.initApp = initApp;
+})(Celler || (Celler = {}));
+window.onload = function () {
+    Celler.initApp();
+};
 var Celler;
 (function (Celler) {
     var ServerAdapter = (function () {
@@ -194,61 +250,5 @@ var Celler;
         return ServerAdapter;
     })();
     Celler.ServerAdapter = ServerAdapter;
-})(Celler || (Celler = {}));
-var Celler;
-(function (Celler) {
-    var PlayState = (function (_super) {
-        __extends(PlayState, _super);
-        function PlayState() {
-            _super.call(this);
-        }
-        PlayState.prototype.preload = function () {
-            this.loadSprite(1 /* Red */, 3 /* Home */);
-            this.loadSprite(1 /* Red */, 0 /* CellBody */);
-            this.loadSprite(1 /* Red */, 1 /* CellEye */);
-            this.loadSprite(1 /* Red */, 2 /* Sight */);
-            this.loadSprite(0 /* Blue */, 3 /* Home */);
-            this.loadSprite(0 /* Blue */, 0 /* CellBody */);
-            this.loadSprite(0 /* Blue */, 1 /* CellEye */);
-            this.loadSprite(0 /* Blue */, 2 /* Sight */);
-        };
-        PlayState.prototype.create = function () {
-            this.createSuitObjects(1 /* Red */);
-            this.createSuitObjects(0 /* Blue */);
-        };
-        PlayState.prototype.loadSprite = function (suit, assetType) {
-            var typeName = Celler.Assets.Type[assetType].toLowerCase();
-            var suitName = Celler.Suit[suit].toLowerCase();
-            this.game.load.image(Celler.Assets.Sprites.getSpriteKey(suit, assetType), "" + Celler.Assets.Sprites.path + "/" + suitName + "/" + typeName + ".png");
-        };
-        PlayState.prototype.getCornerCoords = function (suit, indent) {
-            switch (suit) {
-                case 0 /* Blue */:
-                    return new Phaser.Point(this.game.world.width - indent, indent);
-                case 1 /* Red */:
-                    return new Phaser.Point(indent, this.game.world.width - indent);
-            }
-            throw new Error("wrong suit");
-        };
-        PlayState.prototype.createSuitObjects = function (suit) {
-            var sight = new Celler.Sight(this.game, suit, PlayState.sightSize);
-            var home = new Celler.Home(this.game, suit, PlayState.homeSize);
-            var cell = new Celler.Cell(this.game, suit, PlayState.cellSize);
-            this.game.add.existing(home);
-            this.game.add.existing(sight);
-            this.game.add.existing(cell);
-            home.position = this.getCornerCoords(suit, home.width / 2);
-            cell.position = home.position.clone();
-            sight.position = cell.position.clone();
-            this.game.world.sendToBack(sight);
-            this.game.world.sendToBack(cell);
-            this.game.world.sendToBack(home);
-        };
-        PlayState.cellSize = 60;
-        PlayState.sightSize = 80;
-        PlayState.homeSize = 100;
-        return PlayState;
-    })(Phaser.State);
-    Celler.PlayState = PlayState;
 })(Celler || (Celler = {}));
 //# sourceMappingURL=typescript.output.js.map
