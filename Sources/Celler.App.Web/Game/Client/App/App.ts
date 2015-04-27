@@ -7,6 +7,7 @@
         game: Phaser.Game;
         server: ServerAdapter;
         playerId = "";
+        playerSuit = Suit.Blue;
 
         constructor() {
             this.server = new ServerAdapter();
@@ -34,7 +35,6 @@
                 this.playerId = id;
             });
         }
-
     }
 
     export var app: App;

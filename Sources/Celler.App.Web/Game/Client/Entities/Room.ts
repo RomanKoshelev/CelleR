@@ -25,8 +25,9 @@
         }
 
         update() {
-            this.game.debug.text( app.playerId, 10, 20);
-        } 
+            this.game.debug.text( app.playerId, 10, 20 );
+            this.sights[app.playerSuit].procKeyboard();
+        }
 
         private getCornerCoords( suit: Suit, margin: number ): Phaser.Point {
             switch( suit ) {
@@ -35,8 +36,10 @@
             case Suit.Red:
                 return new Phaser.Point( this.game.world.width - margin, margin );
             }
-            throw new Error( `Unsupported suit ${Suit[suit]}` );
+            throw new Error( `Unsupported suit ${Suit[ suit ]}` );
         }
+
+        private sights = [];
 
         private createObjects( suit: Suit ) {
             var sight = new Sight( this.game, suit, Room.sightSize );
@@ -54,6 +57,8 @@
             this.game.world.sendToBack( sight );
             this.game.world.sendToBack( cell );
             this.game.world.sendToBack( home );
+
+            this.sights[ suit ] = sight;
         }
 
         private loadSuitSprites( suit: Suit ) {
@@ -70,5 +75,7 @@
                 Assets.Sprites.getSpriteKey( suit, assetType ),
                 `${Assets.Sprites.path}/${suitName}/${typeName}.png` );
         }
+
+
     }
 }
