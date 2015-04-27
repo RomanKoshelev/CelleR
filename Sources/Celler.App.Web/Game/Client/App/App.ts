@@ -14,7 +14,7 @@
         }
 
         create() {
-            this.game.state.add( "PlayState", PlayState, true );
+            this.game.state.add( "Player", Room, true );
         }
 
         private initGame() {
@@ -23,7 +23,7 @@
                 Phaser.AUTO,
                 "celler-playground",
                 {
-                    create: this.create,
+                    create: this.create
                 },
                 false,
                 true,

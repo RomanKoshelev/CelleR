@@ -1,5 +1,5 @@
 ﻿module Celler {
-    export class PlayState extends Phaser.State {
+    export class Room extends Phaser.State {
 
         static cellSize = 65;
         static sightSize = 100;
@@ -38,9 +38,9 @@
         }
 
         private createObjects( suit: Suit ) {
-            var sight = new Sight( this.game, suit, PlayState.sightSize );
-            var home = new Home( this.game, suit, PlayState.homeSize );
-            var cell = new Cell( this.game, suit, PlayState.cellSize );
+            var sight = new Sight( this.game, suit, Room.sightSize );
+            var home = new Home( this.game, suit, Room.homeSize );
+            var cell = new Cell( this.game, suit, Room.cellSize );
 
             this.game.add.existing( home );
             this.game.add.existing( sight );

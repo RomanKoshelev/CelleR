@@ -29,26 +29,26 @@ var __extends = this.__extends || function (d, b) {
 };
 var Celler;
 (function (Celler) {
-    var PlayState = (function (_super) {
-        __extends(PlayState, _super);
-        function PlayState() {
+    var Room = (function (_super) {
+        __extends(Room, _super);
+        function Room() {
             _super.call(this);
         }
-        PlayState.prototype.init = function () {
+        Room.prototype.init = function () {
             this.game.stage.backgroundColor = "#004400";
         };
-        PlayState.prototype.preload = function () {
+        Room.prototype.preload = function () {
             this.loadSuitSprites(0 /* Blue */);
             this.loadSuitSprites(1 /* Red */);
         };
-        PlayState.prototype.create = function () {
+        Room.prototype.create = function () {
             this.createObjects(0 /* Blue */);
             this.createObjects(1 /* Red */);
         };
-        PlayState.prototype.update = function () {
+        Room.prototype.update = function () {
             this.game.debug.text(Celler.app.playerId, 10, 20);
         };
-        PlayState.prototype.getCornerCoords = function (suit, indent) {
+        Room.prototype.getCornerCoords = function (suit, indent) {
             switch (suit) {
                 case 0 /* Blue */:
                     return new Phaser.Point(indent, this.game.world.width - indent);
@@ -57,10 +57,10 @@ var Celler;
             }
             throw new Error("wrong suit");
         };
-        PlayState.prototype.createObjects = function (suit) {
-            var sight = new Celler.Sight(this.game, suit, PlayState.sightSize);
-            var home = new Celler.Home(this.game, suit, PlayState.homeSize);
-            var cell = new Celler.Cell(this.game, suit, PlayState.cellSize);
+        Room.prototype.createObjects = function (suit) {
+            var sight = new Celler.Sight(this.game, suit, Room.sightSize);
+            var home = new Celler.Home(this.game, suit, Room.homeSize);
+            var cell = new Celler.Cell(this.game, suit, Room.cellSize);
             this.game.add.existing(home);
             this.game.add.existing(sight);
             this.game.add.existing(cell);
@@ -71,23 +71,23 @@ var Celler;
             this.game.world.sendToBack(cell);
             this.game.world.sendToBack(home);
         };
-        PlayState.prototype.loadSuitSprites = function (suit) {
+        Room.prototype.loadSuitSprites = function (suit) {
             this.loadSprite(suit, 3 /* Home */);
             this.loadSprite(suit, 0 /* CellBody */);
             this.loadSprite(suit, 1 /* CellEye */);
             this.loadSprite(suit, 2 /* Sight */);
         };
-        PlayState.prototype.loadSprite = function (suit, assetType) {
+        Room.prototype.loadSprite = function (suit, assetType) {
             var typeName = Celler.Assets.Type[assetType].toLowerCase();
             var suitName = Celler.Suit[suit].toLowerCase();
             this.game.load.image(Celler.Assets.Sprites.getSpriteKey(suit, assetType), "" + Celler.Assets.Sprites.path + "/" + suitName + "/" + typeName + ".png");
         };
-        PlayState.cellSize = 65;
-        PlayState.sightSize = 100;
-        PlayState.homeSize = 150;
-        return PlayState;
+        Room.cellSize = 65;
+        Room.sightSize = 100;
+        Room.homeSize = 150;
+        return Room;
     })(Phaser.State);
-    Celler.PlayState = PlayState;
+    Celler.Room = Room;
 })(Celler || (Celler = {}));
 var Celler;
 (function (Celler) {
@@ -236,12 +236,12 @@ var Celler;
             this.server.onStarted.addOnce(this.initGame, this);
         }
         App.prototype.create = function () {
-            this.game.state.add("PlayState", Celler.PlayState, true);
+            this.game.state.add("Player", Celler.Room, true);
         };
         App.prototype.initGame = function () {
             var _this = this;
             this.game = new Phaser.Game(App.gameSize, App.gameSize, Phaser.AUTO, "celler-playground", {
-                create: this.create,
+                create: this.create
             }, false, true, null);
             this.server.getPlayerId().done(function (id) {
                 _this.playerId = id;
