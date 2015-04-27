@@ -2,13 +2,17 @@
     export class Cell extends Phaser.Group {
 
         suit: Suit;
-        sight: SuitSprite;
+        sightPoint: Phaser.Point;
 
         constructor( game: Phaser.Game, suit: Suit, size: number ) {
             super( game );
             this.init( suit, size );
             app.server.onCellMoved.add( this.onCellMoved, this );
             app.server.onSightPositionHinted.add( this.onSightPositionHinted, this );
+        }
+
+        update() {
+            this.lookAtSigtPoint();
         }
 
         private body: SuitSprite;
@@ -32,12 +36,15 @@
         }
 
         private onSightPositionHinted( position: SuitPositonModel ) {
-            if( Suit[ position.Suit ] === this.suit ) {
-                this.lookAt( new Phaser.Point( position.Position.X, position.Position.Y ) );
+            if ( Suit[position.Suit] === this.suit ) {
+                this.sightPoint = new Phaser.Point( position.Position.X, position.Position.Y );
             }
         }
 
-        private lookAt( p: Phaser.Point ) {
+        private lookAtSigtPoint() {
+            if ( this.sightPoint == null ) return;
+
+            var p = this.sightPoint.clone();
             var r = this.width * 0.1;
             var l = Phaser.Point.distance( this.position, p );
             var c = this.width;
@@ -62,7 +69,10 @@
         }
 
         private jumpTo( p: Phaser.Point ) {
-            this.game.add.tween( this ).to( { x: p.x, y: p.y }, 500, Phaser.Easing.Circular.InOut, true );
+            this.game.add.tween( this )
+                .from( {x: this.position.x, y: this.position.y })
+                .to( { x: p.x, y: p.y }, 500, Phaser.Easing.Circular.InOut, true );
+            this.position = p.clone();
         }
     }
 }

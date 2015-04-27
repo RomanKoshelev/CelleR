@@ -38,8 +38,6 @@
             var home = new Home( this.game, suit, PlayState.homeSize );
             var cell = new Cell( this.game, suit, PlayState.cellSize );
 
-            cell.sight = sight;
-
             this.game.add.existing( home );
             this.game.add.existing( sight );
             this.game.add.existing( cell );

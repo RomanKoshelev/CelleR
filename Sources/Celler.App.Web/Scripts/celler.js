@@ -73,6 +73,9 @@ var Celler;
             Celler.app.server.onCellMoved.add(this.onCellMoved, this);
             Celler.app.server.onSightPositionHinted.add(this.onSightPositionHinted, this);
         }
+        Cell.prototype.update = function () {
+            this.lookAtSigtPoint();
+        };
         Cell.prototype.init = function (suit, size) {
             this.addChild(this.body = new Celler.SuitSprite(this.game, suit, 0 /* CellBody */));
             this.addChild(this.eye = new Celler.SuitSprite(this.game, suit, 1 /* CellEye */));
@@ -87,10 +90,13 @@ var Celler;
         };
         Cell.prototype.onSightPositionHinted = function (position) {
             if (Celler.Suit[position.Suit] === this.suit) {
-                this.lookAt(new Phaser.Point(position.Position.X, position.Position.Y));
+                this.sightPoint = new Phaser.Point(position.Position.X, position.Position.Y);
             }
         };
-        Cell.prototype.lookAt = function (p) {
+        Cell.prototype.lookAtSigtPoint = function () {
+            if (this.sightPoint == null)
+                return;
+            var p = this.sightPoint.clone();
             var r = this.width * 0.1;
             var l = Phaser.Point.distance(this.position, p);
             var c = this.width;
@@ -110,7 +116,8 @@ var Celler;
             this.eye.scale.set(this.eyeRate);
         };
         Cell.prototype.jumpTo = function (p) {
-            this.game.add.tween(this).to({ x: p.x, y: p.y }, 500, Phaser.Easing.Circular.InOut, true);
+            this.game.add.tween(this).from({ x: this.position.x, y: this.position.y }).to({ x: p.x, y: p.y }, 500, Phaser.Easing.Circular.InOut, true);
+            this.position = p.clone();
         };
         return Cell;
     })(Phaser.Group);
@@ -188,7 +195,6 @@ var Celler;
             var sight = new Celler.Sight(this.game, suit, PlayState.sightSize);
             var home = new Celler.Home(this.game, suit, PlayState.homeSize);
             var cell = new Celler.Cell(this.game, suit, PlayState.cellSize);
-            cell.sight = sight;
             this.game.add.existing(home);
             this.game.add.existing(sight);
             this.game.add.existing(cell);
