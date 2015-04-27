@@ -33,11 +33,11 @@
                 this.inAnimation = true;
                 this.game.add.tween( this )
                     .to( { x: position.Position.X, y: position.Position.Y }, 100, Phaser.Easing.Circular.InOut, true )
-                    .onComplete.addOnce( this.onAniationCompleete, this );
+                    .onComplete.addOnce( this.onAnimationCompleete, this );
             }
         }
 
-        private onAniationCompleete() {
+        private onAnimationCompleete() {
             this.inAnimation = false;
         }
 

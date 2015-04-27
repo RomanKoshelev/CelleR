@@ -5,39 +5,37 @@
         onSightPositionHinted = new Phaser.Signal();
         onCellMoved = new Phaser.Signal();
         onSightMoved = new Phaser.Signal();
+        onStarted = new Phaser.Signal();
 
         constructor() {
             this.init();
         }
 
-        hintSightPosition ( position: SuitPositonModel ) {
-            if( this.ready ) {
-                this.server.hintSightPosition( position );
-            }
+        hintSightPosition( position: SuitPositonModel ) {
+            this.server.hintSightPosition( position );
         }
 
-        moveCell( position: SuitPositonModel  ) {
-            if( this.ready ) {
-                this.server.moveCell( position );
-            }
+        moveCell( position: SuitPositonModel ) {
+            this.server.moveCell( position );
         }
 
         moveSight( position: SuitPositonModel ) {
-            if( this.ready ) {
-                this.server.moveSight( position );
-            }
+            this.server.moveSight( position );
+        }
+
+        getPlayerId( position: SuitPositonModel ): JQueryPromise<string> {
+            return this.server.getPlayerId();
         }
 
         private client = $.connection.gameHub.client;
         private server = $.connection.gameHub.server;
-        private ready = false;
 
         private init() {
             this.client.sightPositionHinted = ( position: SuitPositonModel ) => { this.sightPositionHinted( position ); };
             this.client.cellMoved = ( position: SuitPositonModel ) => { this.cellMoved( position ); };
             this.client.sightMoved = ( position: SuitPositonModel ) => { this.sightMoved( position ); };
 
-            $.connection.hub.start().done( () => { this.ready = true; } );
+            $.connection.hub.start().done( () => { this.onStarted.dispatch() } );
         }
 
         private sightPositionHinted( position: SuitPositonModel ) {

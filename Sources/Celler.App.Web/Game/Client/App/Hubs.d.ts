@@ -65,6 +65,13 @@ interface GameHubServer {
       * @return {JQueryPromise of void}
       */
     moveSight(position : SuitPositonModel) : JQueryPromise<void>;
+ 
+    /** 
+      * Sends a "getPlayerId" message to the GameHub hub.
+      * Contract Documentation: ---
+      * @return {JQueryPromise of string}
+      */
+    getPlayerId() : JQueryPromise<string>;
 }
  
 interface GameHubClient

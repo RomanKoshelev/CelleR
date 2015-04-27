@@ -30,5 +30,10 @@ namespace Celler.App.Web.Game.Server.GameHub
         {
             Clients.All.SightMoved( position );
         }
+
+        public string GetPlayerId()
+        {
+            return Context.ConnectionId;
+        }
     }
 }

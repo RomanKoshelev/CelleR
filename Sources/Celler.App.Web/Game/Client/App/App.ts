@@ -2,12 +2,21 @@
 
     export class App {
 
+        static gameSize = 720;
+
         game: Phaser.Game;
         server: ServerAdapter;
-        static gameSize = 720;
 
         constructor() {
             this.server = new ServerAdapter();
+            this.server.onStarted.addOnce( this.createGame, this );
+        }
+
+        create() {
+            this.game.state.add( "PlayState", PlayState, true );
+        }
+
+        private createGame() {
             this.game = new Phaser.Game(
                 App.gameSize, App.gameSize,
                 Phaser.AUTO,
@@ -19,10 +28,7 @@
                 true,
                 null
             );
-        }
 
-        create() {
-            this.game.state.add( "PlayState", PlayState, true );
         }
     }
 

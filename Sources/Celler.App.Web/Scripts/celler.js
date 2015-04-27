@@ -205,10 +205,10 @@ var Celler;
         Sight.prototype.onSightMoved = function (position) {
             if (Celler.Suit[position.Suit] === this.suit) {
                 this.inAnimation = true;
-                this.game.add.tween(this).to({ x: position.Position.X, y: position.Position.Y }, 100, Phaser.Easing.Circular.InOut, true).onComplete.addOnce(this.onAniationCompleete, this);
+                this.game.add.tween(this).to({ x: position.Position.X, y: position.Position.Y }, 100, Phaser.Easing.Circular.InOut, true).onComplete.addOnce(this.onAnimationCompleete, this);
             }
         };
-        Sight.prototype.onAniationCompleete = function () {
+        Sight.prototype.onAnimationCompleete = function () {
             this.inAnimation = false;
         };
         Sight.prototype.toSuitPositionModel = function () {
@@ -229,12 +229,15 @@ var Celler;
     var App = (function () {
         function App() {
             this.server = new Celler.ServerAdapter();
-            this.game = new Phaser.Game(App.gameSize, App.gameSize, Phaser.AUTO, "celler-playground", {
-                create: this.create
-            }, false, true, null);
+            this.server.onStarted.addOnce(this.createGame, this);
         }
         App.prototype.create = function () {
             this.game.state.add("PlayState", Celler.PlayState, true);
+        };
+        App.prototype.createGame = function () {
+            this.game = new Phaser.Game(App.gameSize, App.gameSize, Phaser.AUTO, "celler-playground", {
+                create: this.create
+            }, false, true, null);
         };
         App.gameSize = 720;
         return App;
@@ -256,25 +259,22 @@ var Celler;
             this.onSightPositionHinted = new Phaser.Signal();
             this.onCellMoved = new Phaser.Signal();
             this.onSightMoved = new Phaser.Signal();
+            this.onStarted = new Phaser.Signal();
             this.client = $.connection.gameHub.client;
             this.server = $.connection.gameHub.server;
-            this.ready = false;
             this.init();
         }
         ServerAdapter.prototype.hintSightPosition = function (position) {
-            if (this.ready) {
-                this.server.hintSightPosition(position);
-            }
+            this.server.hintSightPosition(position);
         };
         ServerAdapter.prototype.moveCell = function (position) {
-            if (this.ready) {
-                this.server.moveCell(position);
-            }
+            this.server.moveCell(position);
         };
         ServerAdapter.prototype.moveSight = function (position) {
-            if (this.ready) {
-                this.server.moveSight(position);
-            }
+            this.server.moveSight(position);
+        };
+        ServerAdapter.prototype.getPlayerId = function (position) {
+            return this.server.getPlayerId();
         };
         ServerAdapter.prototype.init = function () {
             var _this = this;
@@ -288,7 +288,7 @@ var Celler;
                 _this.sightMoved(position);
             };
             $.connection.hub.start().done(function () {
-                _this.ready = true;
+                _this.onStarted.dispatch();
             });
         };
         ServerAdapter.prototype.sightPositionHinted = function (position) {
