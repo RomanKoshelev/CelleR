@@ -8,8 +8,8 @@ namespace Celler.App.Web.Game.Server.GameHub
 {
     public interface IGameHubClient
     {
-        void SightPositionHinted( SuitPositonModel position );
-        void CellMoved( SuitPositonModel position );
-        void SightMoved( SuitPositonModel position );
+        void SightPositionHinted( SuitPointModel position );
+        void CellMoved( SuitPointModel position );
+        void SightMoved( SuitPointModel position );
     }
 }

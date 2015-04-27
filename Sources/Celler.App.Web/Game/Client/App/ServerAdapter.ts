@@ -11,15 +11,15 @@
             this.init();
         }
 
-        hintSightPosition( position: SuitPositonModel ) {
+        hintSightPosition( position: SuitPointModel ) {
             this.server.hintSightPosition( position );
         }
 
-        moveCell( position: SuitPositonModel ) {
+        moveCell( position: SuitPointModel ) {
             this.server.moveCell( position );
         }
 
-        moveSight( position: SuitPositonModel ) {
+        moveSight( position: SuitPointModel ) {
             this.server.moveSight( position );
         }
 
@@ -31,22 +31,22 @@
         private server = $.connection.gameHub.server;
 
         private init() {
-            this.client.sightPositionHinted = ( position: SuitPositonModel ) => { this.sightPositionHinted( position ); };
-            this.client.cellMoved = ( position: SuitPositonModel ) => { this.cellMoved( position ); };
-            this.client.sightMoved = ( position: SuitPositonModel ) => { this.sightMoved( position ); };
+            this.client.sightPositionHinted = ( position: SuitPointModel ) => { this.sightPositionHinted( position ); };
+            this.client.cellMoved = ( position: SuitPointModel ) => { this.cellMoved( position ); };
+            this.client.sightMoved = ( position: SuitPointModel ) => { this.sightMoved( position ); };
 
             $.connection.hub.start().done( () => { this.onStarted.dispatch() } );
         }
 
-        private sightPositionHinted( position: SuitPositonModel ) {
+        private sightPositionHinted( position: SuitPointModel ) {
             this.onSightPositionHinted.dispatch( position );
         }
 
-        private cellMoved( position: SuitPositonModel ) {
+        private cellMoved( position: SuitPointModel ) {
             this.onCellMoved.dispatch( position );
         }
 
-        private sightMoved( position: SuitPositonModel ) {
+        private sightMoved( position: SuitPointModel ) {
             this.onSightMoved.dispatch( position );
         }
     }

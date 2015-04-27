@@ -184,7 +184,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Game\Server\Models\PointModel.cs" />
-    <Compile Include="Game\Server\Models\SuitPositonModel.cs" />
+    <Compile Include="Game\Server\Models\SuitPointModel.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

@@ -45,26 +45,26 @@ interface GameHubServer {
     /** 
       * Sends a "hintSightPosition" message to the GameHub hub.
       * Contract Documentation: ---
-      * @param position {SuitPositonModel} 
+      * @param position {SuitPointModel} 
       * @return {JQueryPromise of void}
       */
-    hintSightPosition(position : SuitPositonModel) : JQueryPromise<void>;
+    hintSightPosition(position : SuitPointModel) : JQueryPromise<void>;
  
     /** 
       * Sends a "moveCell" message to the GameHub hub.
       * Contract Documentation: ---
-      * @param position {SuitPositonModel} 
+      * @param position {SuitPointModel} 
       * @return {JQueryPromise of void}
       */
-    moveCell(position : SuitPositonModel) : JQueryPromise<void>;
+    moveCell(position : SuitPointModel) : JQueryPromise<void>;
  
     /** 
       * Sends a "moveSight" message to the GameHub hub.
       * Contract Documentation: ---
-      * @param position {SuitPositonModel} 
+      * @param position {SuitPointModel} 
       * @return {JQueryPromise of void}
       */
-    moveSight(position : SuitPositonModel) : JQueryPromise<void>;
+    moveSight(position : SuitPointModel) : JQueryPromise<void>;
  
     /** 
       * Sends a "getPlayerId" message to the GameHub hub.
@@ -78,28 +78,28 @@ interface GameHubClient
 {
  
     /**
-      * Set this function with a "function(position : SuitPositonModel){}" to receive the "sightPositionHinted" message from the GameHub hub.
+      * Set this function with a "function(position : SuitPointModel){}" to receive the "sightPositionHinted" message from the GameHub hub.
       * Contract Documentation: ---
-      * @param position {SuitPositonModel} 
+      * @param position {SuitPointModel} 
       * @return {void}
       */
-    sightPositionHinted : (position : SuitPositonModel) => void;
+    sightPositionHinted : (position : SuitPointModel) => void;
  
     /**
-      * Set this function with a "function(position : SuitPositonModel){}" to receive the "cellMoved" message from the GameHub hub.
+      * Set this function with a "function(position : SuitPointModel){}" to receive the "cellMoved" message from the GameHub hub.
       * Contract Documentation: ---
-      * @param position {SuitPositonModel} 
+      * @param position {SuitPointModel} 
       * @return {void}
       */
-    cellMoved : (position : SuitPositonModel) => void;
+    cellMoved : (position : SuitPointModel) => void;
  
     /**
-      * Set this function with a "function(position : SuitPositonModel){}" to receive the "sightMoved" message from the GameHub hub.
+      * Set this function with a "function(position : SuitPointModel){}" to receive the "sightMoved" message from the GameHub hub.
       * Contract Documentation: ---
-      * @param position {SuitPositonModel} 
+      * @param position {SuitPointModel} 
       * @return {void}
       */
-    sightMoved : (position : SuitPositonModel) => void;
+    sightMoved : (position : SuitPointModel) => void;
 }
  
 //#endregion GameHub hub
@@ -115,18 +115,10 @@ interface GameHubClient
  
  
 /**
-  * Data contract for Celler.App.Web.Game.Server.Models.SuitPositonModel
+  * Data contract for Celler.App.Web.Game.Server.Models.SuitPointModel
   */
-interface SuitPositonModel {
+interface SuitPointModel {
     Suit : string;
-    Position : PointModel;
-}
- 
- 
-/**
-  * Data contract for Celler.App.Web.Game.Server.Models.PointModel
-  */
-interface PointModel {
     X : number;
     Y : number;
 }

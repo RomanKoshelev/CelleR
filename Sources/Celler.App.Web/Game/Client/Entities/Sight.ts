@@ -25,11 +25,11 @@
 
         private inAnimation = false;
 
-        private onSightMoved( position: SuitPositonModel ) {
+        private onSightMoved( position: SuitPointModel ) {
             if( Suit[ position.Suit ] === this.suit ) {
                 this.inAnimation = true;
                 this.game.add.tween( this )
-                    .to( { x: position.Position.X, y: position.Position.Y }, 100, Phaser.Easing.Circular.InOut, true )
+                    .to( { x: position.X, y: position.Y }, 200, Phaser.Easing.Circular.InOut, true )
                     .onComplete.addOnce( this.onAnimationCompleete, this );
             }
         }
@@ -38,21 +38,20 @@
             this.inAnimation = false;
         }
 
-        private toSuitPositionModel(): SuitPositonModel {
+        private toSuitPositionModel(): SuitPointModel {
             return {
                 Suit: Suit[ this.suit ],
-                Position: {
-                    X: this.position.x,
-                    Y: this.position.y
-                }
+                X: this.position.x,
+                Y: this.position.y
+                
             };
         }
 
-        private prevUpdatePosition = new Phaser.Point( 0, 0 );
+        private prevHintPosition = new Phaser.Point( 0, 0 );
 
         private serverHintSightPosition() {
-            if( !this.inAnimation && this.position.distance( this.prevUpdatePosition ) > Sight.minHintDistance ) {
-                this.prevUpdatePosition = this.position.clone();
+            if ( !this.inAnimation && this.position.distance( this.prevHintPosition ) > Sight.minHintDistance ) {
+                this.prevHintPosition = this.position.clone();
                 app.server.hintSightPosition( this.toSuitPositionModel() );
             }
         }

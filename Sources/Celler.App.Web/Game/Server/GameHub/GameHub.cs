@@ -16,17 +16,17 @@ namespace Celler.App.Web.Game.Server.GameHub
         {
         }
 
-        public void HintSightPosition( SuitPositonModel position )
+        public void HintSightPosition( SuitPointModel position )
         {
             Clients.All.SightPositionHinted( position );
         }
 
-        public void MoveCell( SuitPositonModel position  )
+        public void MoveCell( SuitPointModel position  )
         {
             Clients.All.CellMoved( position );
         }
     
-        public void MoveSight( SuitPositonModel position  )
+        public void MoveSight( SuitPointModel position  )
         {
             Clients.All.SightMoved( position );
         }

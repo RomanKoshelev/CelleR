@@ -30,16 +30,16 @@
             this.updateEyeSize();
         }
 
-        private onCellMoved( position: SuitPositonModel ) {
+        private onCellMoved( position: SuitPointModel ) {
             if( Suit[ position.Suit ] === this.suit ) {
                 this.game.add.tween( this )
-                    .to( { x: position.Position.X, y: position.Position.Y }, 500, Phaser.Easing.Circular.InOut, true );
+                    .to( { x: position.X, y: position.Y }, 500, Phaser.Easing.Circular.InOut, true );
             }
         }
 
-        private onSightPositionHinted( position: SuitPositonModel ) {
+        private onSightPositionHinted( position: SuitPointModel ) {
             if ( Suit[position.Suit] === this.suit ) {
-                this.sightPoint = new Phaser.Point( position.Position.X, position.Position.Y );
+                this.sightPoint = new Phaser.Point( position.X, position.Y );
             }
         }
 

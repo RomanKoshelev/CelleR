@@ -149,12 +149,12 @@ var Celler;
         };
         Cell.prototype.onCellMoved = function (position) {
             if (Celler.Suit[position.Suit] === this.suit) {
-                this.game.add.tween(this).to({ x: position.Position.X, y: position.Position.Y }, 500, Phaser.Easing.Circular.InOut, true);
+                this.game.add.tween(this).to({ x: position.X, y: position.Y }, 500, Phaser.Easing.Circular.InOut, true);
             }
         };
         Cell.prototype.onSightPositionHinted = function (position) {
             if (Celler.Suit[position.Suit] === this.suit) {
-                this.sightPoint = new Phaser.Point(position.Position.X, position.Position.Y);
+                this.sightPoint = new Phaser.Point(position.X, position.Y);
             }
         };
         Cell.prototype.lookAtSigtPoint = function () {
@@ -190,7 +190,7 @@ var Celler;
         function Sight(game, suit, size) {
             _super.call(this, game, suit, 2 /* Sight */, size);
             this.inAnimation = false;
-            this.prevUpdatePosition = new Phaser.Point(0, 0);
+            this.prevHintPosition = new Phaser.Point(0, 0);
             this.inputEnabled = true;
             this.input.enableDrag();
             this.events.onDragStop.add(this.onDragStop, this);
@@ -207,7 +207,7 @@ var Celler;
         Sight.prototype.onSightMoved = function (position) {
             if (Celler.Suit[position.Suit] === this.suit) {
                 this.inAnimation = true;
-                this.game.add.tween(this).to({ x: position.Position.X, y: position.Position.Y }, 100, Phaser.Easing.Circular.InOut, true).onComplete.addOnce(this.onAnimationCompleete, this);
+                this.game.add.tween(this).to({ x: position.X, y: position.Y }, 200, Phaser.Easing.Circular.InOut, true).onComplete.addOnce(this.onAnimationCompleete, this);
             }
         };
         Sight.prototype.onAnimationCompleete = function () {
@@ -216,15 +216,13 @@ var Celler;
         Sight.prototype.toSuitPositionModel = function () {
             return {
                 Suit: Celler.Suit[this.suit],
-                Position: {
-                    X: this.position.x,
-                    Y: this.position.y
-                }
+                X: this.position.x,
+                Y: this.position.y
             };
         };
         Sight.prototype.serverHintSightPosition = function () {
-            if (!this.inAnimation && this.position.distance(this.prevUpdatePosition) > Sight.minHintDistance) {
-                this.prevUpdatePosition = this.position.clone();
+            if (!this.inAnimation && this.position.distance(this.prevHintPosition) > Sight.minHintDistance) {
+                this.prevHintPosition = this.position.clone();
                 Celler.app.server.hintSightPosition(this.toSuitPositionModel());
             }
         };

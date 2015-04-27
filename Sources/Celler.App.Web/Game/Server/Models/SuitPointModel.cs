@@ -4,9 +4,10 @@
 
 namespace Celler.App.Web.Game.Server.Models
 {
-    public class SuitPositonModel
+    public class SuitPointModel
     {
         public string Suit { get; set; }
-        public PointModel Position  { get; set; }
-    }
+        public double X { get; set; }
+        public double Y { get; set; }
+   }
 }
