@@ -6,30 +6,35 @@
 
         game: Phaser.Game;
         server: ServerAdapter;
+        playerId = "";
 
         constructor() {
             this.server = new ServerAdapter();
-            this.server.onStarted.addOnce( this.createGame, this );
+            this.server.onStarted.addOnce( this.initGame, this );
         }
 
         create() {
             this.game.state.add( "PlayState", PlayState, true );
         }
 
-        private createGame() {
+        private initGame() {
             this.game = new Phaser.Game(
                 App.gameSize, App.gameSize,
                 Phaser.AUTO,
                 "celler-playground",
                 {
-                    create: this.create
+                    create: this.create,
                 },
                 false,
                 true,
                 null
-            );
+                );
 
+            this.server.getPlayerId().done ( ( id: string ) => {
+                this.playerId = id;
+            });
         }
+
     }
 
     export var app: App;

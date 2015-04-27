@@ -23,7 +23,7 @@
             this.server.moveSight( position );
         }
 
-        getPlayerId( position: SuitPositonModel ): JQueryPromise<string> {
+        getPlayerId(): JQueryPromise<string> {
             return this.server.getPlayerId();
         }
 

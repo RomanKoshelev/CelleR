@@ -45,6 +45,9 @@ var Celler;
             this.createObjects(0 /* Blue */);
             this.createObjects(1 /* Red */);
         };
+        PlayState.prototype.update = function () {
+            this.game.debug.text(Celler.app.playerId, 10, 20);
+        };
         PlayState.prototype.getCornerCoords = function (suit, indent) {
             switch (suit) {
                 case 0 /* Blue */:
@@ -228,16 +231,21 @@ var Celler;
 (function (Celler) {
     var App = (function () {
         function App() {
+            this.playerId = "";
             this.server = new Celler.ServerAdapter();
-            this.server.onStarted.addOnce(this.createGame, this);
+            this.server.onStarted.addOnce(this.initGame, this);
         }
         App.prototype.create = function () {
             this.game.state.add("PlayState", Celler.PlayState, true);
         };
-        App.prototype.createGame = function () {
+        App.prototype.initGame = function () {
+            var _this = this;
             this.game = new Phaser.Game(App.gameSize, App.gameSize, Phaser.AUTO, "celler-playground", {
-                create: this.create
+                create: this.create,
             }, false, true, null);
+            this.server.getPlayerId().done(function (id) {
+                _this.playerId = id;
+            });
         };
         App.gameSize = 720;
         return App;
@@ -273,7 +281,7 @@ var Celler;
         ServerAdapter.prototype.moveSight = function (position) {
             this.server.moveSight(position);
         };
-        ServerAdapter.prototype.getPlayerId = function (position) {
+        ServerAdapter.prototype.getPlayerId = function () {
             return this.server.getPlayerId();
         };
         ServerAdapter.prototype.init = function () {

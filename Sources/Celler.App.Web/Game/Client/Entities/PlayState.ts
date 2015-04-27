@@ -23,6 +23,10 @@
             this.createObjects( Suit.Red );
         }
 
+        update() {
+            this.game.debug.text( app.playerId, 10, 20);
+        } 
+
         private getCornerCoords( suit: Suit, indent: number ): Phaser.Point {
             switch( suit ) {
             case Suit.Blue:
