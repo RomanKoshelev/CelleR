@@ -119,6 +119,14 @@ interface GameHubClient
   */
 interface SuitPointModel {
     Suit : string;
+    Point : PointModel;
+}
+ 
+ 
+/**
+  * Data contract for Celler.App.Web.Game.Server.Models.PointModel
+  */
+interface PointModel {
     X : number;
     Y : number;
 }

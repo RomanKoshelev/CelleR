@@ -33,13 +33,13 @@
         private onCellMoved( position: SuitPointModel ) {
             if( Suit[ position.Suit ] === this.suit ) {
                 this.game.add.tween( this )
-                    .to( { x: position.X, y: position.Y }, 500, Phaser.Easing.Circular.InOut, true );
+                    .to( { x: position.Point.X, y: position.Point.Y }, 500, Phaser.Easing.Circular.InOut, true );
             }
         }
 
         private onSightPositionHinted( position: SuitPointModel ) {
             if ( Suit[position.Suit] === this.suit ) {
-                this.sightPoint = new Phaser.Point( position.X, position.Y );
+                this.sightPoint = new Phaser.Point( position.Point.X, position.Point.Y );
             }
         }
 

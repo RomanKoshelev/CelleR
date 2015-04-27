@@ -7,7 +7,6 @@ namespace Celler.App.Web.Game.Server.Models
     public class SuitPointModel
     {
         public string Suit { get; set; }
-        public double X { get; set; }
-        public double Y { get; set; }
+        public PointModel Point { get; set; }
    }
 }

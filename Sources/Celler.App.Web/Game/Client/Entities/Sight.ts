@@ -29,7 +29,7 @@
             if( Suit[ position.Suit ] === this.suit ) {
                 this.inAnimation = true;
                 this.game.add.tween( this )
-                    .to( { x: position.X, y: position.Y }, 200, Phaser.Easing.Circular.InOut, true )
+                    .to( { x: position.Point.X, y: position.Point.Y }, 200, Phaser.Easing.Circular.InOut, true )
                     .onComplete.addOnce( this.onAnimationCompleete, this );
             }
         }
@@ -41,9 +41,10 @@
         private toSuitPositionModel(): SuitPointModel {
             return {
                 Suit: Suit[ this.suit ],
-                X: this.position.x,
-                Y: this.position.y
-                
+                Point: {
+                    X: this.position.x,
+                    Y: this.position.y
+                }
             };
         }
 

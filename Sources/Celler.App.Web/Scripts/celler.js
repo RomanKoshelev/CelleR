@@ -149,12 +149,12 @@ var Celler;
         };
         Cell.prototype.onCellMoved = function (position) {
             if (Celler.Suit[position.Suit] === this.suit) {
-                this.game.add.tween(this).to({ x: position.X, y: position.Y }, 500, Phaser.Easing.Circular.InOut, true);
+                this.game.add.tween(this).to({ x: position.Point.X, y: position.Point.Y }, 500, Phaser.Easing.Circular.InOut, true);
             }
         };
         Cell.prototype.onSightPositionHinted = function (position) {
             if (Celler.Suit[position.Suit] === this.suit) {
-                this.sightPoint = new Phaser.Point(position.X, position.Y);
+                this.sightPoint = new Phaser.Point(position.Point.X, position.Point.Y);
             }
         };
         Cell.prototype.lookAtSigtPoint = function () {
@@ -207,7 +207,7 @@ var Celler;
         Sight.prototype.onSightMoved = function (position) {
             if (Celler.Suit[position.Suit] === this.suit) {
                 this.inAnimation = true;
-                this.game.add.tween(this).to({ x: position.X, y: position.Y }, 200, Phaser.Easing.Circular.InOut, true).onComplete.addOnce(this.onAnimationCompleete, this);
+                this.game.add.tween(this).to({ x: position.Point.X, y: position.Point.Y }, 200, Phaser.Easing.Circular.InOut, true).onComplete.addOnce(this.onAnimationCompleete, this);
             }
         };
         Sight.prototype.onAnimationCompleete = function () {
@@ -216,8 +216,10 @@ var Celler;
         Sight.prototype.toSuitPositionModel = function () {
             return {
                 Suit: Celler.Suit[this.suit],
-                X: this.position.x,
-                Y: this.position.y
+                Point: {
+                    X: this.position.x,
+                    Y: this.position.y
+                }
             };
         };
         Sight.prototype.serverHintSightPosition = function () {
