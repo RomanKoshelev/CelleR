@@ -14,24 +14,20 @@ namespace Celler.App.Web.Game.Server.GameHub
 
         public GameHub()
         {
-            Logger.Trace( "GameHub ctor" );
         }
 
         public void HintSightPosition( SuitPositonModel position )
         {
-            Logger.Trace( "UpdateSightCoords( {0} )", position.Suit );
             Clients.All.SightPositionHinted( position );
         }
 
         public void MoveCell( SuitPositonModel position  )
         {
-            Logger.Trace( "MoveCell( {0} )", position.Suit );
             Clients.All.CellMoved( position );
         }
     
         public void MoveSight( SuitPositonModel position  )
         {
-            Logger.Trace( "MoveCell( {0} )", position.Suit );
             Clients.All.SightMoved( position );
         }
     }

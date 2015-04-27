@@ -1,9 +1,9 @@
 ﻿module Celler {
     export class PlayState extends Phaser.State {
 
-        static cellSize = 60;
-        static sightSize = 80;
-        static homeSize = 120;
+        static cellSize = 80;
+        static sightSize = 100;
+        static homeSize = 140;
 
         constructor() {
             super();

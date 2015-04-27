@@ -4,7 +4,7 @@
 
         game: Phaser.Game;
         server: ServerAdapter;
-        static gameSize = 700;
+        static gameSize = 720;
 
         constructor() {
             this.server = new ServerAdapter();

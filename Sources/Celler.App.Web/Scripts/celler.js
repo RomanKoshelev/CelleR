@@ -29,6 +29,65 @@ var __extends = this.__extends || function (d, b) {
 };
 var Celler;
 (function (Celler) {
+    var PlayState = (function (_super) {
+        __extends(PlayState, _super);
+        function PlayState() {
+            _super.call(this);
+        }
+        PlayState.prototype.init = function () {
+            this.game.stage.backgroundColor = "#004400";
+        };
+        PlayState.prototype.preload = function () {
+            this.loadSuitSprites(0 /* Blue */);
+            this.loadSuitSprites(1 /* Red */);
+        };
+        PlayState.prototype.create = function () {
+            this.createObjects(0 /* Blue */);
+            this.createObjects(1 /* Red */);
+        };
+        PlayState.prototype.getCornerCoords = function (suit, indent) {
+            switch (suit) {
+                case 0 /* Blue */:
+                    return new Phaser.Point(indent, this.game.world.width - indent);
+                case 1 /* Red */:
+                    return new Phaser.Point(this.game.world.width - indent, indent);
+            }
+            throw new Error("wrong suit");
+        };
+        PlayState.prototype.createObjects = function (suit) {
+            var sight = new Celler.Sight(this.game, suit, PlayState.sightSize);
+            var home = new Celler.Home(this.game, suit, PlayState.homeSize);
+            var cell = new Celler.Cell(this.game, suit, PlayState.cellSize);
+            this.game.add.existing(home);
+            this.game.add.existing(sight);
+            this.game.add.existing(cell);
+            home.position = this.getCornerCoords(suit, home.width / 2);
+            cell.position = home.position.clone();
+            sight.position = cell.position.clone();
+            this.game.world.sendToBack(sight);
+            this.game.world.sendToBack(cell);
+            this.game.world.sendToBack(home);
+        };
+        PlayState.prototype.loadSuitSprites = function (suit) {
+            this.loadSprite(suit, 3 /* Home */);
+            this.loadSprite(suit, 0 /* CellBody */);
+            this.loadSprite(suit, 1 /* CellEye */);
+            this.loadSprite(suit, 2 /* Sight */);
+        };
+        PlayState.prototype.loadSprite = function (suit, assetType) {
+            var typeName = Celler.Assets.Type[assetType].toLowerCase();
+            var suitName = Celler.Suit[suit].toLowerCase();
+            this.game.load.image(Celler.Assets.Sprites.getSpriteKey(suit, assetType), "" + Celler.Assets.Sprites.path + "/" + suitName + "/" + typeName + ".png");
+        };
+        PlayState.cellSize = 80;
+        PlayState.sightSize = 100;
+        PlayState.homeSize = 140;
+        return PlayState;
+    })(Phaser.State);
+    Celler.PlayState = PlayState;
+})(Celler || (Celler = {}));
+var Celler;
+(function (Celler) {
     var SuitSprite = (function (_super) {
         __extends(SuitSprite, _super);
         function SuitSprite(game, suit, assetType, size) {
@@ -162,65 +221,6 @@ var Celler;
 })(Celler || (Celler = {}));
 var Celler;
 (function (Celler) {
-    var PlayState = (function (_super) {
-        __extends(PlayState, _super);
-        function PlayState() {
-            _super.call(this);
-        }
-        PlayState.prototype.init = function () {
-            this.game.stage.backgroundColor = "#004400";
-        };
-        PlayState.prototype.preload = function () {
-            this.loadSuitSprites(0 /* Blue */);
-            this.loadSuitSprites(1 /* Red */);
-        };
-        PlayState.prototype.create = function () {
-            this.createObjects(0 /* Blue */);
-            this.createObjects(1 /* Red */);
-        };
-        PlayState.prototype.getCornerCoords = function (suit, indent) {
-            switch (suit) {
-                case 0 /* Blue */:
-                    return new Phaser.Point(indent, this.game.world.width - indent);
-                case 1 /* Red */:
-                    return new Phaser.Point(this.game.world.width - indent, indent);
-            }
-            throw new Error("wrong suit");
-        };
-        PlayState.prototype.createObjects = function (suit) {
-            var sight = new Celler.Sight(this.game, suit, PlayState.sightSize);
-            var home = new Celler.Home(this.game, suit, PlayState.homeSize);
-            var cell = new Celler.Cell(this.game, suit, PlayState.cellSize);
-            this.game.add.existing(home);
-            this.game.add.existing(sight);
-            this.game.add.existing(cell);
-            home.position = this.getCornerCoords(suit, home.width / 2);
-            cell.position = home.position.clone();
-            sight.position = cell.position.clone();
-            this.game.world.sendToBack(sight);
-            this.game.world.sendToBack(cell);
-            this.game.world.sendToBack(home);
-        };
-        PlayState.prototype.loadSuitSprites = function (suit) {
-            this.loadSprite(suit, 3 /* Home */);
-            this.loadSprite(suit, 0 /* CellBody */);
-            this.loadSprite(suit, 1 /* CellEye */);
-            this.loadSprite(suit, 2 /* Sight */);
-        };
-        PlayState.prototype.loadSprite = function (suit, assetType) {
-            var typeName = Celler.Assets.Type[assetType].toLowerCase();
-            var suitName = Celler.Suit[suit].toLowerCase();
-            this.game.load.image(Celler.Assets.Sprites.getSpriteKey(suit, assetType), "" + Celler.Assets.Sprites.path + "/" + suitName + "/" + typeName + ".png");
-        };
-        PlayState.cellSize = 60;
-        PlayState.sightSize = 80;
-        PlayState.homeSize = 120;
-        return PlayState;
-    })(Phaser.State);
-    Celler.PlayState = PlayState;
-})(Celler || (Celler = {}));
-var Celler;
-(function (Celler) {
     var App = (function () {
         function App() {
             this.server = new Celler.ServerAdapter();
@@ -231,7 +231,7 @@ var Celler;
         App.prototype.create = function () {
             this.game.state.add("PlayState", Celler.PlayState, true);
         };
-        App.gameSize = 700;
+        App.gameSize = 720;
         return App;
     })();
     Celler.App = App;
