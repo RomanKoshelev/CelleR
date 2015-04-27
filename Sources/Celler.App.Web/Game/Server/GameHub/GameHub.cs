@@ -17,19 +17,22 @@ namespace Celler.App.Web.Game.Server.GameHub
             Logger.Trace( "GameHub ctor" );
         }
 
-        public void UpdateSightCoords( SightModel sight )
+        public void HintSightPosition( SuitPositonModel position )
         {
-            Logger.Trace( "UpdateSightCoords( {0} )", sight.Suit );
-            Clients.All.SightCoordsUpdated( sight );
+            Logger.Trace( "UpdateSightCoords( {0} )", position.Suit );
+            Clients.All.SightPositionHinted( position );
         }
 
-        public void MoveCell( string suit, PointModel position )
+        public void MoveCell( SuitPositonModel position  )
         {
-            Logger.Trace( "MoveCell( {0} )", suit );
-            Clients.All.CellCoordsUpdated( new CellModel {
-                Suit = suit,
-                Position = position
-            } );
+            Logger.Trace( "MoveCell( {0} )", position.Suit );
+            Clients.All.CellMoved( position );
+        }
+    
+        public void MoveSight( SuitPositonModel position  )
+        {
+            Logger.Trace( "MoveCell( {0} )", position.Suit );
+            Clients.All.SightMoved( position );
         }
     }
 }

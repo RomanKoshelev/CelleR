@@ -7,12 +7,8 @@
         constructor( game: Phaser.Game, suit: Suit, size: number ) {
             super( game );
             this.init( suit, size );
-            app.server.onCellCoordsUpdated.add( this.onCellCoordsUpdated, this );
-        }
-
-        update() {
-            this.lookAt( this.sight.position );
-            super.update();
+            app.server.onCellMoved.add( this.onCellMoved, this );
+            app.server.onSightPositionHinted.add( this.onSightPositionHinted, this );
         }
 
         private body: SuitSprite;
@@ -29,9 +25,15 @@
             this.updateEyeSize();
         }
 
-        private onCellCoordsUpdated( model: CellModel ) {
-            if( Suit[ model.Suit ] === this.suit ) {
-                this.jumpTo( new Phaser.Point( model.Position.X, model.Position.Y ) )
+        private onCellMoved( position: SuitPositonModel ) {
+            if( Suit[ position.Suit ] === this.suit ) {
+                this.jumpTo( new Phaser.Point( position.Position.X, position.Position.Y ) );
+            }
+        }
+
+        private onSightPositionHinted( position: SuitPositonModel ) {
+            if( Suit[ position.Suit ] === this.suit ) {
+                this.lookAt( new Phaser.Point( position.Position.X, position.Position.Y ) );
             }
         }
 
@@ -60,7 +62,7 @@
         }
 
         private jumpTo( p: Phaser.Point ) {
-            var tween = this.game.add.tween( this ).to( { x: p.x, y: p.y }, 1000, Phaser.Easing.Cubic.InOut, true );
+            this.game.add.tween( this ).to( { x: p.x, y: p.y }, 500, Phaser.Easing.Circular.InOut, true );
         }
     }
 }

@@ -3,61 +3,43 @@
 
         constructor( game: Phaser.Game, suit: Suit, size: number ) {
             super( game, suit, Assets.Type.Sight, size );
-            this.init();
-            app.server.onSightCoordsUpdated.add( this.onSightCoordsUpdated, this );
-        }
 
-        update() {
-            this.doUpdate();
-            super.update();
-        }
-
-        private init() {
             this.inputEnabled = true;
             this.input.enableDrag();
-            this.events.onDragStart.add( this.onDragStart, this );
             this.events.onDragStop.add( this.onDragStop, this );
+
+            app.server.onSightMoved.add( this.onSightMoved, this );
         }
 
         private prevUpdatePosition = new Phaser.Point( 0, 0 );
 
-        private doUpdate() {
+        update() {
             if( this.position.distance( this.prevUpdatePosition ) > 0 ) {
                 this.prevUpdatePosition = this.position.clone();
-                app.server.updateSightCoords( this.toSightModel() );
+                app.server.hintSightPosition( this.toSuitPositionModel() );
             }
-        }
-
-        private onDragStart() {
-            this.inDragMode = true;
-            app.server.moveCell( Suit[this.suit], this.toPointModel() );
+            super.update();
         }
 
         private onDragStop() {
-            this.inDragMode = false;
-            app.server.moveCell( Suit[this.suit], this.toPointModel() );
+            app.server.moveCell( this.toSuitPositionModel() );
+            app.server.moveSight( this.toSuitPositionModel() );
         }
 
-        private toSightModel(): SightModel {
-            return {
-                Suit: Suit[ this.suit ],
-                Position: this.toPointModel()
-            };
-        }
-
-        private toPointModel(): PointModel {
-            return {
-                X: this.position.x,
-                Y: this.position.y
-            };
-        }
-
-        private onSightCoordsUpdated( model: SightModel ) {
-            if( Suit[ model.Suit ] === this.suit && !this.inDragMode ) {
-                this.position = new Phaser.Point( model.Position.X, model.Position.Y );
+        private onSightMoved( position: SuitPositonModel ) {
+            if( Suit[ position.Suit ] === this.suit ) {
+                this.position = new Phaser.Point( position.Position.X, position.Position.Y );
             }
         }
 
-        private inDragMode: boolean;
+        private toSuitPositionModel(): SuitPositonModel {
+            return {
+                Suit: Suit[ this.suit ],
+                Position: {
+                    X: this.position.x,
+                    Y: this.position.y
+                }
+            };
+        }
     }
 }

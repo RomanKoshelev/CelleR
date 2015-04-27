@@ -2,22 +2,29 @@
 
     export class ServerAdapter {
 
-        onSightCoordsUpdated = new Phaser.Signal();
-        onCellCoordsUpdated = new Phaser.Signal();
+        onSightPositionHinted = new Phaser.Signal();
+        onCellMoved = new Phaser.Signal();
+        onSightMoved = new Phaser.Signal();
 
         constructor() {
             this.init();
         }
 
-        updateSightCoords( sight: SightModel ) {
+        hintSightPosition ( position: SuitPositonModel ) {
             if( this.ready ) {
-                this.server.updateSightCoords( sight );
+                this.server.hintSightPosition( position );
             }
         }
 
-        moveCell( suit: string, to: PointModel ) {
+        moveCell( position: SuitPositonModel  ) {
             if( this.ready ) {
-                this.server.moveCell( suit, to );
+                this.server.moveCell( position );
+            }
+        }
+
+        moveSight( position: SuitPositonModel ) {
+            if( this.ready ) {
+                this.server.moveSight( position );
             }
         }
 
@@ -26,17 +33,23 @@
         private ready = false;
 
         private init() {
-            this.client.sightCoordsUpdated = ( sight: SightModel ) => { this.sightCoordsUpdated( sight ); };
-            this.client.cellCoordsUpdated = ( cell: CellModel ) => { this.cellCoordsUpdated( cell ); };
+            this.client.sightPositionHinted = ( position: SuitPositonModel ) => { this.sightPositionHinted( position ); };
+            this.client.cellMoved = ( position: SuitPositonModel ) => { this.cellMoved( position ); };
+            this.client.sightMoved = ( position: SuitPositonModel ) => { this.sightMoved( position ); };
+
             $.connection.hub.start().done( () => { this.ready = true; } );
         }
 
-        private sightCoordsUpdated( sight: SightModel ) {
-            this.onSightCoordsUpdated.dispatch( sight );
+        private sightPositionHinted( position: SuitPositonModel ) {
+            this.onSightPositionHinted.dispatch( position );
         }
 
-        private cellCoordsUpdated( cell: CellModel ) {
-            this.onCellCoordsUpdated.dispatch( cell );
+        private cellMoved( position: SuitPositonModel ) {
+            this.onCellMoved.dispatch( position );
+        }
+
+        private sightMoved( position: SuitPositonModel ) {
+            this.onSightMoved.dispatch( position );
         }
     }
 }

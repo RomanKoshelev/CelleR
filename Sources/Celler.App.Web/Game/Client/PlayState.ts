@@ -38,6 +38,8 @@
             var home = new Home( this.game, suit, PlayState.homeSize );
             var cell = new Cell( this.game, suit, PlayState.cellSize );
 
+            cell.sight = sight;
+
             this.game.add.existing( home );
             this.game.add.existing( sight );
             this.game.add.existing( cell );
@@ -45,7 +47,6 @@
             home.position = this.getCornerCoords( suit, home.width / 2 );
             cell.position = home.position.clone();
             sight.position = cell.position.clone();
-            cell.sight = sight;
 
             this.game.world.sendToBack( sight );
             this.game.world.sendToBack( cell );

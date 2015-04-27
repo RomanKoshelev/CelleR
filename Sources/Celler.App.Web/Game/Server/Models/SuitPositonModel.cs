@@ -4,7 +4,7 @@
 
 namespace Celler.App.Web.Game.Server.Models
 {
-    public class CellModel
+    public class SuitPositonModel
     {
         public string Suit { get; set; }
         public PointModel Position  { get; set; }
