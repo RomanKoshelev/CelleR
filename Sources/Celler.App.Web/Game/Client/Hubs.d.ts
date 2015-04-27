@@ -49,6 +49,15 @@ interface GameHubServer {
       * @return {JQueryPromise of void}
       */
     updateSightCoords(sight : SightModel) : JQueryPromise<void>;
+ 
+    /** 
+      * Sends a "moveCell" message to the GameHub hub.
+      * Contract Documentation: ---
+      * @param suit {string} 
+      * @param position {PointModel} 
+      * @return {JQueryPromise of void}
+      */
+    moveCell(suit : string, position : PointModel) : JQueryPromise<void>;
 }
  
 interface GameHubClient
@@ -61,6 +70,14 @@ interface GameHubClient
       * @return {void}
       */
     sightCoordsUpdated : (sight : SightModel) => void;
+ 
+    /**
+      * Set this function with a "function(cell : CellModel){}" to receive the "cellCoordsUpdated" message from the GameHub hub.
+      * Contract Documentation: ---
+      * @param cell {CellModel} 
+      * @return {void}
+      */
+    cellCoordsUpdated : (cell : CellModel) => void;
 }
  
 //#endregion GameHub hub
@@ -76,9 +93,9 @@ interface GameHubClient
  
  
 /**
-  * Data contract for Celler.App.Web.Game.Server.Models.SightModel
+  * Data contract for Celler.App.Web.Game.Server.Models.CellModel
   */
-interface SightModel {
+interface CellModel {
     Suit : string;
     Position : PointModel;
 }
@@ -90,6 +107,15 @@ interface SightModel {
 interface PointModel {
     X : number;
     Y : number;
+}
+ 
+ 
+/**
+  * Data contract for Celler.App.Web.Game.Server.Models.SightModel
+  */
+interface SightModel {
+    Suit : string;
+    Position : PointModel;
 }
  
 //#endregion data contracts

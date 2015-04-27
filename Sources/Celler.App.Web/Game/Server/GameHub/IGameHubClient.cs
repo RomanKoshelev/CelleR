@@ -9,5 +9,6 @@ namespace Celler.App.Web.Game.Server.GameHub
     public interface IGameHubClient
     {
         void SightCoordsUpdated( SightModel sight );
+        void CellCoordsUpdated( CellModel cell );
     }
 }

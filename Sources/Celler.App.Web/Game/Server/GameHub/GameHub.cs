@@ -22,5 +22,14 @@ namespace Celler.App.Web.Game.Server.GameHub
             Logger.Trace( "UpdateSightCoords( {0} )", sight.Suit );
             Clients.All.SightCoordsUpdated( sight );
         }
+
+        public void MoveCell( string suit, PointModel position )
+        {
+            Logger.Trace( "MoveCell( {0} )", suit );
+            Clients.All.CellCoordsUpdated( new CellModel {
+                Suit = suit,
+                Position = position
+            } );
+        }
     }
 }

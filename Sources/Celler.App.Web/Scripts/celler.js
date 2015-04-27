@@ -1,29 +1,5 @@
 var Celler;
 (function (Celler) {
-    var App = (function () {
-        function App() {
-            this.server = new Celler.ServerAdapter();
-            this.game = new Phaser.Game(600, 600, Phaser.AUTO, "celler-playground", {
-                create: this.create
-            }, false, true, null);
-        }
-        App.prototype.create = function () {
-            this.game.state.add("PlayState", Celler.PlayState, true);
-        };
-        return App;
-    })();
-    Celler.App = App;
-    Celler.app;
-    function initApp() {
-        Celler.app = new App();
-    }
-    Celler.initApp = initApp;
-})(Celler || (Celler = {}));
-window.onload = function () {
-    Celler.initApp();
-};
-var Celler;
-(function (Celler) {
     var Assets;
     (function (Assets) {
         (function (Type) {
@@ -53,12 +29,49 @@ var __extends = this.__extends || function (d, b) {
 };
 var Celler;
 (function (Celler) {
+    var SuitSprite = (function (_super) {
+        __extends(SuitSprite, _super);
+        function SuitSprite(game, suit, assetType, size) {
+            if (size === void 0) { size = 0; }
+            _super.call(this, game, 0, 0, Celler.Assets.Sprites.getSpriteKey(suit, assetType));
+            this.suit = suit;
+            this.anchor.set(0.5);
+            if (size !== 0) {
+                this.scale.set(size / this.width);
+            }
+        }
+        return SuitSprite;
+    })(Phaser.Sprite);
+    Celler.SuitSprite = SuitSprite;
+})(Celler || (Celler = {}));
+var Celler;
+(function (Celler) {
+    var Home = (function (_super) {
+        __extends(Home, _super);
+        function Home(game, suit, size) {
+            _super.call(this, game, suit, 3 /* Home */, size);
+        }
+        return Home;
+    })(Celler.SuitSprite);
+    Celler.Home = Home;
+})(Celler || (Celler = {}));
+var Celler;
+(function (Celler) {
+    (function (Suit) {
+        Suit[Suit["Blue"] = 0] = "Blue";
+        Suit[Suit["Red"] = 1] = "Red";
+    })(Celler.Suit || (Celler.Suit = {}));
+    var Suit = Celler.Suit;
+})(Celler || (Celler = {}));
+var Celler;
+(function (Celler) {
     var Cell = (function (_super) {
         __extends(Cell, _super);
         function Cell(game, suit, size) {
             _super.call(this, game);
             this.init(suit, size);
             Celler.app.server.onSightCoordsUpdated.add(this.onSightCoordsUpdated, this);
+            Celler.app.server.onCellCoordsUpdated.add(this.onCellCoordsUpdated, this);
         }
         Cell.prototype.init = function (suit, size) {
             this.addChild(this.body = new Celler.SuitSprite(this.game, suit, 0 /* CellBody */));
@@ -70,6 +83,11 @@ var Celler;
         Cell.prototype.onSightCoordsUpdated = function (model) {
             if (Celler.Suit[model.Suit] === this.suit) {
                 this.lookAt(new Phaser.Point(model.Position.X, model.Position.Y));
+            }
+        };
+        Cell.prototype.onCellCoordsUpdated = function (model) {
+            if (Celler.Suit[model.Suit] === this.suit) {
+                this.position = new Phaser.Point(model.Position.X, model.Position.Y);
             }
         };
         Cell.prototype.lookAt = function (p) {
@@ -97,17 +115,6 @@ var Celler;
 })(Celler || (Celler = {}));
 var Celler;
 (function (Celler) {
-    var Home = (function (_super) {
-        __extends(Home, _super);
-        function Home(game, suit, size) {
-            _super.call(this, game, suit, 3 /* Home */, size);
-        }
-        return Home;
-    })(Celler.SuitSprite);
-    Celler.Home = Home;
-})(Celler || (Celler = {}));
-var Celler;
-(function (Celler) {
     var Sight = (function (_super) {
         __extends(Sight, _super);
         function Sight(game, suit, size) {
@@ -127,49 +134,27 @@ var Celler;
         Sight.prototype.doUpdate = function () {
             if (this.position.distance(this.prevUpdatePosition) > 0) {
                 this.prevUpdatePosition = this.position.clone();
-                Celler.app.server.updateSightCoords(this.toModel());
+                Celler.app.server.updateSightCoords(this.toSightModel());
             }
         };
-        Sight.prototype.toModel = function () {
+        Sight.prototype.onDragStop = function () {
+            Celler.app.server.moveCell(Celler.Suit[this.suit], this.toPointModel());
+        };
+        Sight.prototype.toSightModel = function () {
             return {
                 Suit: Celler.Suit[this.suit],
-                Position: {
-                    X: this.position.x,
-                    Y: this.position.y
-                }
+                Position: this.toPointModel()
             };
         };
-        Sight.prototype.onDragStop = function () {
-            Celler.app.server.updateSightCoords(this.toModel());
+        Sight.prototype.toPointModel = function () {
+            return {
+                X: this.position.x,
+                Y: this.position.y
+            };
         };
         return Sight;
     })(Celler.SuitSprite);
     Celler.Sight = Sight;
-})(Celler || (Celler = {}));
-var Celler;
-(function (Celler) {
-    (function (Suit) {
-        Suit[Suit["Blue"] = 0] = "Blue";
-        Suit[Suit["Red"] = 1] = "Red";
-    })(Celler.Suit || (Celler.Suit = {}));
-    var Suit = Celler.Suit;
-})(Celler || (Celler = {}));
-var Celler;
-(function (Celler) {
-    var SuitSprite = (function (_super) {
-        __extends(SuitSprite, _super);
-        function SuitSprite(game, suit, assetType, size) {
-            if (size === void 0) { size = 0; }
-            _super.call(this, game, 0, 0, Celler.Assets.Sprites.getSpriteKey(suit, assetType));
-            this.suit = suit;
-            this.anchor.set(0.5);
-            if (size !== 0) {
-                this.scale.set(size / this.width);
-            }
-        }
-        return SuitSprite;
-    })(Phaser.Sprite);
-    Celler.SuitSprite = SuitSprite;
 })(Celler || (Celler = {}));
 var Celler;
 (function (Celler) {
@@ -232,9 +217,34 @@ var Celler;
 })(Celler || (Celler = {}));
 var Celler;
 (function (Celler) {
+    var App = (function () {
+        function App() {
+            this.server = new Celler.ServerAdapter();
+            this.game = new Phaser.Game(600, 600, Phaser.AUTO, "celler-playground", {
+                create: this.create
+            }, false, true, null);
+        }
+        App.prototype.create = function () {
+            this.game.state.add("PlayState", Celler.PlayState, true);
+        };
+        return App;
+    })();
+    Celler.App = App;
+    Celler.app;
+    function initApp() {
+        Celler.app = new App();
+    }
+    Celler.initApp = initApp;
+})(Celler || (Celler = {}));
+window.onload = function () {
+    Celler.initApp();
+};
+var Celler;
+(function (Celler) {
     var ServerAdapter = (function () {
         function ServerAdapter() {
             this.onSightCoordsUpdated = new Phaser.Signal();
+            this.onCellCoordsUpdated = new Phaser.Signal();
             this.client = $.connection.gameHub.client;
             this.server = $.connection.gameHub.server;
             this.ready = false;
@@ -245,10 +255,18 @@ var Celler;
                 this.server.updateSightCoords(sight);
             }
         };
+        ServerAdapter.prototype.moveCell = function (suit, to) {
+            if (this.ready) {
+                this.server.moveCell(suit, to);
+            }
+        };
         ServerAdapter.prototype.init = function () {
             var _this = this;
             this.client.sightCoordsUpdated = function (sight) {
                 _this.sightCoordsUpdated(sight);
+            };
+            this.client.cellCoordsUpdated = function (cell) {
+                _this.cellCoordsUpdated(cell);
             };
             $.connection.hub.start().done(function () {
                 _this.ready = true;
@@ -256,6 +274,9 @@ var Celler;
         };
         ServerAdapter.prototype.sightCoordsUpdated = function (sight) {
             this.onSightCoordsUpdated.dispatch(sight);
+        };
+        ServerAdapter.prototype.cellCoordsUpdated = function (cell) {
+            this.onCellCoordsUpdated.dispatch(cell);
         };
         return ServerAdapter;
     })();

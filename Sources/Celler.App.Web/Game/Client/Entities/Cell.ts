@@ -7,6 +7,7 @@
             super( game );
             this.init( suit, size );
             app.server.onSightCoordsUpdated.add( this.onSightCoordsUpdated, this );
+            app.server.onCellCoordsUpdated.add( this.onCellCoordsUpdated, this );
         }
 
         private body: SuitSprite;
@@ -26,6 +27,12 @@
         private onSightCoordsUpdated( model: SightModel ) {
             if( Suit[ model.Suit ] === this.suit ) {
                 this.lookAt( new Phaser.Point( model.Position.X, model.Position.Y ) );
+            }
+        }
+
+        private onCellCoordsUpdated( model: CellModel ) {
+            if( Suit[ model.Suit ] === this.suit ) {
+                this.position = new Phaser.Point( model.Position.X, model.Position.Y );
             }
         }
 

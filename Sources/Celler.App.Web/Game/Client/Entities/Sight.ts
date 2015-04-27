@@ -22,22 +22,26 @@
         private doUpdate() {
             if( this.position.distance( this.prevUpdatePosition ) > 0 ) {
                 this.prevUpdatePosition = this.position.clone();
-                app.server.updateSightCoords( this.toModel() );
+                app.server.updateSightCoords( this.toSightModel() );
             }
         }
 
-        private toModel(): SightModel {
+        private onDragStop() {
+            app.server.moveCell( Suit[ this.suit ], this.toPointModel() );
+        }
+
+        private toSightModel(): SightModel {
             return {
                 Suit: Suit[ this.suit ],
-                Position: {
-                    X: this.position.x,
-                    Y: this.position.y
-                }
+                Position: this.toPointModel()
             };
         }
 
-        private onDragStop() {
-            app.server.updateSightCoords( this.toModel() );
+        private toPointModel(): PointModel {
+            return {
+                X: this.position.x,
+                Y: this.position.y
+            };
         }
     }
 }
