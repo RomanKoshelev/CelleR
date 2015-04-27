@@ -79,10 +79,9 @@ var Celler;
             var suitName = Celler.Suit[suit].toLowerCase();
             this.game.load.image(Celler.Assets.Sprites.getSpriteKey(suit, assetType), "" + Celler.Assets.Sprites.path + "/" + suitName + "/" + typeName + ".png");
         };
-        PlayState.scale = 1.2;
-        PlayState.cellSize = 60 * PlayState.scale;
-        PlayState.sightSize = 90 * PlayState.scale;
-        PlayState.homeSize = 120 * PlayState.scale;
+        PlayState.cellSize = 65;
+        PlayState.sightSize = 100;
+        PlayState.homeSize = 150;
         return PlayState;
     })(Phaser.State);
     Celler.PlayState = PlayState;
@@ -186,13 +185,14 @@ var Celler;
         function Sight(game, suit, size) {
             _super.call(this, game, suit, 2 /* Sight */, size);
             this.prevUpdatePosition = new Phaser.Point(0, 0);
+            this.inAnimation = false;
             this.inputEnabled = true;
             this.input.enableDrag();
             this.events.onDragStop.add(this.onDragStop, this);
             Celler.app.server.onSightMoved.add(this.onSightMoved, this);
         }
         Sight.prototype.update = function () {
-            if (this.position.distance(this.prevUpdatePosition) > 1) {
+            if (!this.inAnimation && this.position.distance(this.prevUpdatePosition) > 1) {
                 this.prevUpdatePosition = this.position.clone();
                 Celler.app.server.hintSightPosition(this.toSuitPositionModel());
             }
@@ -204,8 +204,12 @@ var Celler;
         };
         Sight.prototype.onSightMoved = function (position) {
             if (Celler.Suit[position.Suit] === this.suit) {
-                this.game.add.tween(this).to({ x: position.Position.X, y: position.Position.Y }, 100, Phaser.Easing.Circular.InOut, true);
+                this.inAnimation = true;
+                this.game.add.tween(this).to({ x: position.Position.X, y: position.Position.Y }, 100, Phaser.Easing.Circular.InOut, true).onComplete.addOnce(this.onAniationCompleete, this);
             }
+        };
+        Sight.prototype.onAniationCompleete = function () {
+            this.inAnimation = false;
         };
         Sight.prototype.toSuitPositionModel = function () {
             return {
