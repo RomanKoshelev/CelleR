@@ -21,6 +21,8 @@
 
             this.inputEnabled = true;
             this.input.enableDrag();
+
+            this.events.onDragStop.add(this.onDragStop, this);
         }
 
         private prevUpdatePosition = new Phaser.Point( 0, 0 );
@@ -28,7 +30,7 @@
         private doUpdate() {
             if( this.position.distance( this.prevUpdatePosition ) > 0 ) {
                 this.prevUpdatePosition = this.position.clone();
-                app.server.updateSightCoords( this.toModel() );
+//                app.server.updateSightCoords( this.toModel() );
             }
         }
 
@@ -38,6 +40,10 @@
                 X: this.position.x,
                 Y: this.position.y
             };
+        }
+
+        private onDragStop() {
+            app.server.updateSightCoords( this.toModel() );
         }
     }
 }

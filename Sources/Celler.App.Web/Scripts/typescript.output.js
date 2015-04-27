@@ -121,11 +121,11 @@ var Celler;
             this.anchor.set(0.5);
             this.inputEnabled = true;
             this.input.enableDrag();
+            this.events.onDragStop.add(this.onDragStop, this);
         };
         Sight.prototype.doUpdate = function () {
             if (this.position.distance(this.prevUpdatePosition) > 0) {
                 this.prevUpdatePosition = this.position.clone();
-                Celler.app.server.updateSightCoords(this.toModel());
             }
         };
         Sight.prototype.toModel = function () {
@@ -134,6 +134,9 @@ var Celler;
                 X: this.position.x,
                 Y: this.position.y
             };
+        };
+        Sight.prototype.onDragStop = function () {
+            Celler.app.server.updateSightCoords(this.toModel());
         };
         return Sight;
     })(Phaser.Sprite);
@@ -146,19 +149,16 @@ var Celler;
         function PlayState() {
             _super.call(this);
         }
+        PlayState.prototype.init = function () {
+            this.game.stage.backgroundColor = "#004400";
+        };
         PlayState.prototype.preload = function () {
             this.loadSuitSprites(0 /* Blue */);
             this.loadSuitSprites(1 /* Red */);
         };
         PlayState.prototype.create = function () {
-            this.game.stage.backgroundColor = "#005500";
             this.createObjects(0 /* Blue */);
             this.createObjects(1 /* Red */);
-        };
-        PlayState.prototype.loadSprite = function (suit, assetType) {
-            var typeName = Celler.Assets.Type[assetType].toLowerCase();
-            var suitName = Celler.Suit[suit].toLowerCase();
-            this.game.load.image(Celler.Assets.Sprites.getSpriteKey(suit, assetType), "" + Celler.Assets.Sprites.path + "/" + suitName + "/" + typeName + ".png");
         };
         PlayState.prototype.getCornerCoords = function (suit, indent) {
             switch (suit) {
@@ -189,9 +189,14 @@ var Celler;
             this.loadSprite(suit, 1 /* CellEye */);
             this.loadSprite(suit, 2 /* Sight */);
         };
+        PlayState.prototype.loadSprite = function (suit, assetType) {
+            var typeName = Celler.Assets.Type[assetType].toLowerCase();
+            var suitName = Celler.Suit[suit].toLowerCase();
+            this.game.load.image(Celler.Assets.Sprites.getSpriteKey(suit, assetType), "" + Celler.Assets.Sprites.path + "/" + suitName + "/" + typeName + ".png");
+        };
         PlayState.cellSize = 60;
         PlayState.sightSize = 80;
-        PlayState.homeSize = 100;
+        PlayState.homeSize = 120;
         return PlayState;
     })(Phaser.State);
     Celler.PlayState = PlayState;
