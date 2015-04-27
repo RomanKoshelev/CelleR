@@ -29,6 +29,23 @@ var __extends = this.__extends || function (d, b) {
 };
 var Celler;
 (function (Celler) {
+    var SuitSprite = (function (_super) {
+        __extends(SuitSprite, _super);
+        function SuitSprite(game, suit, assetType, size) {
+            if (size === void 0) { size = 0; }
+            _super.call(this, game, 0, 0, Celler.Assets.Sprites.getSpriteKey(suit, 2 /* Sight */));
+            this.suit = suit;
+            this.anchor.set(0.5);
+            if (size !== 0) {
+                this.scale.set(size / this.width);
+            }
+        }
+        return SuitSprite;
+    })(Phaser.Sprite);
+    Celler.SuitSprite = SuitSprite;
+})(Celler || (Celler = {}));
+var Celler;
+(function (Celler) {
     var Home = (function (_super) {
         __extends(Home, _super);
         function Home(game, suit, size) {
@@ -107,18 +124,15 @@ var Celler;
     var Sight = (function (_super) {
         __extends(Sight, _super);
         function Sight(game, suit, size) {
-            _super.call(this, game, 0, 0, Celler.Assets.Sprites.getSpriteKey(suit, 2 /* Sight */));
+            _super.call(this, game, suit, 2 /* Sight */, size);
             this.prevUpdatePosition = new Phaser.Point(0, 0);
-            this.init(suit, size);
+            this.init();
         }
         Sight.prototype.update = function () {
             this.doUpdate();
             _super.prototype.update.call(this);
         };
-        Sight.prototype.init = function (suit, size) {
-            this.suit = suit;
-            this.scale.set(size / this.width);
-            this.anchor.set(0.5);
+        Sight.prototype.init = function () {
             this.inputEnabled = true;
             this.input.enableDrag();
             this.events.onDragStop.add(this.onDragStop, this);
@@ -142,7 +156,7 @@ var Celler;
             Celler.app.server.updateSightCoords(this.toModel());
         };
         return Sight;
-    })(Phaser.Sprite);
+    })(Celler.SuitSprite);
     Celler.Sight = Sight;
 })(Celler || (Celler = {}));
 var Celler;

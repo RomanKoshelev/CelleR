@@ -256,6 +256,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Game\Client\Assets\Assets.ts" />
+    <TypeScriptCompile Include="Game\Client\Entities\SuitSprite.ts" />
     <TypeScriptCompile Include="Game\Client\Entities\Home.ts" />
     <TypeScriptCompile Include="Game\Client\Entities\Suit.ts" />
     <TypeScriptCompile Include="Game\Client\Entities\Cell.ts" />
