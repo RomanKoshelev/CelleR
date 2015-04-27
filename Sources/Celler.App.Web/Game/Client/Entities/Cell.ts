@@ -69,9 +69,7 @@
         }
 
         private jumpTo( p: Phaser.Point ) {
-            this.game.add.tween( this )
-                .from( {x: this.position.x, y: this.position.y })
-                .to( { x: p.x, y: p.y }, 500, Phaser.Easing.Circular.InOut, true );
+            this.game.add.tween( this ).to( { x: p.x, y: p.y }, 500, Phaser.Easing.Circular.InOut, true );
             this.position = p.clone();
         }
     }

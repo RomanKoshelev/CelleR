@@ -116,7 +116,7 @@ var Celler;
             this.eye.scale.set(this.eyeRate);
         };
         Cell.prototype.jumpTo = function (p) {
-            this.game.add.tween(this).from({ x: this.position.x, y: this.position.y }).to({ x: p.x, y: p.y }, 500, Phaser.Easing.Circular.InOut, true);
+            this.game.add.tween(this).to({ x: p.x, y: p.y }, 500, Phaser.Easing.Circular.InOut, true);
             this.position = p.clone();
         };
         return Cell;
@@ -136,7 +136,7 @@ var Celler;
             Celler.app.server.onSightMoved.add(this.onSightMoved, this);
         }
         Sight.prototype.update = function () {
-            if (this.position.distance(this.prevUpdatePosition) > 0) {
+            if (this.position.distance(this.prevUpdatePosition) > 1) {
                 this.prevUpdatePosition = this.position.clone();
                 Celler.app.server.hintSightPosition(this.toSuitPositionModel());
             }

@@ -14,7 +14,7 @@
         private prevUpdatePosition = new Phaser.Point( 0, 0 );
 
         update() {
-            if( this.position.distance( this.prevUpdatePosition ) > 0 ) {
+            if( this.position.distance( this.prevUpdatePosition ) > 1 ) {
                 this.prevUpdatePosition = this.position.clone();
                 app.server.hintSightPosition( this.toSuitPositionModel() );
             }
