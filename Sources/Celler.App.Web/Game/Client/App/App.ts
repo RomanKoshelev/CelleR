@@ -2,8 +2,6 @@
 
     export class App {
 
-        static gameSize = 720;
-
         game: Phaser.Game;
         server: ServerAdapter;
         playerId = "";
@@ -11,29 +9,25 @@
 
         constructor() {
             this.server = new ServerAdapter();
-            this.server.onStarted.addOnce( this.initGame, this );
+            this.server.onStarted.addOnce( this.init, this );
         }
 
         create() {
-            this.game.state.add( "Player", Room, true );
+            this.game.state.add( "Room", Room, true );
         }
 
-        private initGame() {
-            this.game = new Phaser.Game(
-                App.gameSize, App.gameSize,
-                Phaser.AUTO,
-                "celler-playground",
-                {
-                    create: this.create
-                },
-                false,
-                true,
-                null
-                );
-
-            this.server.getPlayerId().done ( ( id: string ) => {
+        private init() {
+            this.server.getPlayerId().done( ( id: string ) => {
                 this.playerId = id;
+            } );
+
+            this.server.getRoomData().done( ( room: RoomModel ) => {
+                this.createGame( room.Width, room.Height );
             });
+        }
+
+        private createGame(width: number, height: number) {
+            this.game = new Phaser.Game( width, height, Phaser.AUTO, "celler-playground", { create: this.create } );
         }
     }
 

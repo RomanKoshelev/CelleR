@@ -183,6 +183,7 @@
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LogController.cs" />
+    <Compile Include="Game\Server\Models\RoomModel.cs" />
     <Compile Include="Game\Server\Models\PointModel.cs" />
     <Compile Include="Game\Server\Models\SuitPointModel.cs" />
     <Compile Include="Global.asax.cs">
@@ -306,7 +307,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1656</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:2002/</IISUrl>
+          <IISUrl>http://localhost:2003/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

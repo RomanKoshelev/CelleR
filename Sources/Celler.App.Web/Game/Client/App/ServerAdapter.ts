@@ -27,6 +27,10 @@
             return this.server.getPlayerId();
         }
 
+        getRoomData(): JQueryPromise<RoomModel> {
+            return this.server.getRoomData();
+        }
+
         private client = $.connection.gameHub.client;
         private server = $.connection.gameHub.server;
 

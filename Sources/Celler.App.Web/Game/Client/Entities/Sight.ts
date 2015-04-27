@@ -93,6 +93,7 @@
             }
 
             if( keyboard.isDown( Phaser.Keyboard.ENTER ) || keyboard.isDown( Phaser.Keyboard.SPACEBAR ) ) {
+                app.server.moveSight( this.toSuitPositionModel() );
                 app.server.moveCell( this.toSuitPositionModel() );
             }
         }

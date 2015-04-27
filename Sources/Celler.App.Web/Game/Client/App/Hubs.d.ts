@@ -72,6 +72,13 @@ interface GameHubServer {
       * @return {JQueryPromise of string}
       */
     getPlayerId() : JQueryPromise<string>;
+ 
+    /** 
+      * Sends a "getRoomData" message to the GameHub hub.
+      * Contract Documentation: ---
+      * @return {JQueryPromise of RoomModel}
+      */
+    getRoomData() : JQueryPromise<RoomModel>;
 }
  
 interface GameHubClient
@@ -112,6 +119,15 @@ interface GameHubClient
 // Data Contracts //
 ////////////////////
 //#region data contracts
+ 
+ 
+/**
+  * Data contract for Celler.App.Web.Game.Server.Models.RoomModel
+  */
+interface RoomModel {
+    Width : number;
+    Height : number;
+}
  
  
 /**
