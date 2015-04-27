@@ -22,13 +22,14 @@
         }
 
         private onDragStop() {
-            app.server.moveCell( this.toSuitPositionModel() );
             app.server.moveSight( this.toSuitPositionModel() );
+            app.server.moveCell( this.toSuitPositionModel() );
         }
 
         private onSightMoved( position: SuitPositonModel ) {
             if( Suit[ position.Suit ] === this.suit ) {
-                this.position = new Phaser.Point( position.Position.X, position.Position.Y );
+                this.game.add.tween( this )
+                    .to( { x: position.Position.X, y: position.Position.Y }, 100, Phaser.Easing.Circular.InOut, true );
             }
         }
 

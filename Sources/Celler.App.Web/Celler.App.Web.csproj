@@ -216,7 +216,7 @@
     <Content Include="Scripts\celler.js" />
     <Content Include="Scripts\phaser.js" />
     <Content Include="Scripts\phaser.min.js" />
-    <Content Include="Game\Client\Hubs.tt">
+    <Content Include="Game\Client\App\Hubs.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Hubs.d.ts</LastGenOutput>
     </Content>
@@ -255,25 +255,25 @@
     <Content Include="Views\Log\Trace.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Game\Client\Assets\Assets.ts" />
+    <TypeScriptCompile Include="Game\Client\App\Assets.ts" />
     <TypeScriptCompile Include="Game\Client\Entities\SuitSprite.ts" />
     <TypeScriptCompile Include="Game\Client\Entities\Home.ts" />
     <TypeScriptCompile Include="Game\Client\Entities\Suit.ts" />
     <TypeScriptCompile Include="Game\Client\Entities\Cell.ts" />
     <TypeScriptCompile Include="Game\Client\Entities\Sight.ts" />
-    <TypeScriptCompile Include="Game\Client\PlayState.ts" />
+    <TypeScriptCompile Include="Game\Client\App\PlayState.ts" />
     <TypeScriptCompile Include="Scripts\typings\phaser\p2.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\phaser\phaser.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\phaser\pixi.d.ts" />
-    <TypeScriptCompile Include="Game\Client\Hubs.d.ts">
+    <TypeScriptCompile Include="Game\Client\App\Hubs.d.ts">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Hubs.tt</DependentUpon>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\signalr\signalr.d.ts" />
-    <TypeScriptCompile Include="Game\Client\App.ts" />
-    <TypeScriptCompile Include="Game\Client\ServerAdapter.ts" />
+    <TypeScriptCompile Include="Game\Client\App\App.ts" />
+    <TypeScriptCompile Include="Game\Client\App\ServerAdapter.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Fonts\glyphicons-halflings-regular.woff" />
@@ -307,7 +307,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1656</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:2001/</IISUrl>
+          <IISUrl>http://localhost:2002/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

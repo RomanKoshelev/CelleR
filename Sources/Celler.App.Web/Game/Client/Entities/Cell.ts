@@ -31,7 +31,8 @@
 
         private onCellMoved( position: SuitPositonModel ) {
             if( Suit[ position.Suit ] === this.suit ) {
-                this.jumpTo( new Phaser.Point( position.Position.X, position.Position.Y ) );
+                this.game.add.tween( this )
+                    .to( { x: position.Position.X, y: position.Position.Y }, 500, Phaser.Easing.Circular.InOut, true );
             }
         }
 
@@ -66,11 +67,6 @@
         private updateEyeSize() {
             this.eyeRate = this.calcEyeRate();
             this.eye.scale.set( this.eyeRate );
-        }
-
-        private jumpTo( p: Phaser.Point ) {
-            this.game.add.tween( this ).to( { x: p.x, y: p.y }, 500, Phaser.Easing.Circular.InOut, true );
-            this.position = p.clone();
         }
     }
 }

@@ -4,11 +4,12 @@
 
         game: Phaser.Game;
         server: ServerAdapter;
+        static gameSize = 700;
 
         constructor() {
             this.server = new ServerAdapter();
             this.game = new Phaser.Game(
-                600, 600,
+                App.gameSize, App.gameSize,
                 Phaser.AUTO,
                 "celler-playground",
                 {

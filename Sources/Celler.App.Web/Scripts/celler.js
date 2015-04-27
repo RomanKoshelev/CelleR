@@ -85,7 +85,7 @@ var Celler;
         };
         Cell.prototype.onCellMoved = function (position) {
             if (Celler.Suit[position.Suit] === this.suit) {
-                this.jumpTo(new Phaser.Point(position.Position.X, position.Position.Y));
+                this.game.add.tween(this).to({ x: position.Position.X, y: position.Position.Y }, 500, Phaser.Easing.Circular.InOut, true);
             }
         };
         Cell.prototype.onSightPositionHinted = function (position) {
@@ -115,10 +115,6 @@ var Celler;
             this.eyeRate = this.calcEyeRate();
             this.eye.scale.set(this.eyeRate);
         };
-        Cell.prototype.jumpTo = function (p) {
-            this.game.add.tween(this).to({ x: p.x, y: p.y }, 500, Phaser.Easing.Circular.InOut, true);
-            this.position = p.clone();
-        };
         return Cell;
     })(Phaser.Group);
     Celler.Cell = Cell;
@@ -143,12 +139,12 @@ var Celler;
             _super.prototype.update.call(this);
         };
         Sight.prototype.onDragStop = function () {
-            Celler.app.server.moveCell(this.toSuitPositionModel());
             Celler.app.server.moveSight(this.toSuitPositionModel());
+            Celler.app.server.moveCell(this.toSuitPositionModel());
         };
         Sight.prototype.onSightMoved = function (position) {
             if (Celler.Suit[position.Suit] === this.suit) {
-                this.position = new Phaser.Point(position.Position.X, position.Position.Y);
+                this.game.add.tween(this).to({ x: position.Position.X, y: position.Position.Y }, 100, Phaser.Easing.Circular.InOut, true);
             }
         };
         Sight.prototype.toSuitPositionModel = function () {
@@ -228,13 +224,14 @@ var Celler;
     var App = (function () {
         function App() {
             this.server = new Celler.ServerAdapter();
-            this.game = new Phaser.Game(600, 600, Phaser.AUTO, "celler-playground", {
+            this.game = new Phaser.Game(App.gameSize, App.gameSize, Phaser.AUTO, "celler-playground", {
                 create: this.create
             }, false, true, null);
         }
         App.prototype.create = function () {
             this.game.state.add("PlayState", Celler.PlayState, true);
         };
+        App.gameSize = 700;
         return App;
     })();
     Celler.App = App;
