@@ -1,5 +1,29 @@
 var Celler;
 (function (Celler) {
+    var App = (function () {
+        function App() {
+            this.server = new Celler.ServerAdapter();
+            this.game = new Phaser.Game(600, 600, Phaser.AUTO, "celler-playground", {
+                create: this.create
+            }, false, true, null);
+        }
+        App.prototype.create = function () {
+            this.game.state.add("PlayState", Celler.PlayState, true);
+        };
+        return App;
+    })();
+    Celler.App = App;
+    Celler.app;
+    function initApp() {
+        Celler.app = new App();
+    }
+    Celler.initApp = initApp;
+})(Celler || (Celler = {}));
+window.onload = function () {
+    Celler.initApp();
+};
+var Celler;
+(function (Celler) {
     var Assets;
     (function (Assets) {
         (function (Type) {
@@ -29,54 +53,6 @@ var __extends = this.__extends || function (d, b) {
 };
 var Celler;
 (function (Celler) {
-    var SuitSprite = (function (_super) {
-        __extends(SuitSprite, _super);
-        function SuitSprite(game, suit, assetType, size) {
-            if (size === void 0) { size = 0; }
-            _super.call(this, game, 0, 0, Celler.Assets.Sprites.getSpriteKey(suit, 2 /* Sight */));
-            this.suit = suit;
-            this.anchor.set(0.5);
-            if (size !== 0) {
-                this.scale.set(size / this.width);
-            }
-        }
-        return SuitSprite;
-    })(Phaser.Sprite);
-    Celler.SuitSprite = SuitSprite;
-})(Celler || (Celler = {}));
-var Celler;
-(function (Celler) {
-    var Home = (function (_super) {
-        __extends(Home, _super);
-        function Home(game, suit, size) {
-            _super.call(this, game, 0, 0, Celler.Assets.Sprites.getSpriteKey(suit, 3 /* Home */));
-            this.scale.set(size / this.width);
-            this.anchor.set(0.5);
-        }
-        return Home;
-    })(Phaser.Sprite);
-    Celler.Home = Home;
-})(Celler || (Celler = {}));
-var Celler;
-(function (Celler) {
-    (function (Suit) {
-        Suit[Suit["Blue"] = 0] = "Blue";
-        Suit[Suit["Red"] = 1] = "Red";
-    })(Celler.Suit || (Celler.Suit = {}));
-    var Suit = Celler.Suit;
-})(Celler || (Celler = {}));
-var Celler;
-(function (Celler) {
-    var CellPart = (function (_super) {
-        __extends(CellPart, _super);
-        function CellPart(cell, assetType) {
-            this.parent = cell;
-            _super.call(this, cell.game, 0, 0, Celler.Assets.Sprites.getSpriteKey(cell.suit, assetType));
-            this.anchor.set(0.5);
-            this.parent = cell;
-        }
-        return CellPart;
-    })(Phaser.Sprite);
     var Cell = (function (_super) {
         __extends(Cell, _super);
         function Cell(game, suit, size) {
@@ -85,12 +61,11 @@ var Celler;
             Celler.app.server.onSightCoordsUpdated.add(this.onSightCoordsUpdated, this);
         }
         Cell.prototype.init = function (suit, size) {
+            this.addChild(this.body = new Celler.SuitSprite(this.game, suit, 0 /* CellBody */));
+            this.addChild(this.eye = new Celler.SuitSprite(this.game, suit, 1 /* CellEye */));
             this.suit = suit;
-            this.addChild(this.body = new CellPart(this, 0 /* CellBody */));
-            this.addChild(this.eye = new CellPart(this, 1 /* CellEye */));
             this.scale.set(size / this.width);
-            this.eyeScale = this.calcEyeScale();
-            this.setEyeScale(this.eyeScale);
+            this.updateEyeSize();
         };
         Cell.prototype.onSightCoordsUpdated = function (model) {
             if (Celler.Suit[model.Suit] === this.suit) {
@@ -101,7 +76,7 @@ var Celler;
             var r = this.width * 0.1;
             var l = Phaser.Point.distance(this.position, p);
             var c = this.width;
-            var e = c * this.eyeScale;
+            var e = c * this.eyeRate;
             var d = (c - e) / 2;
             var m = d / this.scale.x;
             p = Phaser.Point.subtract(p, this.position);
@@ -109,15 +84,27 @@ var Celler;
             p = p.multiply(m, m);
             this.eye.position = l > r ? p : new Phaser.Point();
         };
-        Cell.prototype.calcEyeScale = function () {
+        Cell.prototype.calcEyeRate = function () {
             return 0.75;
         };
-        Cell.prototype.setEyeScale = function (eyeScale) {
-            this.eye.scale.set(eyeScale);
+        Cell.prototype.updateEyeSize = function () {
+            this.eyeRate = this.calcEyeRate();
+            this.eye.scale.set(this.eyeRate);
         };
         return Cell;
     })(Phaser.Group);
     Celler.Cell = Cell;
+})(Celler || (Celler = {}));
+var Celler;
+(function (Celler) {
+    var Home = (function (_super) {
+        __extends(Home, _super);
+        function Home(game, suit, size) {
+            _super.call(this, game, suit, 3 /* Home */, size);
+        }
+        return Home;
+    })(Celler.SuitSprite);
+    Celler.Home = Home;
 })(Celler || (Celler = {}));
 var Celler;
 (function (Celler) {
@@ -158,6 +145,31 @@ var Celler;
         return Sight;
     })(Celler.SuitSprite);
     Celler.Sight = Sight;
+})(Celler || (Celler = {}));
+var Celler;
+(function (Celler) {
+    (function (Suit) {
+        Suit[Suit["Blue"] = 0] = "Blue";
+        Suit[Suit["Red"] = 1] = "Red";
+    })(Celler.Suit || (Celler.Suit = {}));
+    var Suit = Celler.Suit;
+})(Celler || (Celler = {}));
+var Celler;
+(function (Celler) {
+    var SuitSprite = (function (_super) {
+        __extends(SuitSprite, _super);
+        function SuitSprite(game, suit, assetType, size) {
+            if (size === void 0) { size = 0; }
+            _super.call(this, game, 0, 0, Celler.Assets.Sprites.getSpriteKey(suit, assetType));
+            this.suit = suit;
+            this.anchor.set(0.5);
+            if (size !== 0) {
+                this.scale.set(size / this.width);
+            }
+        }
+        return SuitSprite;
+    })(Phaser.Sprite);
+    Celler.SuitSprite = SuitSprite;
 })(Celler || (Celler = {}));
 var Celler;
 (function (Celler) {
@@ -218,30 +230,6 @@ var Celler;
     })(Phaser.State);
     Celler.PlayState = PlayState;
 })(Celler || (Celler = {}));
-var Celler;
-(function (Celler) {
-    var App = (function () {
-        function App() {
-            this.server = new Celler.ServerAdapter();
-            this.game = new Phaser.Game(600, 600, Phaser.AUTO, "celler-playground", {
-                create: this.create
-            }, false, true, null);
-        }
-        App.prototype.create = function () {
-            this.game.state.add("PlayState", Celler.PlayState, true);
-        };
-        return App;
-    })();
-    Celler.App = App;
-    Celler.app;
-    function initApp() {
-        Celler.app = new App();
-    }
-    Celler.initApp = initApp;
-})(Celler || (Celler = {}));
-window.onload = function () {
-    Celler.initApp();
-};
 var Celler;
 (function (Celler) {
     var ServerAdapter = (function () {

@@ -1,10 +1,8 @@
 ﻿module Celler {
-    export class Home extends Phaser.Sprite {
+    export class Home extends SuitSprite {
 
         constructor( game: Phaser.Game, suit: Suit, size: number ) {
-            super( game, 0, 0, Assets.Sprites.getSpriteKey( suit, Assets.Type.Home ) );
-            this.scale.set( size / this.width );
-            this.anchor.set( 0.5 );
+            super( game, suit, Assets.Type.Home, size );
         }
     }
 }
