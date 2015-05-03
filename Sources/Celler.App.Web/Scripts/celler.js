@@ -187,6 +187,7 @@ var Celler;
                 _this.createObjects(sesion);
             });
         }
+        // Code: createObjects ( model: SessionModel ) 
         Session.prototype.createObjects = function (model) {
             for (var c in model.Cells) {
                 var suit;

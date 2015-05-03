@@ -14,6 +14,7 @@
             } );
         }
 
+        // Code: createObjects ( model: SessionModel ) 
         private createObjects( model: SessionModel ) {
             for( var c in model.Cells ) {
                 var suit: Suit;
