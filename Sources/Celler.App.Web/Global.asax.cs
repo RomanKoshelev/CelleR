@@ -4,9 +4,11 @@
 
 using System;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using Celler.App.Web.Game.Server.Dispatcher;
 using NLog;
 
 namespace Celler.App.Web
@@ -19,6 +21,7 @@ namespace Celler.App.Web
             FilterConfig.RegisterGlobalFilters( GlobalFilters.Filters );
             RouteConfig.RegisterRoutes( RouteTable.Routes );
             BundleConfig.RegisterBundles( BundleTable.Bundles );
+            HostingEnvironment.RegisterObject(new GameDispatcher());
         }
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();

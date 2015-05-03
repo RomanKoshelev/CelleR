@@ -183,14 +183,19 @@
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LogController.cs" />
+    <Compile Include="Game\Server\Clients\GameClientsProxy.cs" />
+    <Compile Include="Game\Server\Dispatcher\GameDispatcher.cs" />
+    <Compile Include="Game\Server\Logic\GameLogic.cs" />
+    <Compile Include="Game\Server\Clients\IGameClient.cs" />
+    <Compile Include="Game\Server\Logic\IGameLogic.cs" />
     <Compile Include="Game\Server\Models\RoomModel.cs" />
     <Compile Include="Game\Server\Models\PointModel.cs" />
     <Compile Include="Game\Server\Models\SuitPointModel.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Game\Server\GameHub\GameHub.cs" />
-    <Compile Include="Game\Server\GameHub\IGameHubClient.cs" />
+    <Compile Include="Game\Server\Hub\GameHub.cs" />
+    <Compile Include="Game\Server\Hub\IGameHubClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -217,7 +222,7 @@
     <Content Include="Scripts\celler.js" />
     <Content Include="Scripts\phaser.js" />
     <Content Include="Scripts\phaser.min.js" />
-    <Content Include="Game\Client\App\Hubs.tt">
+    <Content Include="Game\Client\Server\Hubs.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Hubs.d.ts</LastGenOutput>
     </Content>
@@ -266,7 +271,7 @@
     <TypeScriptCompile Include="Scripts\typings\phaser\p2.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\phaser\phaser.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\phaser\pixi.d.ts" />
-    <TypeScriptCompile Include="Game\Client\App\Hubs.d.ts">
+    <TypeScriptCompile Include="Game\Client\Server\Hubs.d.ts">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Hubs.tt</DependentUpon>
@@ -274,7 +279,7 @@
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\signalr\signalr.d.ts" />
     <TypeScriptCompile Include="Game\Client\App\App.ts" />
-    <TypeScriptCompile Include="Game\Client\App\ServerAdapter.ts" />
+    <TypeScriptCompile Include="Game\Client\Server\ServerAdapter.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Fonts\glyphicons-halflings-regular.woff" />

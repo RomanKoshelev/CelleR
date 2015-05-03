@@ -4,7 +4,7 @@
 
 using Celler.App.Web.Game.Server.Models;
 
-namespace Celler.App.Web.Game.Server.GameHub
+namespace Celler.App.Web.Game.Server.Hub
 {
     public interface IGameHubClient
     {
