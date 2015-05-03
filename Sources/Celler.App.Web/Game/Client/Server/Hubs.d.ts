@@ -43,6 +43,13 @@ interface GameHub {
 interface GameHubServer {
  
     /** 
+      * Sends a "getPlayerId" message to the GameHub hub.
+      * Contract Documentation: ---
+      * @return {JQueryPromise of string}
+      */
+    getPlayerId() : JQueryPromise<string>;
+ 
+    /** 
       * Sends a "hintSightPosition" message to the GameHub hub.
       * Contract Documentation: ---
       * @param position {SuitPointModel} 
@@ -67,18 +74,18 @@ interface GameHubServer {
     moveSight(position : SuitPointModel) : JQueryPromise<void>;
  
     /** 
-      * Sends a "getPlayerId" message to the GameHub hub.
+      * Sends a "getBounds" message to the GameHub hub.
       * Contract Documentation: ---
-      * @return {JQueryPromise of string}
+      * @return {JQueryPromise of BoundsModel}
       */
-    getPlayerId() : JQueryPromise<string>;
+    getBounds() : JQueryPromise<BoundsModel>;
  
     /** 
-      * Sends a "getRoomData" message to the GameHub hub.
+      * Sends a "getSession" message to the GameHub hub.
       * Contract Documentation: ---
-      * @return {JQueryPromise of RoomModel}
+      * @return {JQueryPromise of SessionModel}
       */
-    getRoomData() : JQueryPromise<RoomModel>;
+    getSession() : JQueryPromise<SessionModel>;
 }
  
 interface GameHubClient
@@ -130,9 +137,36 @@ interface GameHubClient
  
  
 /**
-  * Data contract for Celler.App.Web.Game.Server.Models.RoomModel
+  * Data contract for Celler.App.Web.Game.Server.Models.SessionModel
   */
-interface RoomModel {
+interface SessionModel {
+    Id : string;
+    Cells : CellModel[];
+}
+ 
+ 
+/**
+  * Data contract for Celler.App.Web.Game.Server.Models.CellModel
+  */
+interface CellModel {
+    Suit : string;
+    Position : PointModel;
+}
+ 
+ 
+/**
+  * Data contract for Celler.App.Web.Game.Server.Models.PointModel
+  */
+interface PointModel {
+    X : number;
+    Y : number;
+}
+ 
+ 
+/**
+  * Data contract for Celler.App.Web.Game.Server.Models.BoundsModel
+  */
+interface BoundsModel {
     Width : number;
     Height : number;
 }
@@ -144,15 +178,6 @@ interface RoomModel {
 interface SuitPointModel {
     Suit : string;
     Point : PointModel;
-}
- 
- 
-/**
-  * Data contract for Celler.App.Web.Game.Server.Models.PointModel
-  */
-interface PointModel {
-    X : number;
-    Y : number;
 }
  
 //#endregion data contracts

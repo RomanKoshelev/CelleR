@@ -8,7 +8,7 @@ using Celler.App.Web.Game.Server.Models;
 
 namespace Celler.App.Web.Game.Server.Hub
 {
-    public class GameHub : Microsoft.AspNet.SignalR.Hub
+    public class GameHub : Microsoft.AspNet.SignalR.Hub, IGameLogic
     {
         private readonly IGameLogic _gameLogic;
 
@@ -16,6 +16,14 @@ namespace Celler.App.Web.Game.Server.Hub
         {
             _gameLogic = GameDispatcher.Instance.GameLogic;
         }
+
+        public string GetPlayerId()
+        {
+            return Context.ConnectionId;
+        }
+
+
+        #region IGameLogic
 
         public void HintSightPosition( SuitPointModel position )
         {
@@ -32,14 +40,21 @@ namespace Celler.App.Web.Game.Server.Hub
             _gameLogic.MoveSight( position );
         }
 
-        public string GetPlayerId()
+        public BoundsModel GetBounds()
         {
-            return Context.ConnectionId;
+            return _gameLogic.GetBounds();
         }
 
-        public RoomModel GetRoomData()
+        public SessionModel GetSession()
         {
-            return _gameLogic.GetRoomData();
+            return _gameLogic.GetSession();
         }
+
+        public void UpdateTickCount( int _ )
+        {
+            // Ignore
+        }
+
+        #endregion
     }
 }

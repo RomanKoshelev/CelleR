@@ -11,8 +11,8 @@ namespace Celler.App.Web.Game.Server.Logic
 {
     public class GameLogic : IGameLogic {
 
-        private const double RoomWidth = 720;
-        private const double RoomHeight = 720;
+        private const double WorldWidth = 720;
+        private const double WorldHeight = 720;
         private const int TickInterval = 1000;
 
         private readonly IGameClient _clients;
@@ -40,15 +40,20 @@ namespace Celler.App.Web.Game.Server.Logic
             _clients.SightMoved( position );
         }
 
-        RoomModel IGameLogic.GetRoomData()
+        BoundsModel IGameLogic.GetBounds()
         {
-            return new RoomModel {
-                Width = RoomWidth,
-                Height = RoomHeight
+            return new BoundsModel {
+                Width = WorldWidth,
+                Height = WorldHeight
             };
         }
 
-        void IGameLogic.UpdateTickCount( int tickCount )
+        SessionModel IGameLogic.GetSession()
+        {
+            return new SessionModel();
+        }
+
+        public void UpdateTickCount( int tickCount )
         {
             _clients.TickCountUpdated( tickCount );
         }
@@ -57,8 +62,8 @@ namespace Celler.App.Web.Game.Server.Logic
         {
             position.Point.X = Math.Max( position.Point.X, 0 );
             position.Point.Y = Math.Max( position.Point.Y, 0 );
-            position.Point.X = Math.Min( position.Point.X, RoomWidth );
-            position.Point.Y = Math.Min( position.Point.Y, RoomHeight );
+            position.Point.X = Math.Min( position.Point.X, WorldWidth );
+            position.Point.Y = Math.Min( position.Point.Y, WorldHeight );
         }
 
         public static int GetTickInterval()

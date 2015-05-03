@@ -23,8 +23,8 @@
                 this.playerId = id;
             } );
 
-            this.server.getRoomData().done( ( room: RoomModel ) => {
-                this.createGame( room.Width, room.Height );
+            this.server.getBounds().done( ( bounds: BoundsModel ) => {
+                this.createGame( bounds.Width, bounds.Height );
             });
         }
 

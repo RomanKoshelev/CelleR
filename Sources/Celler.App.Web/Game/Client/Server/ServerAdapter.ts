@@ -28,8 +28,8 @@
             return this.server.getPlayerId();
         }
 
-        getRoomData(): JQueryPromise<RoomModel> {
-            return this.server.getRoomData();
+        getBounds(): JQueryPromise<BoundsModel> {
+            return this.server.getBounds();
         }
 
         private client = $.connection.gameHub.client;

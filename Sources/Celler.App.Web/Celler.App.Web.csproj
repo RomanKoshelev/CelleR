@@ -188,7 +188,9 @@
     <Compile Include="Game\Server\Logic\GameLogic.cs" />
     <Compile Include="Game\Server\Clients\IGameClient.cs" />
     <Compile Include="Game\Server\Logic\IGameLogic.cs" />
-    <Compile Include="Game\Server\Models\RoomModel.cs" />
+    <Compile Include="Game\Server\Models\CellModel.cs" />
+    <Compile Include="Game\Server\Models\SessionModel.cs" />
+    <Compile Include="Game\Server\Models\BoundsModel.cs" />
     <Compile Include="Game\Server\Models\PointModel.cs" />
     <Compile Include="Game\Server\Models\SuitPointModel.cs" />
     <Compile Include="Global.asax.cs">
@@ -262,6 +264,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Game\Client\App\Assets.ts" />
+    <TypeScriptCompile Include="Game\Client\Entities\Session.ts" />
     <TypeScriptCompile Include="Game\Client\Entities\Room.ts" />
     <TypeScriptCompile Include="Game\Client\Entities\SuitSprite.ts" />
     <TypeScriptCompile Include="Game\Client\Entities\Home.ts" />
@@ -312,7 +315,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1656</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:2004/</IISUrl>
+          <IISUrl>http://localhost:2005/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

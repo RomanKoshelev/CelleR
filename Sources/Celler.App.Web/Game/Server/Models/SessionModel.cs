@@ -4,9 +4,9 @@
 
 namespace Celler.App.Web.Game.Server.Models
 {
-    public class RoomModel
+    public class SessionModel
     {
-        public double Width { get; set; }
-        public double Height { get; set; }
+        public string Id { get; set; }
+        public CellModel [] Cells { get; set; }
     }
 }
