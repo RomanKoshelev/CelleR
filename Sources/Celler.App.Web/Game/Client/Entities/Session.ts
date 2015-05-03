@@ -4,26 +4,27 @@
         game: Phaser.Game;
         room: Room;
         sights = [];
-        
+
         constructor( room: Room ) {
             this.room = room;
             this.game = room.game;
 
-            //var model = this.getModel();
-
-            //this.createObjects( model );
-
-
-            this.xxx_createObjects( Suit.Blue );
-            this.xxx_createObjects( Suit.Red );
+            app.server.getSession().done( ( sesion: SessionModel ) => {
+                this.createObjects( sesion );
+            } );
         }
 
         private createObjects( model: SessionModel ) {
-
+            for( var c in model.Cells ) {
+                var suit: Suit;
+                suit = Suit[""];
+                var cell = new Cell( this.game, suit, Room.cellSize );
+                this.game.add.existing( cell );
+            }
         }
 
 
-        private xxx_createObjects( suit: Suit ) {
+        private xxxCreateObjects( suit: Suit ) {
             var sight = new Sight( this.game, suit, Room.sightSize );
             var home = new Home( this.game, suit, Room.homeSize );
             var cell = new Cell( this.game, suit, Room.cellSize );
@@ -44,7 +45,7 @@
         }
 
         private getCornerCoords( suit: Suit, margin: number ): Phaser.Point {
-        switch( suit ) {
+            switch( suit ) {
             case Suit.Blue:
                 return new Phaser.Point( margin, this.game.world.width - margin );
             case Suit.Red:
@@ -52,11 +53,5 @@
             }
             throw new Error( `Unsupported suit ${Suit[ suit ]}` );
         }
-
-/*
-        private getModel(): SessionModel {
-            
-        }
-*/
     }
 }

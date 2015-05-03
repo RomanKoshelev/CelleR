@@ -1,27 +1,25 @@
 ﻿module Celler {
 
-    export class ServerAdapter {
-
-        onSightPositionHinted = new Phaser.Signal();
-        onCellMoved = new Phaser.Signal();
-        onSightMoved = new Phaser.Signal();
-        onStarted = new Phaser.Signal();
-        onTickCountUpdated = new Phaser.Signal();
+    export class ServerAdapter implements GameHubServer, GameHubClient {
 
         constructor() {
             this.init();
         }
 
-        hintSightPosition( position: SuitPointModel ) {
-            this.server.hintSightPosition( position );
+        // --------------------------------------------------------[]
+        // Server
+        private server = $.connection.gameHub.server;
+
+        hintSightPosition( position: SuitPointModel ): JQueryPromise<void> {
+            return this.server.hintSightPosition( position );
         }
 
         moveCell( position: SuitPointModel ) {
-            this.server.moveCell( position );
+            return this.server.moveCell( position );
         }
 
-        moveSight( position: SuitPointModel ) {
-            this.server.moveSight( position );
+        moveSight( position: SuitPointModel ): JQueryPromise<void> {
+            return this.server.moveSight( position );
         }
 
         getPlayerId(): JQueryPromise<string> {
@@ -32,27 +30,39 @@
             return this.server.getBounds();
         }
 
+        getSession(): JQueryPromise<SessionModel> {
+            return this.server.getSession();
+        }
+
+
+        // --------------------------------------------------------[]
+        // Client
+        onSightPositionHinted = new Phaser.Signal();
+        onCellMoved = new Phaser.Signal();
+        onSightMoved = new Phaser.Signal();
+        onStarted = new Phaser.Signal();
+        onTickCountUpdated = new Phaser.Signal();
+
         private client = $.connection.gameHub.client;
-        private server = $.connection.gameHub.server;
 
         private init() {
             this.client.sightPositionHinted = ( position: SuitPointModel ) => { this.sightPositionHinted( position ); };
             this.client.cellMoved = ( position: SuitPointModel ) => { this.cellMoved( position ); };
             this.client.sightMoved = ( position: SuitPointModel ) => { this.sightMoved( position ); };
-            this.client.tickCountUpdated = ( count: number) => { this.tickCountUpdated( count ); };
+            this.client.tickCountUpdated = ( count: number ) => { this.tickCountUpdated( count ); };
 
             $.connection.hub.start().done( () => { this.onStarted.dispatch() } );
         }
 
-        private sightPositionHinted( position: SuitPointModel ) {
+        sightPositionHinted( position: SuitPointModel ) {
             this.onSightPositionHinted.dispatch( position );
         }
 
-        private cellMoved( position: SuitPointModel ) {
+        cellMoved( position: SuitPointModel ) {
             this.onCellMoved.dispatch( position );
         }
 
-        private sightMoved( position: SuitPointModel ) {
+        sightMoved( position: SuitPointModel ) {
             this.onSightMoved.dispatch( position );
         }
 
