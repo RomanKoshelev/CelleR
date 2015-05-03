@@ -26,6 +26,11 @@ namespace Celler.App.Web.Game.Server.Clients
             Clients.All.SightMoved( position );
         }
 
+        public void TickCountUpdated( int tickCount )
+        {
+            Clients.All.TickCountUpdated( tickCount );
+        }
+
         private static IHubConnectionContext< dynamic > Clients
         {
             get { return Context.Clients; }

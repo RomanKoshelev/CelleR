@@ -2,7 +2,6 @@
 // Celler.App.Web
 // GameDispatcher.cs
 
-using System;
 using System.Threading;
 using System.Web.Hosting;
 using Celler.App.Web.Game.Server.Clients;
@@ -13,20 +12,7 @@ namespace Celler.App.Web.Game.Server.Dispatcher
 {
     public class GameDispatcher : IRegisteredObject
     {
-        public event Action< int > OnTick = count => { };
-        public event Action OnStop = () => { };
-
-        public static GameDispatcher Instance
-        {
-            get { return _instance; }
-            set
-            {
-                if( _instance != null ) {
-                    throw new Exception( "GameDispatcher already hase instance" );
-                }
-                _instance = value;
-            }
-        }
+        public static GameDispatcher Instance { get; set; }
 
         public GameDispatcher()
         {
@@ -42,7 +28,7 @@ namespace Celler.App.Web.Game.Server.Dispatcher
 
         public IGameClient GameClients
         {
-            get { return _gameClients ?? ( _gameClients= new GameClientsProxy()); }
+            get { return _gameClients ?? ( _gameClients = new GameClientsProxy() ); }
         }
 
         private IGameLogic _gameLogic;
@@ -50,22 +36,21 @@ namespace Celler.App.Web.Game.Server.Dispatcher
         private Timer _tickTimer;
         private int _tickCount;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        private static GameDispatcher _instance;
 
         private void CreateTickTimer()
         {
-            _tickTimer = new Timer( BroadcastUptimeToClients, null, 0, 1000 );
+            _tickCount = 0;
+            _tickTimer = new Timer( onTickTimer, null, 0, Logic.GameLogic.GetTickInterval() );
         }
 
-        private void BroadcastUptimeToClients( object state )
+        private void onTickTimer( object _ )
         {
-            OnTick( _tickCount++ );
+            GameLogic.UpdateTickCount( _tickCount++ );
         }
 
         public void Stop( bool immediate )
         {
-            Logger.Trace( "GameDispatcher.Stop()" );
-            OnStop();
+            _tickTimer.Dispose();
         }
     }
 }

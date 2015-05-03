@@ -6,6 +6,7 @@
         onCellMoved = new Phaser.Signal();
         onSightMoved = new Phaser.Signal();
         onStarted = new Phaser.Signal();
+        onTickCountUpdated = new Phaser.Signal();
 
         constructor() {
             this.init();
@@ -38,6 +39,7 @@
             this.client.sightPositionHinted = ( position: SuitPointModel ) => { this.sightPositionHinted( position ); };
             this.client.cellMoved = ( position: SuitPointModel ) => { this.cellMoved( position ); };
             this.client.sightMoved = ( position: SuitPointModel ) => { this.sightMoved( position ); };
+            this.client.tickCountUpdated = ( count: number) => { this.tickCountUpdated( count ); };
 
             $.connection.hub.start().done( () => { this.onStarted.dispatch() } );
         }
@@ -52,6 +54,10 @@
 
         private sightMoved( position: SuitPointModel ) {
             this.onSightMoved.dispatch( position );
+        }
+
+        tickCountUpdated( count: number ) {
+            this.onTickCountUpdated.dispatch( count );
         }
     }
 }

@@ -2,11 +2,9 @@
 // Celler.App.Web
 // GameHub.cs
 
-using System;
 using Celler.App.Web.Game.Server.Dispatcher;
 using Celler.App.Web.Game.Server.Logic;
 using Celler.App.Web.Game.Server.Models;
-using NLog;
 
 namespace Celler.App.Web.Game.Server.Hub
 {
@@ -21,7 +19,6 @@ namespace Celler.App.Web.Game.Server.Hub
 
         public void HintSightPosition( SuitPointModel position )
         {
-            //Clients.All.SightPositionHinted( position );
             _gameLogic.HintSightPosition( position );
         }
 
@@ -44,6 +41,5 @@ namespace Celler.App.Web.Game.Server.Hub
         {
             return _gameLogic.GetRoomData();
         }
-
     }
 }

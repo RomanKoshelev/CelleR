@@ -11,5 +11,6 @@ namespace Celler.App.Web.Game.Server.Hub
         void SightPositionHinted( SuitPointModel position );
         void CellMoved( SuitPointModel position );
         void SightMoved( SuitPointModel position );
+        void TickCountUpdated( int tickCount );
     }
 }

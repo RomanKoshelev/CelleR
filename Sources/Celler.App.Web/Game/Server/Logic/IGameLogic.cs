@@ -12,5 +12,6 @@ namespace Celler.App.Web.Game.Server.Logic
         void HintSightPosition( SuitPointModel position );
         void MoveSight( SuitPointModel position );
         RoomModel GetRoomData();
+        void UpdateTickCount( int tickCount );
     }
 }

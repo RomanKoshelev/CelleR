@@ -13,6 +13,7 @@ namespace Celler.App.Web.Game.Server.Logic
 
         private const double RoomWidth = 720;
         private const double RoomHeight = 720;
+        private const int TickInterval = 1000;
 
         private readonly IGameClient _clients;
 
@@ -47,12 +48,22 @@ namespace Celler.App.Web.Game.Server.Logic
             };
         }
 
+        void IGameLogic.UpdateTickCount( int tickCount )
+        {
+            _clients.TickCountUpdated( tickCount );
+        }
+
         private static void KeepPositionInBounds( SuitPointModel position )
         {
             position.Point.X = Math.Max( position.Point.X, 0 );
             position.Point.Y = Math.Max( position.Point.Y, 0 );
             position.Point.X = Math.Min( position.Point.X, RoomWidth );
             position.Point.Y = Math.Min( position.Point.Y, RoomHeight );
+        }
+
+        public static int GetTickInterval()
+        {
+            return TickInterval;
         }
     }
 }

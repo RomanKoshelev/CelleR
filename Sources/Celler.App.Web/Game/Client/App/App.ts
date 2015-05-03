@@ -6,10 +6,12 @@
         server: ServerAdapter;
         playerId = "";
         playerSuit = Suit.Blue;
+        tickCount: Number;
 
         constructor() {
             this.server = new ServerAdapter();
             this.server.onStarted.addOnce( this.init, this );
+            this.server.onTickCountUpdated.add( this.onTickCountUpdated, this );
         }
 
         create() {
@@ -28,6 +30,10 @@
 
         private createGame(width: number, height: number) {
             this.game = new Phaser.Game( width, height, Phaser.AUTO, "celler-playground", { create: this.create } );
+        }
+
+        private onTickCountUpdated( count: Number ) {
+            this.tickCount = count;
         }
     }
 

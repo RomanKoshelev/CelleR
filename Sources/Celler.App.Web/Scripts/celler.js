@@ -47,7 +47,7 @@ var Celler;
             this.createObjects(1 /* Red */);
         };
         Room.prototype.update = function () {
-            this.game.debug.text(Celler.app.playerId, 10, 20);
+            this.game.debug.text("" + Celler.app.playerId + " [" + Celler.app.tickCount + "]", 10, 20);
             this.sights[Celler.app.playerSuit].procKeyboard();
         };
         Room.prototype.getCornerCoords = function (suit, margin) {
@@ -277,6 +277,7 @@ var Celler;
             this.playerSuit = 0 /* Blue */;
             this.server = new Celler.ServerAdapter();
             this.server.onStarted.addOnce(this.init, this);
+            this.server.onTickCountUpdated.add(this.onTickCountUpdated, this);
         }
         App.prototype.create = function () {
             this.game.state.add("Room", Celler.Room, true);
@@ -292,6 +293,9 @@ var Celler;
         };
         App.prototype.createGame = function (width, height) {
             this.game = new Phaser.Game(width, height, Phaser.AUTO, "celler-playground", { create: this.create });
+        };
+        App.prototype.onTickCountUpdated = function (count) {
+            this.tickCount = count;
         };
         return App;
     })();
@@ -313,6 +317,7 @@ var Celler;
             this.onCellMoved = new Phaser.Signal();
             this.onSightMoved = new Phaser.Signal();
             this.onStarted = new Phaser.Signal();
+            this.onTickCountUpdated = new Phaser.Signal();
             this.client = $.connection.gameHub.client;
             this.server = $.connection.gameHub.server;
             this.init();
@@ -343,6 +348,9 @@ var Celler;
             this.client.sightMoved = function (position) {
                 _this.sightMoved(position);
             };
+            this.client.tickCountUpdated = function (count) {
+                _this.tickCountUpdated(count);
+            };
             $.connection.hub.start().done(function () {
                 _this.onStarted.dispatch();
             });
@@ -355,6 +363,9 @@ var Celler;
         };
         ServerAdapter.prototype.sightMoved = function (position) {
             this.onSightMoved.dispatch(position);
+        };
+        ServerAdapter.prototype.tickCountUpdated = function (count) {
+            this.onTickCountUpdated.dispatch(count);
         };
         return ServerAdapter;
     })();

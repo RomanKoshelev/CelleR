@@ -107,6 +107,14 @@ interface GameHubClient
       * @return {void}
       */
     sightMoved : (position : SuitPointModel) => void;
+ 
+    /**
+      * Set this function with a "function(tickCount : number){}" to receive the "tickCountUpdated" message from the GameHub hub.
+      * Contract Documentation: ---
+      * @param tickCount {number} 
+      * @return {void}
+      */
+    tickCountUpdated : (tickCount : number) => void;
 }
  
 //#endregion GameHub hub

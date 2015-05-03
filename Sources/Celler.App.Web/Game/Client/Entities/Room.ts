@@ -25,7 +25,7 @@
         }
 
         update() {
-            this.game.debug.text( app.playerId, 10, 20 );
+            this.game.debug.text( `${app.playerId} [${app.tickCount}]`, 10, 20 );
             this.sights[app.playerSuit].procKeyboard();
         }
 
