@@ -24,7 +24,7 @@
         update() {
             this.game.debug.text( `${this.session.id} [${app.tickCount}]`, 10, 20 );
         }
-        
+
         private preloadSprites( suit: Suit ) {
             Assets.Sprites.load( suit, Assets.Type.Home );
             Assets.Sprites.load( suit, Assets.Type.CellBody );

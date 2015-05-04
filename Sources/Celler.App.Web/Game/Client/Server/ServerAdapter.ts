@@ -14,7 +14,7 @@
             return this.server.hintSightPosition( id, position );
         }
 
-        moveCell( id: string, position: PointModel) : JQueryPromise<void> {
+        moveCell( id: string, position: PointModel ): JQueryPromise<void> {
             return this.server.moveCell( id, position );
         }
 

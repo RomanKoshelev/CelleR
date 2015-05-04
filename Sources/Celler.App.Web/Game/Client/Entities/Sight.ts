@@ -8,7 +8,7 @@
         static shiftPerKeypoardClick = 10;
 
         constructor( game: Phaser.Game, model: SightModel ) {
-            super( game, Suit[model.Base.Suit], Assets.Type.Sight, model.Base.Size );
+            super( game, Suit[ model.Base.Suit ], Assets.Type.Sight, model.Base.Size );
 
             this.id = model.Base.Id;
             this.cellId = model.CellId;

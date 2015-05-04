@@ -35,7 +35,7 @@ namespace Celler.App.Web.Game.Server.Logic
 
         void IGameLogic.HintSightPosition( string id, PointModel position )
         {
-            KeepPositionInBounds( position);
+            KeepPositionInBounds( position );
             _clients.SightPositionHinted( id, position );
         }
 

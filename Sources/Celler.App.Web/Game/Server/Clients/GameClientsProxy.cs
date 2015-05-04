@@ -16,7 +16,7 @@ namespace Celler.App.Web.Game.Server.Clients
             Clients.All.CellMoved( id, position );
         }
 
-        public void SightPositionHinted( string id, PointModel position)
+        public void SightPositionHinted( string id, PointModel position )
         {
             Clients.All.SightPositionHinted( id, position );
         }

@@ -173,8 +173,8 @@ var Celler;
                 this.game.add.tween(this).to({ x: position.X, y: position.Y }, 500, Phaser.Easing.Circular.InOut, true);
             }
         };
-        Cell.prototype.onSightPositionHinted = function (suit, position) {
-            if (Celler.Suit[suit] === this.suit) {
+        Cell.prototype.onSightPositionHinted = function (sightId, position) {
+            if (this.sightId === sightId) {
                 this.sightPoint = Celler.modelToPoint(position);
             }
         };

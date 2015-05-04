@@ -7,7 +7,7 @@
         suit: Suit;
         sightPoint: Phaser.Point;
 
-        constructor( game: Phaser.Game, model: CellModel) {
+        constructor( game: Phaser.Game, model: CellModel ) {
             super( game );
             this.init( model );
             app.server.onCellMoved.add( this.onCellMoved, this );
@@ -27,32 +27,32 @@
             this.id = model.Base.Id;
             this.sightId = model.SightId;
             this.homeId = model.HomeId;
-            this.suit = Suit[model.Base.Suit];
+            this.suit = Suit[ model.Base.Suit ];
 
             this.addChild( this.body = new SuitSprite( this.game, this.suit, Assets.Type.CellBody ) );
             this.addChild( this.eye = new SuitSprite( this.game, this.suit, Assets.Type.CellEye ) );
-            
+
             this.scale.set( model.Base.Size / this.width );
             this.position = modelToPoint( model.Base.Position );
 
             this.updateEyeSize();
         }
 
-        private onCellMoved( id: string , position: PointModel ) {
+        private onCellMoved( id: string, position: PointModel ) {
             if( this.id === id ) {
                 this.game.add.tween( this )
                     .to( { x: position.X, y: position.Y }, 500, Phaser.Easing.Circular.InOut, true );
             }
         }
 
-        private onSightPositionHinted( suit: string, position: PointModel ) {
-            if ( Suit[suit] === this.suit ) {
+        private onSightPositionHinted( sightId: string, position: PointModel ) {
+            if( this.sightId === sightId ) {
                 this.sightPoint = modelToPoint( position );
             }
         }
 
         private lookAtSigtPoint() {
-            if ( this.sightPoint == null ) return;
+            if( this.sightPoint == null ) return;
 
             var p = this.sightPoint.clone();
             var l = Phaser.Point.distance( this.position, p );

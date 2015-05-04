@@ -25,10 +25,10 @@
 
             this.server.getBounds().done( ( bounds: SizeModel ) => {
                 this.createGame( bounds.Width, bounds.Height );
-            });
+            } );
         }
 
-        private createGame(width: number, height: number) {
+        private createGame( width: number, height: number ) {
             this.game = new Phaser.Game( width, height, Phaser.AUTO, "celler-playground", { create: this.create } );
         }
 
