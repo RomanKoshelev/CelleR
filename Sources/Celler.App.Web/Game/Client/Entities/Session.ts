@@ -2,10 +2,10 @@
 
     export class Session {
         game: Phaser.Game;
-        room: Room;
+        room: PlayState;
         sights = [];
 
-        constructor( room: Room ) {
+        constructor( room: PlayState ) {
             this.room = room;
             this.game = room.game;
 
@@ -16,19 +16,19 @@
 
         // Code: createObjects ( model: SessionModel ) 
         private createObjects( model: SessionModel ) {
-            for( var c in model.Cells ) {
-                var suit: Suit;
-                suit = Suit[""];
-                var cell = new Cell( this.game, suit, Room.cellSize );
+            model.Cells.map( cm => {
+                var suit = Suit[ cm.SuitObject.Suit ];
+                var cell = new Cell( this.game, suit, PlayState.cellSize );
                 this.game.add.existing( cell );
-            }
+                cell.position = this.getCornerCoords( suit, cell.width );
+            } );
         }
 
 
         private xxxCreateObjects( suit: Suit ) {
-            var sight = new Sight( this.game, suit, Room.sightSize );
-            var home = new Home( this.game, suit, Room.homeSize );
-            var cell = new Cell( this.game, suit, Room.cellSize );
+            var sight = new Sight( this.game, suit, PlayState.sightSize );
+            var home = new Home( this.game, suit, PlayState.homeSize );
+            var cell = new Cell( this.game, suit, PlayState.cellSize );
 
             this.game.add.existing( home );
             this.game.add.existing( sight );
@@ -52,7 +52,7 @@
             case Suit.Red:
                 return new Phaser.Point( this.game.world.width - margin, margin );
             }
-            throw new Error( `Unsupported suit ${Suit[ suit ]}` );
+            throw new Error( `Unsupported suit [${Suit[ suit ]}]` );
         }
     }
 }

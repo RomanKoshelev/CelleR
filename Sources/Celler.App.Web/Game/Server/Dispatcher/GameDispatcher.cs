@@ -34,18 +34,16 @@ namespace Celler.App.Web.Game.Server.Dispatcher
         private IGameLogic _gameLogic;
         private IGameClient _gameClients;
         private Timer _tickTimer;
-        private int _tickCount;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private void CreateTickTimer()
         {
-            _tickCount = 0;
             _tickTimer = new Timer( onTickTimer, null, 0, Logic.GameLogic.GetTickInterval() );
         }
 
         private void onTickTimer( object _ )
         {
-            GameLogic.UpdateTickCount( _tickCount++ );
+            GameLogic.Update();
         }
 
         public void Stop( bool immediate )

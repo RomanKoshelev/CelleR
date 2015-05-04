@@ -5,6 +5,7 @@
 using System;
 using Celler.App.Web.Game.Server.Clients;
 using Celler.App.Web.Game.Server.Dispatcher;
+using Celler.App.Web.Game.Server.Entities;
 using Celler.App.Web.Game.Server.Models;
 
 namespace Celler.App.Web.Game.Server.Logic
@@ -16,10 +17,12 @@ namespace Celler.App.Web.Game.Server.Logic
         private const int TickInterval = 1000;
 
         private readonly IGameClient _clients;
+        private readonly Session _session;
 
         public GameLogic()
         {
             _clients = GameDispatcher.Instance.GameClients;
+            _session = new Session();
         }
 
         void IGameLogic.MoveCell( SuitPointModel position )
@@ -40,9 +43,9 @@ namespace Celler.App.Web.Game.Server.Logic
             _clients.SightMoved( position );
         }
 
-        BoundsModel IGameLogic.GetBounds()
+        SizeModel IGameLogic.GetBounds()
         {
-            return new BoundsModel {
+            return new SizeModel {
                 Width = WorldWidth,
                 Height = WorldHeight
             };
@@ -50,12 +53,12 @@ namespace Celler.App.Web.Game.Server.Logic
 
         SessionModel IGameLogic.GetSession()
         {
-            return new SessionModel();
+            return _session.ToModel();
         }
 
-        public void UpdateTickCount( int tickCount )
+        public void Update()
         {
-            _clients.TickCountUpdated( tickCount );
+            _clients.TickCountUpdated( _session.TickCount++);
         }
 
         private static void KeepPositionInBounds( SuitPointModel position )

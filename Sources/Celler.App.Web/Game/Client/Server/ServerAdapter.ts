@@ -14,7 +14,7 @@
             return this.server.hintSightPosition( position );
         }
 
-        moveCell( position: SuitPointModel ) {
+        moveCell( position: SuitPointModel ) : JQueryPromise<void> {
             return this.server.moveCell( position );
         }
 
@@ -26,7 +26,7 @@
             return this.server.getPlayerId();
         }
 
-        getBounds(): JQueryPromise<BoundsModel> {
+        getBounds(): JQueryPromise<SizeModel> {
             return this.server.getBounds();
         }
 
@@ -34,6 +34,9 @@
             return this.server.getSession();
         }
 
+        update(): JQueryPromise<void> {
+            return this.server.update();
+        }
 
         // --------------------------------------------------------[]
         // Client

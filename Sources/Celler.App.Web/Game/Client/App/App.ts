@@ -15,7 +15,7 @@
         }
 
         create() {
-            this.game.state.add( "Room", Room, true );
+            this.game.state.add( "Room", PlayState, true );
         }
 
         private init() {
@@ -23,7 +23,7 @@
                 this.playerId = id;
             } );
 
-            this.server.getBounds().done( ( bounds: BoundsModel ) => {
+            this.server.getBounds().done( ( bounds: SizeModel ) => {
                 this.createGame( bounds.Width, bounds.Height );
             });
         }

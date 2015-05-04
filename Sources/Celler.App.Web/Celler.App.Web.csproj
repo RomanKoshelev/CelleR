@@ -185,12 +185,18 @@
     <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Game\Server\Clients\GameClientsProxy.cs" />
     <Compile Include="Game\Server\Dispatcher\GameDispatcher.cs" />
+    <Compile Include="Game\Server\Entities\Cell.cs" />
+    <Compile Include="Game\Server\Entities\IGameEntity.cs" />
+    <Compile Include="Game\Server\Entities\Session.cs" />
+    <Compile Include="Game\Server\Entities\Suit.cs" />
+    <Compile Include="Game\Server\Entities\SuitObject.cs" />
     <Compile Include="Game\Server\Logic\GameLogic.cs" />
     <Compile Include="Game\Server\Clients\IGameClient.cs" />
     <Compile Include="Game\Server\Logic\IGameLogic.cs" />
+    <Compile Include="Game\Server\Models\SuitObjectModel.cs" />
     <Compile Include="Game\Server\Models\CellModel.cs" />
     <Compile Include="Game\Server\Models\SessionModel.cs" />
-    <Compile Include="Game\Server\Models\BoundsModel.cs" />
+    <Compile Include="Game\Server\Models\SizeModel.cs" />
     <Compile Include="Game\Server\Models\PointModel.cs" />
     <Compile Include="Game\Server\Models\SuitPointModel.cs" />
     <Compile Include="Global.asax.cs">
@@ -265,7 +271,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="Game\Client\App\Assets.ts" />
     <TypeScriptCompile Include="Game\Client\Entities\Session.ts" />
-    <TypeScriptCompile Include="Game\Client\Entities\Room.ts" />
+    <TypeScriptCompile Include="Game\Client\Entities\PlayState.ts" />
     <TypeScriptCompile Include="Game\Client\Entities\SuitSprite.ts" />
     <TypeScriptCompile Include="Game\Client\Entities\Home.ts" />
     <TypeScriptCompile Include="Game\Client\Entities\Suit.ts" />

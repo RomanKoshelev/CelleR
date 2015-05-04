@@ -40,7 +40,7 @@ namespace Celler.App.Web.Game.Server.Hub
             _gameLogic.MoveSight( position );
         }
 
-        public BoundsModel GetBounds()
+        public SizeModel GetBounds()
         {
             return _gameLogic.GetBounds();
         }
@@ -50,9 +50,9 @@ namespace Celler.App.Web.Game.Server.Hub
             return _gameLogic.GetSession();
         }
 
-        public void UpdateTickCount( int _ )
+        public void Update()
         {
-            // Ignore
+            // Ignore client's invocation
         }
 
         #endregion

@@ -11,8 +11,8 @@ namespace Celler.App.Web.Game.Server.Logic
         void MoveCell( SuitPointModel position );
         void HintSightPosition( SuitPointModel position );
         void MoveSight( SuitPointModel position );
-        BoundsModel GetBounds();
+        SizeModel GetBounds();
         SessionModel GetSession();
-        void UpdateTickCount( int count );
+        void Update();
     }
 }

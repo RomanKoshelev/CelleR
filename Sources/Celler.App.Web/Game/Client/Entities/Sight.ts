@@ -20,11 +20,14 @@
 
         update() {
             this.serverHintSightPosition();
+            this.procKeyboard();
             super.update();
         }
 
         procKeyboard() {
-            this.doProcKeyboard();
+            if( this.suit === app.playerSuit ) {
+                this.doProcKeyboard();
+            }
         }
 
         private onDragStop() {

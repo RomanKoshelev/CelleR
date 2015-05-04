@@ -1,5 +1,5 @@
 ﻿module Celler {
-    export class Room extends Phaser.State {
+    export class PlayState extends Phaser.State {
 
         static cellSize = 65;
         static sightSize = 100;
@@ -13,7 +13,7 @@
         }
 
         init() {
-            this.game.stage.backgroundColor = Room.background;
+            this.game.stage.backgroundColor = PlayState.background;
         }
 
         preload() {
@@ -27,7 +27,6 @@
 
         update() {
             this.game.debug.text( `${app.playerId} [${app.tickCount}]`, 10, 20 );
-            this.session.sights[app.playerSuit].procKeyboard();
         }
         
         private preloadSprites( suit: Suit ) {

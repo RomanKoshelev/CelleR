@@ -76,9 +76,9 @@ interface GameHubServer {
     /** 
       * Sends a "getBounds" message to the GameHub hub.
       * Contract Documentation: ---
-      * @return {JQueryPromise of BoundsModel}
+      * @return {JQueryPromise of SizeModel}
       */
-    getBounds() : JQueryPromise<BoundsModel>;
+    getBounds() : JQueryPromise<SizeModel>;
  
     /** 
       * Sends a "getSession" message to the GameHub hub.
@@ -86,6 +86,13 @@ interface GameHubServer {
       * @return {JQueryPromise of SessionModel}
       */
     getSession() : JQueryPromise<SessionModel>;
+ 
+    /** 
+      * Sends a "update" message to the GameHub hub.
+      * Contract Documentation: ---
+      * @return {JQueryPromise of void}
+      */
+    update() : JQueryPromise<void>;
 }
  
 interface GameHubClient
@@ -149,8 +156,18 @@ interface SessionModel {
   * Data contract for Celler.App.Web.Game.Server.Models.CellModel
   */
 interface CellModel {
+    SuitObject : SuitObjectModel;
+}
+ 
+ 
+/**
+  * Data contract for Celler.App.Web.Game.Server.Models.SuitObjectModel
+  */
+interface SuitObjectModel {
+    Id : string;
     Suit : string;
     Position : PointModel;
+    Size : SizeModel;
 }
  
  
@@ -164,9 +181,9 @@ interface PointModel {
  
  
 /**
-  * Data contract for Celler.App.Web.Game.Server.Models.BoundsModel
+  * Data contract for Celler.App.Web.Game.Server.Models.SizeModel
   */
-interface BoundsModel {
+interface SizeModel {
     Width : number;
     Height : number;
 }
