@@ -16,12 +16,7 @@
 
         // Code: createObjects ( model: SessionModel ) 
         private createObjects( model: SessionModel ) {
-            model.Cells.map( cm => {
-                var suit = Suit[ cm.SuitObject.Suit ];
-                var cell = new Cell( this.game, suit, PlayState.cellSize );
-                this.game.add.existing( cell );
-                cell.position = this.getCornerCoords( suit, cell.width );
-            } );
+            this.createCells( model.Cells );
         }
 
 
@@ -53,6 +48,16 @@
                 return new Phaser.Point( this.game.world.width - margin, margin );
             }
             throw new Error( `Unsupported suit [${Suit[ suit ]}]` );
+        }
+
+        private createCells( cells: CellModel[] ) {
+            cells.map( model => {
+                var cell = new Cell( this.game, Suit[ model.SuitObject.Suit ], PlayState.cellSize );
+                cell.position = modelToPoint( model.SuitObject.Position );
+                this.game.add.existing( cell );
+            } );
+
+
         }
     }
 }

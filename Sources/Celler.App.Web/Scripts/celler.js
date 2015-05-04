@@ -40,13 +40,7 @@ var Celler;
         }
         // Code: createObjects ( model: SessionModel ) 
         Session.prototype.createObjects = function (model) {
-            var _this = this;
-            model.Cells.map(function (cm) {
-                var suit = Celler.Suit[cm.SuitObject.Suit];
-                var cell = new Celler.Cell(_this.game, suit, Celler.PlayState.cellSize);
-                _this.game.add.existing(cell);
-                cell.position = _this.getCornerCoords(suit, cell.width);
-            });
+            this.createCells(model.Cells);
         };
         Session.prototype.xxxCreateObjects = function (suit) {
             var sight = new Celler.Sight(this.game, suit, Celler.PlayState.sightSize);
@@ -71,6 +65,14 @@ var Celler;
                     return new Phaser.Point(this.game.world.width - margin, margin);
             }
             throw new Error("Unsupported suit [" + Celler.Suit[suit] + "]");
+        };
+        Session.prototype.createCells = function (cells) {
+            var _this = this;
+            cells.map(function (model) {
+                var cell = new Celler.Cell(_this.game, Celler.Suit[model.SuitObject.Suit], Celler.PlayState.cellSize);
+                cell.position = Celler.modelToPoint(model.SuitObject.Position);
+                _this.game.add.existing(cell);
+            });
         };
         return Session;
     })();
@@ -298,6 +300,13 @@ var Celler;
         return Sight;
     })(Celler.SuitSprite);
     Celler.Sight = Sight;
+})(Celler || (Celler = {}));
+var Celler;
+(function (Celler) {
+    function modelToPoint(model) {
+        return new Phaser.Point(model.X, model.Y);
+    }
+    Celler.modelToPoint = modelToPoint;
 })(Celler || (Celler = {}));
 var Celler;
 (function (Celler) {

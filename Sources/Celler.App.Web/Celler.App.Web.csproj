@@ -277,6 +277,7 @@
     <TypeScriptCompile Include="Game\Client\Entities\Suit.ts" />
     <TypeScriptCompile Include="Game\Client\Entities\Cell.ts" />
     <TypeScriptCompile Include="Game\Client\Entities\Sight.ts" />
+    <TypeScriptCompile Include="Game\Client\Utils\Convertors.ts" />
     <TypeScriptCompile Include="Scripts\typings\phaser\p2.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\phaser\phaser.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\phaser\pixi.d.ts" />
