@@ -8,5 +8,7 @@ namespace Celler.App.Web.Game.Server.Models
     {
         public string Id { get; set; }
         public CellModel[] Cells { get; set; }
+        public HomeModel[] Homes { get; set; }
+        public SightModel[] Sights { get; set; }
     }
 }

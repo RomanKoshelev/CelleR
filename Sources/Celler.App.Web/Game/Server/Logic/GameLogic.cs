@@ -12,23 +12,17 @@ namespace Celler.App.Web.Game.Server.Logic
 {
     public class GameLogic : IGameLogic
     {
-        private const double WorldWidth = 720;
-        private const double WorldHeight = 720;
-        private const int TickInterval = 1000;
-
-        private readonly IGameClient _clients;
-        private readonly Session _session;
-
         public GameLogic()
         {
             _clients = GameDispatcher.Instance.GameClients;
-            _session = new Session();
+            InitSession();
         }
 
         public static int GetTickInterval()
         {
             return TickInterval;
         }
+
 
         #region IGameLogic
 
@@ -72,6 +66,31 @@ namespace Celler.App.Web.Game.Server.Logic
 
 
         #region Private
+
+        private const int TickInterval = 1000;
+        private const double WorldWidth = 720;
+        private const double WorldHeight = 720;
+        private const double HomeSize = 150;
+        private const double CellSize = 65;
+        private const double SightSize = 100;
+
+        private readonly IGameClient _clients;
+        private Session _session;
+
+        private void InitSession()
+        {
+            _session = new Session();
+            InitSessionSuit( _session, Suit.Blue );
+            InitSessionSuit( _session, Suit.Red );
+        }
+
+        private void InitSessionSuit( Session session, Suit suit )
+        {
+            var corner = GetCornerCoords( suit, HomeSize/2 );
+            session.AddHome( suit, corner, HomeSize );
+            session.AddCell( suit, corner, CellSize );
+            session.AddSight( suit, corner, CellSize );
+        }
 
         private static void KeepPositionInBounds( SuitPointModel position )
         {

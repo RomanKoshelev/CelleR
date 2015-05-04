@@ -13,36 +13,53 @@ namespace Celler.App.Web.Game.Server.Entities
     {
         public string Id { get; set; }
         public List< Cell > Cells { get; set; }
+        public List< Home > Homes { get; set; }
+        public List< Sight > Sights { get; set; }
         public int TickCount { get; set; }
 
         public SessionModel ToModel()
         {
             return new SessionModel {
                 Id = Id,
-                Cells = Cells.Select( cell => cell.ToModel() ).ToArray()
+                Cells = Cells.Select( o => o.ToModel() ).ToArray(),
+                Homes = Homes.Select( o => o.ToModel() ).ToArray(),
+                Sights = Sights.Select( o => o.ToModel() ).ToArray()
             };
         }
 
         public Session()
         {
             Id = Guid.NewGuid().ToString();
-            CreateObjects();
+            Cells = new List< Cell >();
+            Homes = new List< Home >();
+            Sights = new List< Sight >();
         }
 
-        private void CreateObjects()
+        public void AddCell( Suit suit, Point position, double size )
         {
-            Cells = new List< Cell > {
-                new Cell {
-                    Suit = Suit.Blue,
-                    Position = new Point( 50, 650 ),
-                    Size = 50,
-                },
-                new Cell {
-                    Suit = Suit.Red,
-                    Position = new Point( 650, 50 ),
-                    Size = 30,
-                }
-            };
+            Cells.Add( new Cell {
+                Suit = suit,
+                Position = position.Clone(),
+                Size = size
+            } );
+        }
+
+        public void AddHome( Suit suit, Point position, double size )
+        {
+            Homes.Add( new Home {
+                Suit = suit,
+                Position = position.Clone(),
+                Size = size
+            } );
+        }
+
+        public void AddSight( Suit suit, Point position, double size )
+        {
+            Sights.Add( new Sight {
+                Suit = suit,
+                Position = position.Clone(),
+                Size = size
+            } );
         }
     }
 }

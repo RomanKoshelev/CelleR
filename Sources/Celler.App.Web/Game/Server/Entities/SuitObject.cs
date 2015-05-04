@@ -9,7 +9,7 @@ namespace Celler.App.Web.Game.Server.Entities
 {
     public abstract class SuitObject
     {
-        public string Id { get; set; }
+        public string Id { get; private set; }
         public Suit Suit { get; set; }
         public Point Position { get; set; }
         public double Size { get; set; }

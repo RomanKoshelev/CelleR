@@ -36,31 +36,32 @@ var Celler;
                 _this.createObjects(sesion);
             });
         }
-        // Code: createObjects ( model: SessionModel ) 
         Session.prototype.createObjects = function (model) {
+            this.createHomes(model.Homes);
             this.createCells(model.Cells);
+            this.createSights(model.Sights);
         };
-        Session.prototype.xxxCreateObjects = function (suit) {
-            var sight = new Celler.Sight(this.game, suit, Celler.PlayState.sightSize);
-            var home = new Celler.Home(this.game, suit, Celler.PlayState.homeSize);
-            var cell = new Celler.Cell(this.game, suit, Celler.PlayState.cellSize);
-            this.game.add.existing(home);
-            this.game.add.existing(sight);
-            this.game.add.existing(cell);
-            //            home.position = this.getCornerCoords( suit, home.width / 2 );
-            cell.position = home.position.clone();
-            sight.position = cell.position.clone();
-            this.game.world.sendToBack(sight);
-            this.game.world.sendToBack(cell);
-            this.game.world.sendToBack(home);
-        };
-        Session.prototype.createCells = function (cells) {
+        Session.prototype.createHomes = function (arr) {
             var _this = this;
-            cells.map(function (model) {
-                var cell = new Celler.Cell(_this.game, Celler.Suit[model.Base.Suit], Celler.PlayState.cellSize);
-                cell.position = Celler.toPoint(model.Base.Position);
-                _this.game.add.existing(cell);
+            arr.map(function (model) {
+                _this.createAtPosition(new Celler.Home(_this.game, Celler.Suit[model.Base.Suit], model.Base.Size), model.Base.Position);
             });
+        };
+        Session.prototype.createCells = function (arr) {
+            var _this = this;
+            arr.map(function (model) {
+                _this.createAtPosition(new Celler.Cell(_this.game, Celler.Suit[model.Base.Suit], model.Base.Size), model.Base.Position);
+            });
+        };
+        Session.prototype.createSights = function (arr) {
+            var _this = this;
+            arr.map(function (model) {
+                _this.createAtPosition(new Celler.Sight(_this.game, Celler.Suit[model.Base.Suit], model.Base.Size), model.Base.Position);
+            });
+        };
+        Session.prototype.createAtPosition = function (obj, position) {
+            obj.position = Celler.modelToPoint(position);
+            this.game.add.existing(obj);
         };
         return Session;
     })();
@@ -98,9 +99,6 @@ var Celler;
             Celler.Assets.Sprites.load(suit, 1 /* CellEye */);
             Celler.Assets.Sprites.load(suit, 2 /* Sight */);
         };
-        PlayState.cellSize = 65;
-        PlayState.sightSize = 100;
-        PlayState.homeSize = 150;
         PlayState.background = "#004400";
         return PlayState;
     })(Phaser.State);
@@ -291,10 +289,10 @@ var Celler;
 })(Celler || (Celler = {}));
 var Celler;
 (function (Celler) {
-    function toPoint(model) {
+    function modelToPoint(model) {
         return new Phaser.Point(model.X, model.Y);
     }
-    Celler.toPoint = toPoint;
+    Celler.modelToPoint = modelToPoint;
 })(Celler || (Celler = {}));
 var Celler;
 (function (Celler) {

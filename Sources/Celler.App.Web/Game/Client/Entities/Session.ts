@@ -11,39 +11,33 @@
             } );
         }
 
-        // Code: createObjects ( model: SessionModel ) 
         private createObjects( model: SessionModel ) {
+            this.createHomes( model.Homes );
             this.createCells( model.Cells );
+            this.createSights( model.Sights );
         }
 
-
-        private xxxCreateObjects( suit: Suit ) {
-            var sight = new Sight( this.game, suit, PlayState.sightSize );
-            var home = new Home( this.game, suit, PlayState.homeSize );
-            var cell = new Cell( this.game, suit, PlayState.cellSize );
-
-            this.game.add.existing( home );
-            this.game.add.existing( sight );
-            this.game.add.existing( cell );
-
-//            home.position = this.getCornerCoords( suit, home.width / 2 );
-            cell.position = home.position.clone();
-            sight.position = cell.position.clone();
-
-            this.game.world.sendToBack( sight );
-            this.game.world.sendToBack( cell );
-            this.game.world.sendToBack( home );
-
-        }
-
-
-        private createCells( cells: CellModel[] ) {
-            cells.map( model => {
-                var cell = new Cell( this.game, Suit[ model.Base.Suit ], PlayState.cellSize );
-                cell.position = toPoint( model.Base.Position );
-                this.game.add.existing( cell );
+        private createHomes( arr: HomeModel[] ) {
+            arr.map( model => {
+                this.createAtPosition<Home>( new Home( this.game, Suit[ model.Base.Suit ], model.Base.Size ), model.Base.Position );
             } );
-            
+        }
+
+        private createCells( arr: CellModel[] ) {
+            arr.map( model => {
+                this.createAtPosition<Cell>( new Cell( this.game, Suit[ model.Base.Suit ], model.Base.Size ), model.Base.Position );
+            } );
+        }
+
+        private createSights( arr: SightModel[] ) {
+            arr.map( model => {
+                this.createAtPosition<Sight>( new Sight( this.game, Suit[ model.Base.Suit ], model.Base.Size ), model.Base.Position );
+            } );
+        }
+
+        private createAtPosition<T extends PIXI.DisplayObject>( obj: T, position: PointModel ) {
+            obj.position = modelToPoint( position );
+            this.game.add.existing( obj );
         }
     }
 }

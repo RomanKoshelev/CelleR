@@ -19,6 +19,12 @@ namespace Celler.App.Web.Game.Server.Entities
         public double X { get; set; }
         public double Y { get; set; }
 
+
+        public Point Clone()
+        {
+            return new Point(X,Y);
+        }
+
         public PointModel ToModel()
         {
             return new PointModel { X = X, Y = Y };

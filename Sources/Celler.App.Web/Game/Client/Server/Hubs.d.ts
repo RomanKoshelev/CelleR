@@ -149,13 +149,15 @@ interface GameHubClient
 interface SessionModel {
     Id : string;
     Cells : CellModel[];
+    Homes : HomeModel[];
+    Sights : SightModel[];
 }
  
  
 /**
-  * Data contract for Celler.App.Web.Game.Server.Models.CellModel
+  * Data contract for Celler.App.Web.Game.Server.Models.SightModel
   */
-interface CellModel {
+interface SightModel {
     Base : SuitObjectModel;
 }
  
@@ -177,6 +179,22 @@ interface SuitObjectModel {
 interface PointModel {
     X : number;
     Y : number;
+}
+ 
+ 
+/**
+  * Data contract for Celler.App.Web.Game.Server.Models.HomeModel
+  */
+interface HomeModel {
+    Base : SuitObjectModel;
+}
+ 
+ 
+/**
+  * Data contract for Celler.App.Web.Game.Server.Models.CellModel
+  */
+interface CellModel {
+    Base : SuitObjectModel;
 }
  
  
