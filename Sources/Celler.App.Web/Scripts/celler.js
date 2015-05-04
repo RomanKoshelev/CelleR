@@ -45,24 +45,20 @@ var Celler;
         Session.prototype.createHomes = function (arr) {
             var _this = this;
             arr.map(function (model) {
-                _this.createAtPosition(new Celler.Home(_this.game, Celler.Suit[model.Base.Suit], model.Base.Size), model.Base.Position);
+                _this.game.add.existing(new Celler.Home(_this.game, model));
             });
         };
         Session.prototype.createCells = function (arr) {
             var _this = this;
             arr.map(function (model) {
-                _this.createAtPosition(new Celler.Cell(_this.game, Celler.Suit[model.Base.Suit], model.Base.Size), model.Base.Position);
+                _this.game.add.existing(new Celler.Cell(_this.game, model));
             });
         };
         Session.prototype.createSights = function (arr) {
             var _this = this;
             arr.map(function (model) {
-                _this.createAtPosition(new Celler.Sight(_this.game, Celler.Suit[model.Base.Suit], model.Base.Size), model.Base.Position);
+                _this.game.add.existing(new Celler.Sight(_this.game, model));
             });
-        };
-        Session.prototype.createAtPosition = function (obj, position) {
-            obj.position = Celler.modelToPoint(position);
-            this.game.add.existing(obj);
         };
         return Session;
     })();
@@ -126,8 +122,10 @@ var Celler;
 (function (Celler) {
     var Home = (function (_super) {
         __extends(Home, _super);
-        function Home(game, suit, size) {
-            _super.call(this, game, suit, 3 /* Home */, size);
+        function Home(game, model) {
+            _super.call(this, game, Celler.Suit[model.Base.Suit], 3 /* Home */, model.Base.Size);
+            this.id = model.Base.Id;
+            this.position = Celler.modelToPoint(model.Base.Position);
         }
         return Home;
     })(Celler.SuitSprite);
@@ -149,9 +147,9 @@ var Celler;
 (function (Celler) {
     var Cell = (function (_super) {
         __extends(Cell, _super);
-        function Cell(game, suit, size) {
+        function Cell(game, model) {
             _super.call(this, game);
-            this.init(suit, size);
+            this.init(model);
             Celler.app.server.onCellMoved.add(this.onCellMoved, this);
             Celler.app.server.onSightPositionHinted.add(this.onSightPositionHinted, this);
         }
@@ -159,21 +157,25 @@ var Celler;
             this.lookAtSigtPoint();
             _super.prototype.update.call(this);
         };
-        Cell.prototype.init = function (suit, size) {
-            this.addChild(this.body = new Celler.SuitSprite(this.game, suit, 0 /* CellBody */));
-            this.addChild(this.eye = new Celler.SuitSprite(this.game, suit, 1 /* CellEye */));
-            this.suit = suit;
-            this.scale.set(size / this.width);
+        Cell.prototype.init = function (model) {
+            this.id = model.Base.Id;
+            this.sightId = model.SightId;
+            this.homeId = model.HomeId;
+            this.suit = Celler.Suit[model.Base.Suit];
+            this.addChild(this.body = new Celler.SuitSprite(this.game, this.suit, 0 /* CellBody */));
+            this.addChild(this.eye = new Celler.SuitSprite(this.game, this.suit, 1 /* CellEye */));
+            this.scale.set(model.Base.Size / this.width);
+            this.position = Celler.modelToPoint(model.Base.Position);
             this.updateEyeSize();
         };
-        Cell.prototype.onCellMoved = function (position) {
-            if (Celler.Suit[position.Suit] === this.suit) {
-                this.game.add.tween(this).to({ x: position.Point.X, y: position.Point.Y }, 500, Phaser.Easing.Circular.InOut, true);
+        Cell.prototype.onCellMoved = function (id, position) {
+            if (this.id === id) {
+                this.game.add.tween(this).to({ x: position.X, y: position.Y }, 500, Phaser.Easing.Circular.InOut, true);
             }
         };
-        Cell.prototype.onSightPositionHinted = function (position) {
-            if (Celler.Suit[position.Suit] === this.suit) {
-                this.sightPoint = new Phaser.Point(position.Point.X, position.Point.Y);
+        Cell.prototype.onSightPositionHinted = function (suit, position) {
+            if (Celler.Suit[suit] === this.suit) {
+                this.sightPoint = Celler.modelToPoint(position);
             }
         };
         Cell.prototype.lookAtSigtPoint = function () {
@@ -206,12 +208,14 @@ var Celler;
 (function (Celler) {
     var Sight = (function (_super) {
         __extends(Sight, _super);
-        function Sight(game, suit, size) {
-            _super.call(this, game, suit, 2 /* Sight */, size);
+        function Sight(game, model) {
+            _super.call(this, game, Celler.Suit[model.Base.Suit], 2 /* Sight */, model.Base.Size);
             this.inTweening = false;
             this.prevHintPosition = new Phaser.Point(0, 0);
+            this.id = model.Base.Id;
+            this.cellId = model.CellId;
+            this.position = Celler.modelToPoint(model.Base.Position);
             this.inputEnabled = true;
-            this.input.enableDrag();
             this.input.enableDrag();
             this.events.onDragStop.add(this.onDragStop, this);
             Celler.app.server.onSightMoved.add(this.onSightMoved, this);
@@ -227,13 +231,13 @@ var Celler;
             }
         };
         Sight.prototype.onDragStop = function () {
-            Celler.app.server.moveSight(this.toSuitPositionModel());
-            Celler.app.server.moveCell(this.toSuitPositionModel());
+            Celler.app.server.moveSight(this.id, this.toPointModel());
+            Celler.app.server.moveCell(this.cellId, this.toPointModel());
         };
-        Sight.prototype.onSightMoved = function (position) {
-            if (Celler.Suit[position.Suit] === this.suit) {
+        Sight.prototype.onSightMoved = function (id, position) {
+            if (this.id === id) {
                 this.inTweening = true;
-                this.tween = this.game.add.tween(this).to({ x: position.Point.X, y: position.Point.Y }, 200, Phaser.Easing.Circular.InOut, true);
+                this.tween = this.game.add.tween(this).to({ x: position.X, y: position.Y }, 200, Phaser.Easing.Circular.InOut, true);
                 this.tween.onComplete.addOnce(this.onAnimationCompleete, this);
             }
         };
@@ -246,19 +250,16 @@ var Celler;
         Sight.prototype.onAnimationCompleete = function () {
             this.inTweening = false;
         };
-        Sight.prototype.toSuitPositionModel = function () {
+        Sight.prototype.toPointModel = function () {
             return {
-                Suit: Celler.Suit[this.suit],
-                Point: {
-                    X: this.position.x,
-                    Y: this.position.y
-                }
+                X: this.position.x,
+                Y: this.position.y
             };
         };
         Sight.prototype.serverHintSightPosition = function () {
             if (!this.inTweening && this.position.distance(this.prevHintPosition) > Sight.minHintDistance) {
                 this.prevHintPosition = this.position.clone();
-                Celler.app.server.hintSightPosition(this.toSuitPositionModel());
+                Celler.app.server.hintSightPosition(this.id, this.toPointModel());
             }
         };
         Sight.prototype.doProcKeyboard = function () {
@@ -278,8 +279,8 @@ var Celler;
                 this.position.x += distance;
             }
             if (keyboard.isDown(Phaser.Keyboard.ENTER) || keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
-                Celler.app.server.moveSight(this.toSuitPositionModel());
-                Celler.app.server.moveCell(this.toSuitPositionModel());
+                Celler.app.server.moveSight(this.id, this.toPointModel());
+                Celler.app.server.moveCell(this.id, this.toPointModel());
             }
         };
         Sight.minHintDistance = 4;
@@ -352,14 +353,14 @@ var Celler;
             this.client = $.connection.gameHub.client;
             this.init();
         }
-        ServerAdapter.prototype.hintSightPosition = function (position) {
-            return this.server.hintSightPosition(position);
+        ServerAdapter.prototype.hintSightPosition = function (id, position) {
+            return this.server.hintSightPosition(id, position);
         };
-        ServerAdapter.prototype.moveCell = function (position) {
-            return this.server.moveCell(position);
+        ServerAdapter.prototype.moveCell = function (id, position) {
+            return this.server.moveCell(id, position);
         };
-        ServerAdapter.prototype.moveSight = function (position) {
-            return this.server.moveSight(position);
+        ServerAdapter.prototype.moveSight = function (id, position) {
+            return this.server.moveSight(id, position);
         };
         ServerAdapter.prototype.getPlayerId = function () {
             return this.server.getPlayerId();
@@ -375,14 +376,14 @@ var Celler;
         };
         ServerAdapter.prototype.init = function () {
             var _this = this;
-            this.client.sightPositionHinted = function (position) {
-                _this.sightPositionHinted(position);
+            this.client.sightPositionHinted = function (id, position) {
+                _this.sightPositionHinted(id, position);
             };
-            this.client.cellMoved = function (position) {
-                _this.cellMoved(position);
+            this.client.cellMoved = function (id, position) {
+                _this.cellMoved(id, position);
             };
-            this.client.sightMoved = function (position) {
-                _this.sightMoved(position);
+            this.client.sightMoved = function (id, position) {
+                _this.sightMoved(id, position);
             };
             this.client.tickCountUpdated = function (count) {
                 _this.tickCountUpdated(count);
@@ -391,14 +392,14 @@ var Celler;
                 _this.onStarted.dispatch();
             });
         };
-        ServerAdapter.prototype.sightPositionHinted = function (position) {
-            this.onSightPositionHinted.dispatch(position);
+        ServerAdapter.prototype.sightPositionHinted = function (id, position) {
+            this.onSightPositionHinted.dispatch(id, position);
         };
-        ServerAdapter.prototype.cellMoved = function (position) {
-            this.onCellMoved.dispatch(position);
+        ServerAdapter.prototype.cellMoved = function (id, position) {
+            this.onCellMoved.dispatch(id, position);
         };
-        ServerAdapter.prototype.sightMoved = function (position) {
-            this.onSightMoved.dispatch(position);
+        ServerAdapter.prototype.sightMoved = function (id, position) {
+            this.onSightMoved.dispatch(id, position);
         };
         ServerAdapter.prototype.tickCountUpdated = function (count) {
             this.onTickCountUpdated.dispatch(count);

@@ -8,9 +8,9 @@ namespace Celler.App.Web.Game.Server.Logic
 {
     public interface IGameLogic
     {
-        void MoveCell( SuitPointModel position );
-        void HintSightPosition( SuitPointModel position );
-        void MoveSight( SuitPointModel position );
+        void MoveCell( string id, PointModel position );
+        void MoveSight( string id, PointModel position );
+        void HintSightPosition( string id, PointModel position );
         SizeModel GetBounds();
         SessionModel GetSession();
         void Update();

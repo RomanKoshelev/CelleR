@@ -10,16 +10,16 @@
         // Server
         private server = $.connection.gameHub.server;
 
-        hintSightPosition( position: SuitPointModel ): JQueryPromise<void> {
-            return this.server.hintSightPosition( position );
+        hintSightPosition( id: string, position: PointModel ): JQueryPromise<void> {
+            return this.server.hintSightPosition( id, position );
         }
 
-        moveCell( position: SuitPointModel ) : JQueryPromise<void> {
-            return this.server.moveCell( position );
+        moveCell( id: string, position: PointModel) : JQueryPromise<void> {
+            return this.server.moveCell( id, position );
         }
 
-        moveSight( position: SuitPointModel ): JQueryPromise<void> {
-            return this.server.moveSight( position );
+        moveSight( id: string, position: PointModel ): JQueryPromise<void> {
+            return this.server.moveSight( id, position );
         }
 
         getPlayerId(): JQueryPromise<string> {
@@ -49,24 +49,24 @@
         private client = $.connection.gameHub.client;
 
         private init() {
-            this.client.sightPositionHinted = ( position: SuitPointModel ) => { this.sightPositionHinted( position ); };
-            this.client.cellMoved = ( position: SuitPointModel ) => { this.cellMoved( position ); };
-            this.client.sightMoved = ( position: SuitPointModel ) => { this.sightMoved( position ); };
+            this.client.sightPositionHinted = ( id: string, position: PointModel ) => { this.sightPositionHinted( id, position ); };
+            this.client.cellMoved = ( id: string, position: PointModel ) => { this.cellMoved( id, position ); };
+            this.client.sightMoved = ( id: string, position: PointModel ) => { this.sightMoved( id, position ); };
             this.client.tickCountUpdated = ( count: number ) => { this.tickCountUpdated( count ); };
 
             $.connection.hub.start().done( () => { this.onStarted.dispatch() } );
         }
 
-        sightPositionHinted( position: SuitPointModel ) {
-            this.onSightPositionHinted.dispatch( position );
+        sightPositionHinted( id: string, position: PointModel ) {
+            this.onSightPositionHinted.dispatch( id, position );
         }
 
-        cellMoved( position: SuitPointModel ) {
-            this.onCellMoved.dispatch( position );
+        cellMoved( id: string, position: PointModel ) {
+            this.onCellMoved.dispatch( id, position );
         }
 
-        sightMoved( position: SuitPointModel ) {
-            this.onSightMoved.dispatch( position );
+        sightMoved( id: string, position: PointModel ) {
+            this.onSightMoved.dispatch( id, position );
         }
 
         tickCountUpdated( count: number ) {

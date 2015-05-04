@@ -8,9 +8,11 @@ namespace Celler.App.Web.Game.Server.Entities
 {
     public class Sight : SuitObject
     {
+        public string CellId { get; set; }
         public new SightModel ToModel()
         {
             return new SightModel {
+                CellId = CellId,
                 Base = base.ToModel()
             };
         }

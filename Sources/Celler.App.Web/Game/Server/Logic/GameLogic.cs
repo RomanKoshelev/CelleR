@@ -26,23 +26,24 @@ namespace Celler.App.Web.Game.Server.Logic
 
         #region IGameLogic
 
-        void IGameLogic.MoveCell( SuitPointModel position )
+        void IGameLogic.MoveCell( string id, PointModel position )
         {
             KeepPositionInBounds( position );
-            _session.MoveCell( position );
-            _clients.CellMoved( position );
+            _session.MoveCell( id, position );
+            _clients.CellMoved( id, position );
         }
 
-        void IGameLogic.HintSightPosition( SuitPointModel position )
+        void IGameLogic.HintSightPosition( string id, PointModel position )
         {
-            KeepPositionInBounds( position );
-            _clients.SightPositionHinted( position );
+            KeepPositionInBounds( position);
+            _clients.SightPositionHinted( id, position );
         }
 
-        void IGameLogic.MoveSight( SuitPointModel position )
+        void IGameLogic.MoveSight( string id, PointModel position )
         {
             KeepPositionInBounds( position );
-            _clients.SightMoved( position );
+            _session.MoveSight( id, position );
+            _clients.SightMoved( id, position );
         }
 
         SizeModel IGameLogic.GetBounds()
@@ -85,20 +86,23 @@ namespace Celler.App.Web.Game.Server.Logic
             InitSessionSuit( _session, Suit.Red );
         }
 
-        private void InitSessionSuit( Session session, Suit suit )
+        private static void InitSessionSuit( Session session, Suit suit )
         {
-            var corner = GetCornerCoords( suit, HomeSize/2 );
-            session.AddHome( suit, corner, HomeSize );
-            session.AddCell( suit, corner, CellSize );
-            session.AddSight( suit, corner, SightSize );
+            var place = GetCornerCoords( suit, HomeSize/2 );
+            var home = session.AddHome( suit, place, HomeSize );
+            var cell = session.AddCell( suit, place, CellSize );
+            var sight = session.AddSight( suit, place, SightSize );
+            cell.HomeId = home.Id;
+            cell.SightId = sight.Id;
+            sight.CellId = cell.Id;
         }
 
-        private static void KeepPositionInBounds( SuitPointModel position )
+        private static void KeepPositionInBounds( PointModel position )
         {
-            position.Point.X = Math.Max( position.Point.X, 0 );
-            position.Point.Y = Math.Max( position.Point.Y, 0 );
-            position.Point.X = Math.Min( position.Point.X, WorldWidth );
-            position.Point.Y = Math.Min( position.Point.Y, WorldHeight );
+            position.X = Math.Max( position.X, 0 );
+            position.Y = Math.Max( position.Y, 0 );
+            position.X = Math.Min( position.X, WorldWidth );
+            position.Y = Math.Min( position.Y, WorldHeight );
         }
 
         private static Point GetCornerCoords( Suit suit, double margin )

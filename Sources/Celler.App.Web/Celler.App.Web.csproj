@@ -199,7 +199,6 @@
     <Compile Include="Game\Server\Models\SessionModel.cs" />
     <Compile Include="Game\Server\Models\SizeModel.cs" />
     <Compile Include="Game\Server\Models\PointModel.cs" />
-    <Compile Include="Game\Server\Models\SuitPointModel.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

@@ -29,5 +29,11 @@ namespace Celler.App.Web.Game.Server.Entities
         {
             return new PointModel { X = X, Y = Y };
         }
+
+        public void FromModel( PointModel p )
+        {
+            X = p.X;
+            Y = p.Y;
+        }
     }
 }

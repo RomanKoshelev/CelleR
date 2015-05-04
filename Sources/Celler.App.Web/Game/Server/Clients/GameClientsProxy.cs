@@ -11,19 +11,19 @@ namespace Celler.App.Web.Game.Server.Clients
 {
     public class GameClientsProxy : IGameClient
     {
-        public void CellMoved( SuitPointModel position )
+        public void CellMoved( string id, PointModel position )
         {
-            Clients.All.CellMoved( position );
+            Clients.All.CellMoved( id, position );
         }
 
-        public void SightPositionHinted( SuitPointModel position )
+        public void SightPositionHinted( string id, PointModel position)
         {
-            Clients.All.SightPositionHinted( position );
+            Clients.All.SightPositionHinted( id, position );
         }
 
-        public void SightMoved( SuitPointModel position )
+        public void SightMoved( string id, PointModel position )
         {
-            Clients.All.SightMoved( position );
+            Clients.All.SightMoved( id, position );
         }
 
         public void TickCountUpdated( int tickCount )

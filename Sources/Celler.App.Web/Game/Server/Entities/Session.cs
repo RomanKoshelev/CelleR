@@ -36,38 +36,47 @@ namespace Celler.App.Web.Game.Server.Entities
             Sights = new List< Sight >();
         }
 
-        public void AddCell( Suit suit, Point position, double size )
+        public Cell AddCell( Suit suit, Point position, double size )
         {
-            Cells.Add( new Cell {
+            var obj = new Cell {
                 Suit = suit,
                 Position = position.Clone(),
                 Size = size
-            } );
+            };
+            Cells.Add( obj );
+            return obj;
         }
 
-        public void AddHome( Suit suit, Point position, double size )
+        public Home AddHome( Suit suit, Point position, double size )
         {
-            Homes.Add( new Home {
+            var obj = new Home {
                 Suit = suit,
                 Position = position.Clone(),
                 Size = size
-            } );
+            };
+            Homes.Add( obj );
+            return obj;
         }
 
-        public void AddSight( Suit suit, Point position, double size )
+        public Sight AddSight( Suit suit, Point position, double size )
         {
-            Sights.Add( new Sight {
+            var obj = new Sight {
                 Suit = suit,
                 Position = position.Clone(),
                 Size = size
-            } );
+            };
+            Sights.Add( obj );
+            return obj;
         }
 
-        public void MoveCell( SuitPointModel position )
+        public void MoveCell( string id, PointModel position )
         {
-            Cells.Where( c=>c.Suit.ToString()==position.Suit).ForEach( c => {
-                c.Position = new Point(position.Point.X, position.Point.Y );
-            } );
+            Cells.Where( c => c.Id == id ).ForEach( c => { c.Position.FromModel( position ); } );
+        }
+
+        public void MoveSight( string id, PointModel position )
+        {
+            Sights.Where( s => s.Id == id ).ForEach( s => { s.Position.FromModel( position ); } );
         }
     }
 }

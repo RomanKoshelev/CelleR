@@ -7,5 +7,6 @@ namespace Celler.App.Web.Game.Server.Models
     public class SightModel
     {
         public SuitObjectModel Base { get; set; }
+        public string CellId { get; set; }
     }
 }

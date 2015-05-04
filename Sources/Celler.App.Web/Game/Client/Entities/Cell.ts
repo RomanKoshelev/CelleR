@@ -1,12 +1,15 @@
 ﻿module Celler {
     export class Cell extends Phaser.Group {
 
+        id: string;
+        homeId: string;
+        sightId: string;
         suit: Suit;
         sightPoint: Phaser.Point;
 
-        constructor( game: Phaser.Game, suit: Suit, size: number ) {
+        constructor( game: Phaser.Game, model: CellModel) {
             super( game );
-            this.init( suit, size );
+            this.init( model );
             app.server.onCellMoved.add( this.onCellMoved, this );
             app.server.onSightPositionHinted.add( this.onSightPositionHinted, this );
         }
@@ -20,26 +23,31 @@
         private eye: SuitSprite;
         private eyeRate: number;
 
-        private init( suit: Suit, size: number ) {
-            this.addChild( this.body = new SuitSprite( this.game, suit, Assets.Type.CellBody ) );
-            this.addChild( this.eye = new SuitSprite( this.game, suit, Assets.Type.CellEye ) );
+        private init( model: CellModel ) {
+            this.id = model.Base.Id;
+            this.sightId = model.SightId;
+            this.homeId = model.HomeId;
+            this.suit = Suit[model.Base.Suit];
 
-            this.suit = suit;
-            this.scale.set( size / this.width );
+            this.addChild( this.body = new SuitSprite( this.game, this.suit, Assets.Type.CellBody ) );
+            this.addChild( this.eye = new SuitSprite( this.game, this.suit, Assets.Type.CellEye ) );
+            
+            this.scale.set( model.Base.Size / this.width );
+            this.position = modelToPoint( model.Base.Position );
 
             this.updateEyeSize();
         }
 
-        private onCellMoved( position: SuitPointModel ) {
-            if( Suit[ position.Suit ] === this.suit ) {
+        private onCellMoved( id: string , position: PointModel ) {
+            if( this.id === id ) {
                 this.game.add.tween( this )
-                    .to( { x: position.Point.X, y: position.Point.Y }, 500, Phaser.Easing.Circular.InOut, true );
+                    .to( { x: position.X, y: position.Y }, 500, Phaser.Easing.Circular.InOut, true );
             }
         }
 
-        private onSightPositionHinted( position: SuitPointModel ) {
-            if ( Suit[position.Suit] === this.suit ) {
-                this.sightPoint = new Phaser.Point( position.Point.X, position.Point.Y );
+        private onSightPositionHinted( suit: string, position: PointModel ) {
+            if ( Suit[suit] === this.suit ) {
+                this.sightPoint = modelToPoint( position );
             }
         }
 

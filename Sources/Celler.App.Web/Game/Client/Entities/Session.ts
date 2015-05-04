@@ -20,26 +20,15 @@
         }
 
         private createHomes( arr: HomeModel[] ) {
-            arr.map( model => {
-                this.createAtPosition<Home>( new Home( this.game, Suit[ model.Base.Suit ], model.Base.Size ), model.Base.Position );
-            } );
+            arr.map( model => { this.game.add.existing( new Home( this.game, model ) ); } );
         }
 
         private createCells( arr: CellModel[] ) {
-            arr.map( model => {
-                this.createAtPosition<Cell>( new Cell( this.game, Suit[ model.Base.Suit ], model.Base.Size ), model.Base.Position );
-            } );
+            arr.map( model => { this.game.add.existing( new Cell( this.game, model ) ); } );
         }
 
         private createSights( arr: SightModel[] ) {
-            arr.map( model => {
-                this.createAtPosition<Sight>( new Sight( this.game, Suit[ model.Base.Suit ], model.Base.Size ), model.Base.Position );
-            } );
-        }
-
-        private createAtPosition<T extends PIXI.DisplayObject>( obj: T, position: PointModel ) {
-            obj.position = modelToPoint( position );
-            this.game.add.existing( obj );
+            arr.map( model => { this.game.add.existing( new Sight( this.game, model ) ); } );
         }
     }
 }

@@ -1,20 +1,23 @@
 ﻿module Celler {
     export class Sight extends SuitSprite {
 
+        id: string;
+        cellId: string;
+
         static minHintDistance = 4;
         static shiftPerKeypoardClick = 10;
 
+        constructor( game: Phaser.Game, model: SightModel ) {
+            super( game, Suit[model.Base.Suit], Assets.Type.Sight, model.Base.Size );
 
-        constructor( game: Phaser.Game, suit: Suit, size: number ) {
-            super( game, suit, Assets.Type.Sight, size );
+            this.id = model.Base.Id;
+            this.cellId = model.CellId;
+            this.position = modelToPoint( model.Base.Position );
 
             this.inputEnabled = true;
             this.input.enableDrag();
 
-            this.input.enableDrag();
-
             this.events.onDragStop.add( this.onDragStop, this );
-
             app.server.onSightMoved.add( this.onSightMoved, this );
         }
 
@@ -31,24 +34,24 @@
         }
 
         private onDragStop() {
-            app.server.moveSight( this.toSuitPositionModel() );
-            app.server.moveCell( this.toSuitPositionModel() );
+            app.server.moveSight( this.id, this.toPointModel() );
+            app.server.moveCell( this.cellId, this.toPointModel() );
         }
 
         private inTweening = false;
-        private tween : Phaser.Tween;
+        private tween: Phaser.Tween;
 
-        private onSightMoved( position: SuitPointModel ) {
-            if( Suit[ position.Suit ] === this.suit ) {
+        private onSightMoved( id: string, position: PointModel ) {
+            if( this.id === id ) {
                 this.inTweening = true;
                 this.tween = this.game.add.tween( this )
-                    .to( { x: position.Point.X, y: position.Point.Y }, 200, Phaser.Easing.Circular.InOut, true );
+                    .to( { x: position.X, y: position.Y }, 200, Phaser.Easing.Circular.InOut, true );
                 this.tween.onComplete.addOnce( this.onAnimationCompleete, this );
             }
         }
 
         private stopAnimation() {
-            if ( this.tween != null ) {
+            if( this.tween != null ) {
                 this.position = this.tween.target.position;
                 this.tween.stop();
             }
@@ -58,13 +61,10 @@
             this.inTweening = false;
         }
 
-        private toSuitPositionModel(): SuitPointModel {
+        private toPointModel(): PointModel {
             return {
-                Suit: Suit[ this.suit ],
-                Point: {
-                    X: this.position.x,
-                    Y: this.position.y
-                }
+                X: this.position.x,
+                Y: this.position.y
             };
         }
 
@@ -73,7 +73,7 @@
         private serverHintSightPosition() {
             if( !this.inTweening && this.position.distance( this.prevHintPosition ) > Sight.minHintDistance ) {
                 this.prevHintPosition = this.position.clone();
-                app.server.hintSightPosition( this.toSuitPositionModel() );
+                app.server.hintSightPosition( this.id, this.toPointModel() );
             }
         }
 
@@ -96,8 +96,8 @@
             }
 
             if( keyboard.isDown( Phaser.Keyboard.ENTER ) || keyboard.isDown( Phaser.Keyboard.SPACEBAR ) ) {
-                app.server.moveSight( this.toSuitPositionModel() );
-                app.server.moveCell( this.toSuitPositionModel() );
+                app.server.moveSight( this.id, this.toPointModel() );
+                app.server.moveCell( this.id, this.toPointModel() );
             }
         }
     }

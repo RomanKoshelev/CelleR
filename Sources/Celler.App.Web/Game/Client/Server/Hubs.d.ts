@@ -52,26 +52,29 @@ interface GameHubServer {
     /** 
       * Sends a "hintSightPosition" message to the GameHub hub.
       * Contract Documentation: ---
-      * @param position {SuitPointModel} 
+      * @param id {string} 
+      * @param position {PointModel} 
       * @return {JQueryPromise of void}
       */
-    hintSightPosition(position : SuitPointModel) : JQueryPromise<void>;
+    hintSightPosition(id : string, position : PointModel) : JQueryPromise<void>;
  
     /** 
       * Sends a "moveCell" message to the GameHub hub.
       * Contract Documentation: ---
-      * @param position {SuitPointModel} 
+      * @param id {string} 
+      * @param position {PointModel} 
       * @return {JQueryPromise of void}
       */
-    moveCell(position : SuitPointModel) : JQueryPromise<void>;
+    moveCell(id : string, position : PointModel) : JQueryPromise<void>;
  
     /** 
       * Sends a "moveSight" message to the GameHub hub.
       * Contract Documentation: ---
-      * @param position {SuitPointModel} 
+      * @param id {string} 
+      * @param position {PointModel} 
       * @return {JQueryPromise of void}
       */
-    moveSight(position : SuitPointModel) : JQueryPromise<void>;
+    moveSight(id : string, position : PointModel) : JQueryPromise<void>;
  
     /** 
       * Sends a "getBounds" message to the GameHub hub.
@@ -99,28 +102,31 @@ interface GameHubClient
 {
  
     /**
-      * Set this function with a "function(position : SuitPointModel){}" to receive the "sightPositionHinted" message from the GameHub hub.
+      * Set this function with a "function(id : string, position : PointModel){}" to receive the "sightPositionHinted" message from the GameHub hub.
       * Contract Documentation: ---
-      * @param position {SuitPointModel} 
+      * @param id {string} 
+      * @param position {PointModel} 
       * @return {void}
       */
-    sightPositionHinted : (position : SuitPointModel) => void;
+    sightPositionHinted : (id : string, position : PointModel) => void;
  
     /**
-      * Set this function with a "function(position : SuitPointModel){}" to receive the "cellMoved" message from the GameHub hub.
+      * Set this function with a "function(id : string, position : PointModel){}" to receive the "cellMoved" message from the GameHub hub.
       * Contract Documentation: ---
-      * @param position {SuitPointModel} 
+      * @param id {string} 
+      * @param position {PointModel} 
       * @return {void}
       */
-    cellMoved : (position : SuitPointModel) => void;
+    cellMoved : (id : string, position : PointModel) => void;
  
     /**
-      * Set this function with a "function(position : SuitPointModel){}" to receive the "sightMoved" message from the GameHub hub.
+      * Set this function with a "function(id : string, position : PointModel){}" to receive the "sightMoved" message from the GameHub hub.
       * Contract Documentation: ---
-      * @param position {SuitPointModel} 
+      * @param id {string} 
+      * @param position {PointModel} 
       * @return {void}
       */
-    sightMoved : (position : SuitPointModel) => void;
+    sightMoved : (id : string, position : PointModel) => void;
  
     /**
       * Set this function with a "function(tickCount : number){}" to receive the "tickCountUpdated" message from the GameHub hub.
@@ -159,6 +165,7 @@ interface SessionModel {
   */
 interface SightModel {
     Base : SuitObjectModel;
+    CellId : string;
 }
  
  
@@ -170,15 +177,6 @@ interface SuitObjectModel {
     Suit : string;
     Position : PointModel;
     Size : number;
-}
- 
- 
-/**
-  * Data contract for Celler.App.Web.Game.Server.Models.PointModel
-  */
-interface PointModel {
-    X : number;
-    Y : number;
 }
  
  
@@ -195,6 +193,8 @@ interface HomeModel {
   */
 interface CellModel {
     Base : SuitObjectModel;
+    HomeId : string;
+    SightId : string;
 }
  
  
@@ -208,11 +208,11 @@ interface SizeModel {
  
  
 /**
-  * Data contract for Celler.App.Web.Game.Server.Models.SuitPointModel
+  * Data contract for Celler.App.Web.Game.Server.Models.PointModel
   */
-interface SuitPointModel {
-    Suit : string;
-    Point : PointModel;
+interface PointModel {
+    X : number;
+    Y : number;
 }
  
 //#endregion data contracts

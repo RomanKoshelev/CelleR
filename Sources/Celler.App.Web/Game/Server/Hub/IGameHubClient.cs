@@ -8,9 +8,9 @@ namespace Celler.App.Web.Game.Server.Hub
 {
     public interface IGameHubClient
     {
-        void SightPositionHinted( SuitPointModel position );
-        void CellMoved( SuitPointModel position );
-        void SightMoved( SuitPointModel position );
+        void SightPositionHinted( string id, PointModel position );
+        void CellMoved( string id, PointModel position );
+        void SightMoved( string id, PointModel position );
         void TickCountUpdated( int tickCount );
     }
 }

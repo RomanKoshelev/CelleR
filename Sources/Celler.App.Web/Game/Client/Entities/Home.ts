@@ -1,7 +1,13 @@
 ﻿module Celler {
     export class Home extends SuitSprite {
-        constructor( game: Phaser.Game, suit: Suit, size: number ) {
-            super( game, suit, Assets.Type.Home, size );
+
+        id: string;
+
+        constructor( game: Phaser.Game, model: HomeModel ) {
+            super( game, Suit[model.Base.Suit], Assets.Type.Home, model.Base.Size );
+
+            this.id = model.Base.Id;
+            this.position = modelToPoint( model.Base.Position );
         }
     }
 }

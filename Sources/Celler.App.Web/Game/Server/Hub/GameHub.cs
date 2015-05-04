@@ -25,19 +25,19 @@ namespace Celler.App.Web.Game.Server.Hub
 
         #region IGameLogic
 
-        public void HintSightPosition( SuitPointModel position )
+        public void HintSightPosition( string id, PointModel position )
         {
-            _gameLogic.HintSightPosition( position );
+            _gameLogic.HintSightPosition( id, position );
         }
 
-        public void MoveCell( SuitPointModel position )
+        public void MoveCell( string id, PointModel position )
         {
-            _gameLogic.MoveCell( position );
+            _gameLogic.MoveCell( id, position );
         }
 
-        public void MoveSight( SuitPointModel position )
+        public void MoveSight( string id, PointModel position )
         {
-            _gameLogic.MoveSight( position );
+            _gameLogic.MoveSight( id, position );
         }
 
         public SizeModel GetBounds()
