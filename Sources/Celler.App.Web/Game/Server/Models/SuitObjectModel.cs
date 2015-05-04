@@ -9,6 +9,6 @@ namespace Celler.App.Web.Game.Server.Models
         public string Id { get; set; }
         public string Suit { get; set; }
         public PointModel Position { get; set; }
-        public SizeModel Size { get; set; }
+        public double Size { get; set; }
     }
 }

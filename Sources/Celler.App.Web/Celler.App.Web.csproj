@@ -81,9 +81,6 @@
     <Reference Include="System.Data.Entity">
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Drawing">
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Web.DynamicData">
       <Private>True</Private>
     </Reference>
@@ -185,8 +182,10 @@
     <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Game\Server\Clients\GameClientsProxy.cs" />
     <Compile Include="Game\Server\Dispatcher\GameDispatcher.cs" />
+    <Compile Include="Game\Server\Entities\Home.cs" />
     <Compile Include="Game\Server\Entities\Cell.cs" />
-    <Compile Include="Game\Server\Entities\IGameEntity.cs" />
+    <Compile Include="Game\Server\Models\HomeModel.cs" />
+    <Compile Include="Game\Server\Entities\Point.cs" />
     <Compile Include="Game\Server\Entities\Session.cs" />
     <Compile Include="Game\Server\Entities\Suit.cs" />
     <Compile Include="Game\Server\Entities\SuitObject.cs" />

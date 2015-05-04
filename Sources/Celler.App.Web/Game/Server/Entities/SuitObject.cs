@@ -2,6 +2,7 @@
 // Celler.App.Web
 // SuitObject.cs
 
+using System;
 using Celler.App.Web.Game.Server.Models;
 
 namespace Celler.App.Web.Game.Server.Entities
@@ -10,18 +11,21 @@ namespace Celler.App.Web.Game.Server.Entities
     {
         public string Id { get; set; }
         public Suit Suit { get; set; }
-        public double X { get; set; }
-        public double Y { get; set; }
-        public double Width { get; set; }
-        public double Height { get; set; }
+        public Point Position { get; set; }
+        public double Size { get; set; }
 
-        public SuitObjectModel ToModel()
+        protected SuitObject()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
+
+        protected SuitObjectModel ToModel()
         {
             return new SuitObjectModel {
                 Id = Id,
                 Suit = Suit.ToString(),
-                Position = new PointModel { X = X, Y = Y },
-                Size = new SizeModel { Width = Width, Height = Height }
+                Position = Position.ToModel(),
+                Size = Size
             };
         }
     }

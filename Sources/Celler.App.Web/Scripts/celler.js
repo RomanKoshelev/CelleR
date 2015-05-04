@@ -29,11 +29,9 @@ var Celler;
 var Celler;
 (function (Celler) {
     var Session = (function () {
-        function Session(room) {
+        function Session(game) {
             var _this = this;
-            this.sights = [];
-            this.room = room;
-            this.game = room.game;
+            this.game = game;
             Celler.app.server.getSession().done(function (sesion) {
                 _this.createObjects(sesion);
             });
@@ -49,28 +47,18 @@ var Celler;
             this.game.add.existing(home);
             this.game.add.existing(sight);
             this.game.add.existing(cell);
-            home.position = this.getCornerCoords(suit, home.width / 2);
+            //            home.position = this.getCornerCoords( suit, home.width / 2 );
             cell.position = home.position.clone();
             sight.position = cell.position.clone();
             this.game.world.sendToBack(sight);
             this.game.world.sendToBack(cell);
             this.game.world.sendToBack(home);
-            this.sights[suit] = sight;
-        };
-        Session.prototype.getCornerCoords = function (suit, margin) {
-            switch (suit) {
-                case 0 /* Blue */:
-                    return new Phaser.Point(margin, this.game.world.width - margin);
-                case 1 /* Red */:
-                    return new Phaser.Point(this.game.world.width - margin, margin);
-            }
-            throw new Error("Unsupported suit [" + Celler.Suit[suit] + "]");
         };
         Session.prototype.createCells = function (cells) {
             var _this = this;
             cells.map(function (model) {
-                var cell = new Celler.Cell(_this.game, Celler.Suit[model.SuitObject.Suit], Celler.PlayState.cellSize);
-                cell.position = Celler.modelToPoint(model.SuitObject.Position);
+                var cell = new Celler.Cell(_this.game, Celler.Suit[model.Base.Suit], Celler.PlayState.cellSize);
+                cell.position = Celler.toPoint(model.Base.Position);
                 _this.game.add.existing(cell);
             });
         };
@@ -99,7 +87,7 @@ var Celler;
             this.preloadSprites(1 /* Red */);
         };
         PlayState.prototype.create = function () {
-            this.session = new Celler.Session(this);
+            this.session = new Celler.Session(this.game);
         };
         PlayState.prototype.update = function () {
             this.game.debug.text("" + Celler.app.playerId + " [" + Celler.app.tickCount + "]", 10, 20);
@@ -303,10 +291,10 @@ var Celler;
 })(Celler || (Celler = {}));
 var Celler;
 (function (Celler) {
-    function modelToPoint(model) {
+    function toPoint(model) {
         return new Phaser.Point(model.X, model.Y);
     }
-    Celler.modelToPoint = modelToPoint;
+    Celler.toPoint = toPoint;
 })(Celler || (Celler = {}));
 var Celler;
 (function (Celler) {

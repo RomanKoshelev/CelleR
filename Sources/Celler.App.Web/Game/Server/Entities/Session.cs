@@ -9,7 +9,7 @@ using Celler.App.Web.Game.Server.Models;
 
 namespace Celler.App.Web.Game.Server.Entities
 {
-    public class Session : IGameEntity< SessionModel >
+    public class Session
     {
         public string Id { get; set; }
         public List< Cell > Cells { get; set; }
@@ -34,17 +34,13 @@ namespace Celler.App.Web.Game.Server.Entities
             Cells = new List< Cell > {
                 new Cell {
                     Suit = Suit.Blue,
-                    X = 50,
-                    Y = 650,
-                    Width = 50,
-                    Height = 50,
+                    Position = new Point( 50, 650 ),
+                    Size = 50,
                 },
                 new Cell {
                     Suit = Suit.Red,
-                    X = 650,
-                    Y = 50,
-                    Width = 30,
-                    Height = 30,
+                    Position = new Point( 650, 50 ),
+                    Size = 30,
                 }
             };
         }

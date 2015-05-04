@@ -10,8 +10,8 @@ using Celler.App.Web.Game.Server.Models;
 
 namespace Celler.App.Web.Game.Server.Logic
 {
-    public class GameLogic : IGameLogic {
-
+    public class GameLogic : IGameLogic
+    {
         private const double WorldWidth = 720;
         private const double WorldHeight = 720;
         private const int TickInterval = 1000;
@@ -24,6 +24,13 @@ namespace Celler.App.Web.Game.Server.Logic
             _clients = GameDispatcher.Instance.GameClients;
             _session = new Session();
         }
+
+        public static int GetTickInterval()
+        {
+            return TickInterval;
+        }
+
+        #region IGameLogic
 
         void IGameLogic.MoveCell( SuitPointModel position )
         {
@@ -56,10 +63,15 @@ namespace Celler.App.Web.Game.Server.Logic
             return _session.ToModel();
         }
 
-        public void Update()
+        void IGameLogic.Update()
         {
-            _clients.TickCountUpdated( _session.TickCount++);
+            _clients.TickCountUpdated( _session.TickCount++ );
         }
+
+        #endregion
+
+
+        #region Private
 
         private static void KeepPositionInBounds( SuitPointModel position )
         {
@@ -69,9 +81,17 @@ namespace Celler.App.Web.Game.Server.Logic
             position.Point.Y = Math.Min( position.Point.Y, WorldHeight );
         }
 
-        public static int GetTickInterval()
+        private Point GetCornerCoords( Suit suit, double margin )
         {
-            return TickInterval;
+            switch( suit ) {
+                case Suit.Blue :
+                    return new Point( margin, WorldWidth - margin );
+                case Suit.Red :
+                    return new Point( WorldHeight - margin, margin );
+            }
+            return new Point();
         }
+
+        #endregion
     }
 }

@@ -1,6 +1,6 @@
 // Celler (c) 2015 Krokodev
 // Celler.App.Web
-// SightModel.cs
+// SuitPointModel.cs
 
 using System.Diagnostics.CodeAnalysis;
 
@@ -11,5 +11,5 @@ namespace Celler.App.Web.Game.Server.Models
     {
         public string Suit { get; set; }
         public PointModel Point { get; set; }
-   }
+    }
 }

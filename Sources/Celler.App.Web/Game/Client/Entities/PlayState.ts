@@ -22,7 +22,7 @@
         }
 
         create() {
-            this.session = new Session( this );
+            this.session = new Session( this.game );
         }
 
         update() {

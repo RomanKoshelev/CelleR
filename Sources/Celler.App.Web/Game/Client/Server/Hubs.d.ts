@@ -156,7 +156,7 @@ interface SessionModel {
   * Data contract for Celler.App.Web.Game.Server.Models.CellModel
   */
 interface CellModel {
-    SuitObject : SuitObjectModel;
+    Base : SuitObjectModel;
 }
  
  
@@ -167,7 +167,7 @@ interface SuitObjectModel {
     Id : string;
     Suit : string;
     Position : PointModel;
-    Size : SizeModel;
+    Size : number;
 }
  
  

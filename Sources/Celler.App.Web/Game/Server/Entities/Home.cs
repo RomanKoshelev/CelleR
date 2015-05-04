@@ -1,16 +1,16 @@
 // Celler (c) 2015 Krokodev
 // Celler.App.Web
-// Cell.cs
+// Home.cs
 
 using Celler.App.Web.Game.Server.Models;
 
 namespace Celler.App.Web.Game.Server.Entities
 {
-    public class Cell : SuitObject
+    public class Home : SuitObject
     {
-        public new CellModel ToModel()
+        public new HomeModel ToModel()
         {
-            return new CellModel {
+            return new HomeModel {
                 Base = base.ToModel()
             };
         }
