@@ -2,7 +2,6 @@
     export class PlayState extends Phaser.State {
 
         static background = "#004400";
-
         session: Session;
 
         constructor() {
@@ -23,7 +22,7 @@
         }
 
         update() {
-            this.game.debug.text( `${app.playerId} [${app.tickCount}]`, 10, 20 );
+            this.game.debug.text( `${this.session.id} [${app.tickCount}]`, 10, 20 );
         }
         
         private preloadSprites( suit: Suit ) {

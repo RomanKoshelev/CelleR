@@ -2,16 +2,18 @@
 
     export class Session {
         game: Phaser.Game;
+        id: string;
 
         constructor( game: Phaser.Game ) {
             this.game = game;
 
             app.server.getSession().done( ( sesion: SessionModel ) => {
-                this.createObjects( sesion );
+                this.fromModel( sesion );
             } );
         }
 
-        private createObjects( model: SessionModel ) {
+        private fromModel( model: SessionModel ) {
+            this.id = model.Id;
             this.createHomes( model.Homes );
             this.createCells( model.Cells );
             this.createSights( model.Sights );

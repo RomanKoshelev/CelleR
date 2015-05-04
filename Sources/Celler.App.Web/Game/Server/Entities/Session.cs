@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Celler.App.Web.Game.Server.Models;
+using WebGrease.Css.Extensions;
 
 namespace Celler.App.Web.Game.Server.Entities
 {
@@ -59,6 +60,13 @@ namespace Celler.App.Web.Game.Server.Entities
                 Suit = suit,
                 Position = position.Clone(),
                 Size = size
+            } );
+        }
+
+        public void MoveCell( SuitPointModel position )
+        {
+            Cells.Where( c=>c.Suit.ToString()==position.Suit).ForEach( c => {
+                c.Position = new Point(position.Point.X, position.Point.Y );
             } );
         }
     }

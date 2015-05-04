@@ -33,10 +33,11 @@ var Celler;
             var _this = this;
             this.game = game;
             Celler.app.server.getSession().done(function (sesion) {
-                _this.createObjects(sesion);
+                _this.fromModel(sesion);
             });
         }
-        Session.prototype.createObjects = function (model) {
+        Session.prototype.fromModel = function (model) {
+            this.id = model.Id;
             this.createHomes(model.Homes);
             this.createCells(model.Cells);
             this.createSights(model.Sights);
@@ -91,7 +92,7 @@ var Celler;
             this.session = new Celler.Session(this.game);
         };
         PlayState.prototype.update = function () {
-            this.game.debug.text("" + Celler.app.playerId + " [" + Celler.app.tickCount + "]", 10, 20);
+            this.game.debug.text("" + this.session.id + " [" + Celler.app.tickCount + "]", 10, 20);
         };
         PlayState.prototype.preloadSprites = function (suit) {
             Celler.Assets.Sprites.load(suit, 3 /* Home */);

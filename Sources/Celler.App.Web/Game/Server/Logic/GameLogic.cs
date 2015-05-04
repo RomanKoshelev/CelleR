@@ -29,6 +29,7 @@ namespace Celler.App.Web.Game.Server.Logic
         void IGameLogic.MoveCell( SuitPointModel position )
         {
             KeepPositionInBounds( position );
+            _session.MoveCell( position );
             _clients.CellMoved( position );
         }
 
@@ -89,7 +90,7 @@ namespace Celler.App.Web.Game.Server.Logic
             var corner = GetCornerCoords( suit, HomeSize/2 );
             session.AddHome( suit, corner, HomeSize );
             session.AddCell( suit, corner, CellSize );
-            session.AddSight( suit, corner, CellSize );
+            session.AddSight( suit, corner, SightSize );
         }
 
         private static void KeepPositionInBounds( SuitPointModel position )
@@ -100,7 +101,7 @@ namespace Celler.App.Web.Game.Server.Logic
             position.Point.Y = Math.Min( position.Point.Y, WorldHeight );
         }
 
-        private Point GetCornerCoords( Suit suit, double margin )
+        private static Point GetCornerCoords( Suit suit, double margin )
         {
             switch( suit ) {
                 case Suit.Blue :
