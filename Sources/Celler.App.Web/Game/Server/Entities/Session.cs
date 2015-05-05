@@ -16,6 +16,7 @@ namespace Celler.App.Web.Game.Server.Entities
         public List< Cell > Cells { get; set; }
         public List< Home > Homes { get; set; }
         public List< Sight > Sights { get; set; }
+        public List< Food > Foods { get; set; }
         public int TickCount { get; set; }
 
         public SessionModel ToModel()
@@ -24,7 +25,8 @@ namespace Celler.App.Web.Game.Server.Entities
                 Id = Id,
                 Cells = Cells.Select( o => o.ToModel() ).ToArray(),
                 Homes = Homes.Select( o => o.ToModel() ).ToArray(),
-                Sights = Sights.Select( o => o.ToModel() ).ToArray()
+                Sights = Sights.Select( o => o.ToModel() ).ToArray(),
+                Foods = Foods.Select( o => o.ToModel() ).ToArray()
             };
         }
 
@@ -34,6 +36,7 @@ namespace Celler.App.Web.Game.Server.Entities
             Cells = new List< Cell >();
             Homes = new List< Home >();
             Sights = new List< Sight >();
+            Foods = new List< Food >();
         }
 
         public Cell AddCell( Suit suit, Point position, double size )
@@ -66,6 +69,17 @@ namespace Celler.App.Web.Game.Server.Entities
                 Size = size
             };
             Sights.Add( obj );
+            return obj;
+        }
+
+        public Food AddFood( Suit suit, Point position, double size )
+        {
+            var obj = new Food {
+                Suit = suit,
+                Position = position.Clone(),
+                Size = size
+            };
+            Foods.Add( obj );
             return obj;
         }
 

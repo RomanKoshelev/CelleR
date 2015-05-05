@@ -8,15 +8,15 @@ using Celler.App.Web.Game.Server.Clients;
 using Celler.App.Web.Game.Server.Logic;
 using NLog;
 
-namespace Celler.App.Web.Game.Server.Dispatcher
+namespace Celler.App.Web.Game.Server.App
 {
-    public class GameDispatcher : IRegisteredObject
+    public class GameApplication : IRegisteredObject
     {
-        public static GameDispatcher Instance { get; set; }
+        public static GameApplication Instance { get; set; }
 
-        public GameDispatcher()
+        public GameApplication()
         {
-            Logger.Trace( "new GameDispatcher" );
+            Logger.Trace( "new GameApplication" );
             Instance = this;
             CreateTickTimer();
         }

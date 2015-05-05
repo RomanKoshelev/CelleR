@@ -1,4 +1,5 @@
-﻿module Celler {
+﻿/// <reference path="SuitSprite.ts"/>
+module Celler {
     export class Sight extends SuitSprite {
 
         id: string;

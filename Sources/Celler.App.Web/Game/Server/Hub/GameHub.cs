@@ -2,7 +2,7 @@
 // Celler.App.Web
 // GameHub.cs
 
-using Celler.App.Web.Game.Server.Dispatcher;
+using Celler.App.Web.Game.Server.App;
 using Celler.App.Web.Game.Server.Logic;
 using Celler.App.Web.Game.Server.Models;
 
@@ -14,7 +14,7 @@ namespace Celler.App.Web.Game.Server.Hub
 
         public GameHub()
         {
-            _gameLogic = GameDispatcher.Instance.GameLogic;
+            _gameLogic = GameApplication.Instance.GameLogic;
         }
 
         public string GetPlayerId()

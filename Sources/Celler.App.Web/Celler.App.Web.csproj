@@ -181,10 +181,12 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Game\Server\Clients\GameClientsProxy.cs" />
-    <Compile Include="Game\Server\Dispatcher\GameDispatcher.cs" />
+    <Compile Include="Game\Server\App\GameApplication.cs" />
+    <Compile Include="Game\Server\Entities\Food.cs" />
     <Compile Include="Game\Server\Entities\Sight.cs" />
     <Compile Include="Game\Server\Entities\Home.cs" />
     <Compile Include="Game\Server\Entities\Cell.cs" />
+    <Compile Include="Game\Server\Models\FoodModel.cs" />
     <Compile Include="Game\Server\Models\SightModel.cs" />
     <Compile Include="Game\Server\Models\HomeModel.cs" />
     <Compile Include="Game\Server\Entities\Point.cs" />
@@ -212,10 +214,12 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Game\Client\Assets\Sprites\blue\cellbody.png" />
+    <Content Include="Game\Client\Assets\Sprites\blue\food.png" />
     <Content Include="Game\Client\Assets\Sprites\blue\celleye.png" />
     <Content Include="Game\Client\Assets\Sprites\blue\home.png" />
     <Content Include="Game\Client\Assets\Sprites\blue\loot.png" />
     <Content Include="Game\Client\Assets\Sprites\blue\sight.png" />
+    <Content Include="Game\Client\Assets\Sprites\red\food.png" />
     <Content Include="Game\Client\Assets\Sprites\red\home.png" />
     <Content Include="Game\Client\Assets\Sprites\red\loot.png" />
     <Content Include="Game\Client\Assets\Sprites\red\sight.png" />
@@ -270,6 +274,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Game\Client\App\Assets.ts" />
+    <TypeScriptCompile Include="Game\Client\Entities\Food.ts" />
     <TypeScriptCompile Include="Game\Client\Entities\Session.ts" />
     <TypeScriptCompile Include="Game\Client\Entities\PlayState.ts" />
     <TypeScriptCompile Include="Game\Client\Entities\SuitSprite.ts" />
@@ -307,6 +312,10 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptOutFile>$(ProjectDir)\Scripts\celler.js</TypeScriptOutFile>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptModuleKind>none</TypeScriptModuleKind>
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptGeneratesDeclarations>True</TypeScriptGeneratesDeclarations>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
@@ -322,7 +331,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1656</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:2005/</IISUrl>
+          <IISUrl>http://localhost:2006/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

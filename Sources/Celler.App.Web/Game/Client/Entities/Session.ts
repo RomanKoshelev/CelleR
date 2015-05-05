@@ -17,6 +17,7 @@
             this.createHomes( model.Homes );
             this.createCells( model.Cells );
             this.createSights( model.Sights );
+            this.createFoods( model.Foods );
         }
 
         private createHomes( arr: HomeModel[] ) {
@@ -29,6 +30,10 @@
 
         private createSights( arr: SightModel[] ) {
             arr.map( model => { this.game.add.existing( new Sight( this.game, model ) ); } );
+        }
+
+        private createFoods( arr: FoodModel[] ) {
+            arr.map( model => { this.game.add.existing( new Food( this.game, model ) ); } );
         }
     }
 }

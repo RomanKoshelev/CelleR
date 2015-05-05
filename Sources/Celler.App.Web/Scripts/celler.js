@@ -7,6 +7,7 @@ var Celler;
             Type[Type["CellEye"] = 1] = "CellEye";
             Type[Type["Sight"] = 2] = "Sight";
             Type[Type["Home"] = 3] = "Home";
+            Type[Type["Food"] = 4] = "Food";
         })(Assets.Type || (Assets.Type = {}));
         var Type = Assets.Type;
         var Sprites = (function () {
@@ -26,6 +27,53 @@ var Celler;
         Assets.Sprites = Sprites;
     })(Assets = Celler.Assets || (Celler.Assets = {}));
 })(Celler || (Celler = {}));
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var Celler;
+(function (Celler) {
+    var SuitSprite = (function (_super) {
+        __extends(SuitSprite, _super);
+        function SuitSprite(game, suit, assetType, size) {
+            if (size === void 0) { size = 0; }
+            _super.call(this, game, 0, 0, Celler.Assets.Sprites.getKey(suit, assetType));
+            this.suit = suit;
+            this.anchor.set(0.5);
+            if (size !== 0) {
+                this.scale.set(size / this.width);
+            }
+        }
+        return SuitSprite;
+    })(Phaser.Sprite);
+    Celler.SuitSprite = SuitSprite;
+})(Celler || (Celler = {}));
+/// <reference path="SuitSprite.ts"/>
+var Celler;
+(function (Celler) {
+    var Food = (function (_super) {
+        __extends(Food, _super);
+        function Food(game, model) {
+            _super.call(this, game, Celler.Suit[model.Base.Suit], 4 /* Food */, model.Base.Size);
+            this.id = model.Base.Id;
+            this.position = Celler.modelToPoint(model.Base.Position);
+            this.inputEnabled = true;
+            this.input.enableDrag();
+            this.events.onDragStop.add(this.onDragStop, this);
+            Celler.app.server.onSightMoved.add(this.onSightMoved, this);
+        }
+        Food.prototype.onSightMoved = function (id, position) {
+        };
+        Food.prototype.onDragStop = function () {
+        };
+        Food.minHintDistance = 4;
+        Food.shiftPerKeypoardClick = 10;
+        return Food;
+    })(Celler.SuitSprite);
+    Celler.Food = Food;
+})(Celler || (Celler = {}));
 var Celler;
 (function (Celler) {
     var Session = (function () {
@@ -41,6 +89,7 @@ var Celler;
             this.createHomes(model.Homes);
             this.createCells(model.Cells);
             this.createSights(model.Sights);
+            this.createFoods(model.Foods);
         };
         Session.prototype.createHomes = function (arr) {
             var _this = this;
@@ -60,16 +109,16 @@ var Celler;
                 _this.game.add.existing(new Celler.Sight(_this.game, model));
             });
         };
+        Session.prototype.createFoods = function (arr) {
+            var _this = this;
+            arr.map(function (model) {
+                _this.game.add.existing(new Celler.Food(_this.game, model));
+            });
+        };
         return Session;
     })();
     Celler.Session = Session;
 })(Celler || (Celler = {}));
-var __extends = this.__extends || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
 var Celler;
 (function (Celler) {
     var PlayState = (function (_super) {
@@ -95,29 +144,14 @@ var Celler;
             Celler.Assets.Sprites.load(suit, 0 /* CellBody */);
             Celler.Assets.Sprites.load(suit, 1 /* CellEye */);
             Celler.Assets.Sprites.load(suit, 2 /* Sight */);
+            Celler.Assets.Sprites.load(suit, 4 /* Food */);
         };
         PlayState.background = "#004400";
         return PlayState;
     })(Phaser.State);
     Celler.PlayState = PlayState;
 })(Celler || (Celler = {}));
-var Celler;
-(function (Celler) {
-    var SuitSprite = (function (_super) {
-        __extends(SuitSprite, _super);
-        function SuitSprite(game, suit, assetType, size) {
-            if (size === void 0) { size = 0; }
-            _super.call(this, game, 0, 0, Celler.Assets.Sprites.getKey(suit, assetType));
-            this.suit = suit;
-            this.anchor.set(0.5);
-            if (size !== 0) {
-                this.scale.set(size / this.width);
-            }
-        }
-        return SuitSprite;
-    })(Phaser.Sprite);
-    Celler.SuitSprite = SuitSprite;
-})(Celler || (Celler = {}));
+/// <reference path="SuitSprite.ts"/>
 var Celler;
 (function (Celler) {
     var Home = (function (_super) {
@@ -204,6 +238,7 @@ var Celler;
     })(Phaser.Group);
     Celler.Cell = Cell;
 })(Celler || (Celler = {}));
+/// <reference path="SuitSprite.ts"/>
 var Celler;
 (function (Celler) {
     var Sight = (function (_super) {

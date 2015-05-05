@@ -10,5 +10,6 @@ namespace Celler.App.Web.Game.Server.Models
         public CellModel[] Cells { get; set; }
         public HomeModel[] Homes { get; set; }
         public SightModel[] Sights { get; set; }
+        public FoodModel[] Foods { get; set; }
     }
 }

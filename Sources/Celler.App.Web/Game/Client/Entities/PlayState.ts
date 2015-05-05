@@ -30,6 +30,7 @@
             Assets.Sprites.load( suit, Assets.Type.CellBody );
             Assets.Sprites.load( suit, Assets.Type.CellEye );
             Assets.Sprites.load( suit, Assets.Type.Sight );
+            Assets.Sprites.load( suit, Assets.Type.Food );
         }
     }
 }

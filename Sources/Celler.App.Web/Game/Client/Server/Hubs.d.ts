@@ -157,15 +157,15 @@ interface SessionModel {
     Cells : CellModel[];
     Homes : HomeModel[];
     Sights : SightModel[];
+    Foods : FoodModel[];
 }
  
  
 /**
-  * Data contract for Celler.App.Web.Game.Server.Models.SightModel
+  * Data contract for Celler.App.Web.Game.Server.Models.FoodModel
   */
-interface SightModel {
+interface FoodModel {
     Base : SuitObjectModel;
-    CellId : string;
 }
  
  
@@ -177,6 +177,15 @@ interface SuitObjectModel {
     Suit : string;
     Position : PointModel;
     Size : number;
+}
+ 
+ 
+/**
+  * Data contract for Celler.App.Web.Game.Server.Models.SightModel
+  */
+interface SightModel {
+    Base : SuitObjectModel;
+    CellId : string;
 }
  
  

@@ -3,8 +3,8 @@
 // GameLogic.cs
 
 using System;
+using Celler.App.Web.Game.Server.App;
 using Celler.App.Web.Game.Server.Clients;
-using Celler.App.Web.Game.Server.Dispatcher;
 using Celler.App.Web.Game.Server.Entities;
 using Celler.App.Web.Game.Server.Models;
 
@@ -14,7 +14,7 @@ namespace Celler.App.Web.Game.Server.Logic
     {
         public GameLogic()
         {
-            _clients = GameDispatcher.Instance.GameClients;
+            _clients = GameApplication.Instance.GameClients;
             InitSession();
         }
 
@@ -75,6 +75,7 @@ namespace Celler.App.Web.Game.Server.Logic
         private const double HomeSize = 150;
         private const double CellSize = 65;
         private const double SightSize = 100;
+        private const double MinFoodSize = 20;
 
         private readonly IGameClient _clients;
         private Session _session;
@@ -92,6 +93,7 @@ namespace Celler.App.Web.Game.Server.Logic
             var home = session.AddHome( suit, place, HomeSize );
             var cell = session.AddCell( suit, place, CellSize );
             var sight = session.AddSight( suit, place, SightSize );
+            var food = session.AddFood( suit, place, MinFoodSize );
             cell.HomeId = home.Id;
             cell.SightId = sight.Id;
             sight.CellId = cell.Id;
