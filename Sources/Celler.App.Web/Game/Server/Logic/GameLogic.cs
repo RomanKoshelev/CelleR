@@ -6,16 +6,20 @@ using System;
 using Celler.App.Web.Game.Server.App;
 using Celler.App.Web.Game.Server.Clients;
 using Celler.App.Web.Game.Server.Entities;
+using Celler.App.Web.Game.Server.Managers;
 using Celler.App.Web.Game.Server.Models;
 
 namespace Celler.App.Web.Game.Server.Logic
 {
-    public class GameLogic : IGameLogic
+    public class GameLogic : IGameLogic, IGameManager
     {
         public GameLogic()
         {
             _clients = GameApplication.Instance.GameClients;
-            InitSession();
+            _sessionManager = new SessionManager();
+            _foodLogic = new FoodLogic( this, _sessionManager );
+
+            InitSessionManager();
         }
 
         public static int GetTickInterval()
@@ -29,7 +33,7 @@ namespace Celler.App.Web.Game.Server.Logic
         void IGameLogic.MoveCell( string id, PointModel position )
         {
             KeepPositionInBounds( position );
-            _session.MoveCell( id, position );
+            _sessionManager.MoveCell( id, position );
             _clients.CellMoved( id, position );
         }
 
@@ -42,7 +46,7 @@ namespace Celler.App.Web.Game.Server.Logic
         void IGameLogic.MoveSight( string id, PointModel position )
         {
             KeepPositionInBounds( position );
-            _session.MoveSight( id, position );
+            _sessionManager.MoveSight( id, position );
             _clients.SightMoved( id, position );
         }
 
@@ -56,18 +60,34 @@ namespace Celler.App.Web.Game.Server.Logic
 
         SessionModel IGameLogic.GetSession()
         {
-            return _session.ToModel();
+            return _sessionManager.ToModel();
         }
 
         void IGameLogic.Update()
         {
-            _clients.TickCountUpdated( _session.TickCount++ );
+            UpdateTime();
+            _foodLogic.Update();
+            _clients.TickCountUpdated( _sessionManager.TickCount++ );
         }
 
         #endregion
 
 
-        #region Private
+        #region IGameManager
+
+        TimeSpan IGameManager.TimeAfterLastUpdate { get; set; }
+        DateTime IGameManager.LastTime { get; set; }
+        DateTime IGameManager.CurrentTime { get; set; }
+
+        Size IGameManager.GetBounds()
+        {
+            return new Size( WorldWidth, WorldHeight );
+        }
+
+        #endregion
+
+
+        #region Private constants
 
         private const int TickInterval = 1000;
         private const double WorldWidth = 720;
@@ -75,25 +95,41 @@ namespace Celler.App.Web.Game.Server.Logic
         private const double HomeSize = 150;
         private const double CellSize = 65;
         private const double SightSize = 100;
-        private const double MinFoodSize = 20;
+
+        #endregion
+
+
+        #region Private fields
 
         private readonly IGameClient _clients;
-        private Session _session;
+        private readonly SessionManager _sessionManager;
+        private readonly FoodLogic _foodLogic;
 
-        private void InitSession()
+        #endregion
+
+
+        #region Private methods
+
+        private void UpdateTime()
         {
-            _session = new Session();
-            InitSessionSuit( _session, Suit.Blue );
-            InitSessionSuit( _session, Suit.Red );
+            var m = this as IGameManager;
+            m.TimeAfterLastUpdate = DateTime.Now - m.LastTime;
+            m.LastTime = m.CurrentTime;
+            m.CurrentTime = DateTime.Now;
         }
 
-        private static void InitSessionSuit( Session session, Suit suit )
+        private void InitSessionManager()
+        {
+            InitSessionSuit( _sessionManager, Suit.Blue );
+            InitSessionSuit( _sessionManager, Suit.Red );
+        }
+
+        private static void InitSessionSuit( SessionManager sessionManager, Suit suit )
         {
             var place = GetCornerCoords( suit, HomeSize/2 );
-            var home = session.AddHome( suit, place, HomeSize );
-            var cell = session.AddCell( suit, place, CellSize );
-            var sight = session.AddSight( suit, place, SightSize );
-            var food = session.AddFood( suit, place, MinFoodSize );
+            var home = sessionManager.AddHome( suit, place, HomeSize );
+            var cell = sessionManager.AddCell( suit, place, CellSize );
+            var sight = sessionManager.AddSight( suit, place, SightSize );
             cell.HomeId = home.Id;
             cell.SightId = sight.Id;
             sight.CellId = cell.Id;

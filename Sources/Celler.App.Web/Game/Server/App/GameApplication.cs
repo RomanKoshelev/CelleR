@@ -1,6 +1,6 @@
 // Celler (c) 2015 Krokodev
 // Celler.App.Web
-// GameDispatcher.cs
+// GameApplication.cs
 
 using System.Threading;
 using System.Web.Hosting;

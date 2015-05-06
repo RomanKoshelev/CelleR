@@ -186,11 +186,16 @@
     <Compile Include="Game\Server\Entities\Sight.cs" />
     <Compile Include="Game\Server\Entities\Home.cs" />
     <Compile Include="Game\Server\Entities\Cell.cs" />
+    <Compile Include="Game\Server\Logic\FoodLogic.cs" />
+    <Compile Include="Game\Server\Managers\IFoodManager.cs" />
+    <Compile Include="Game\Server\Logic\IGameManager.cs" />
+    <Compile Include="Game\Server\Logic\ISubLogic.cs" />
+    <Compile Include="Game\Server\Entities\Size.cs" />
     <Compile Include="Game\Server\Models\FoodModel.cs" />
     <Compile Include="Game\Server\Models\SightModel.cs" />
     <Compile Include="Game\Server\Models\HomeModel.cs" />
     <Compile Include="Game\Server\Entities\Point.cs" />
-    <Compile Include="Game\Server\Entities\Session.cs" />
+    <Compile Include="Game\Server\Managers\SessionManager.cs" />
     <Compile Include="Game\Server\Entities\Suit.cs" />
     <Compile Include="Game\Server\Entities\SuitObject.cs" />
     <Compile Include="Game\Server\Logic\GameLogic.cs" />

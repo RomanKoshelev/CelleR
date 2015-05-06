@@ -1,16 +1,17 @@
 // Celler (c) 2015 Krokodev
 // Celler.App.Web
-// Session.cs
+// SessionManager.cs
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Celler.App.Web.Game.Server.Entities;
 using Celler.App.Web.Game.Server.Models;
 using WebGrease.Css.Extensions;
 
-namespace Celler.App.Web.Game.Server.Entities
+namespace Celler.App.Web.Game.Server.Managers
 {
-    public class Session
+    public class SessionManager : IFoodManager
     {
         public string Id { get; set; }
         public List< Cell > Cells { get; set; }
@@ -30,7 +31,7 @@ namespace Celler.App.Web.Game.Server.Entities
             };
         }
 
-        public Session()
+        public SessionManager()
         {
             Id = Guid.NewGuid().ToString();
             Cells = new List< Cell >();
@@ -43,7 +44,7 @@ namespace Celler.App.Web.Game.Server.Entities
         {
             var obj = new Cell {
                 Suit = suit,
-                Position = position.Clone(),
+                Position = position,
                 Size = size
             };
             Cells.Add( obj );
@@ -54,7 +55,7 @@ namespace Celler.App.Web.Game.Server.Entities
         {
             var obj = new Home {
                 Suit = suit,
-                Position = position.Clone(),
+                Position = position,
                 Size = size
             };
             Homes.Add( obj );
@@ -65,7 +66,7 @@ namespace Celler.App.Web.Game.Server.Entities
         {
             var obj = new Sight {
                 Suit = suit,
-                Position = position.Clone(),
+                Position = position,
                 Size = size
             };
             Sights.Add( obj );
@@ -76,7 +77,7 @@ namespace Celler.App.Web.Game.Server.Entities
         {
             var obj = new Food {
                 Suit = suit,
-                Position = position.Clone(),
+                Position = position,
                 Size = size
             };
             Foods.Add( obj );
