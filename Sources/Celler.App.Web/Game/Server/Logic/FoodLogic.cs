@@ -29,8 +29,11 @@ namespace Celler.App.Web.Game.Server.Logic
             if( Game.TimeAfterLastUpdate <= TimeSpan.FromSeconds( 2 ) ) {
                 return;
             }
-            FoodManager.AddFood( Suit.Blue, Point.RandomIn( Game.GetBounds() ), MinFoodSize );
-            FoodManager.AddFood( Suit.Red, Point.RandomIn( Game.GetBounds() ), MinFoodSize );
+            var m1 = FoodManager.AddFood( Suit.Blue, Point.RandomIn( Game.GetBounds() ), MinFoodSize ).ToModel();
+            var m2 = FoodManager.AddFood( Suit.Red, Point.RandomIn( Game.GetBounds() ), MinFoodSize ).ToModel();
+
+            Game.Clients.FoodAdded( m1 );
+            Game.Clients.FoodAdded( m2 );
         }
     }
 }

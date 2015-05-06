@@ -3,6 +3,7 @@
 // IGameManager.cs
 
 using System;
+using Celler.App.Web.Game.Server.Clients;
 using Celler.App.Web.Game.Server.Entities;
 
 namespace Celler.App.Web.Game.Server.Logic
@@ -12,6 +13,7 @@ namespace Celler.App.Web.Game.Server.Logic
         TimeSpan TimeAfterLastUpdate { get; set; }
         DateTime LastTime { get; set; }
         DateTime CurrentTime { get; set; }
+        IGameClient Clients { get; }
         Size GetBounds();
     }
 }

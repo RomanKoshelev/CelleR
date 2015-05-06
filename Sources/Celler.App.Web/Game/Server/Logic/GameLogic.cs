@@ -76,8 +76,9 @@ namespace Celler.App.Web.Game.Server.Logic
         #region IGameManager
 
         TimeSpan IGameManager.TimeAfterLastUpdate { get; set; }
-        DateTime IGameManager.LastTime { get; set; }
+        DateTime IGameManager.LastTime { get;  set; }
         DateTime IGameManager.CurrentTime { get; set; }
+        IGameClient IGameManager.Clients { get {return _clients;} }
 
         Size IGameManager.GetBounds()
         {

@@ -135,6 +135,14 @@ interface GameHubClient
       * @return {void}
       */
     tickCountUpdated : (tickCount : number) => void;
+ 
+    /**
+      * Set this function with a "function(foodModel : FoodModel){}" to receive the "foodAdded" message from the GameHub hub.
+      * Contract Documentation: ---
+      * @param foodModel {FoodModel} 
+      * @return {void}
+      */
+    foodAdded : (foodModel : FoodModel) => void;
 }
  
 //#endregion GameHub hub
@@ -147,18 +155,6 @@ interface GameHubClient
 // Data Contracts //
 ////////////////////
 //#region data contracts
- 
- 
-/**
-  * Data contract for Celler.App.Web.Game.Server.Models.SessionModel
-  */
-interface SessionModel {
-    Id : string;
-    Cells : CellModel[];
-    Homes : HomeModel[];
-    Sights : SightModel[];
-    Foods : FoodModel[];
-}
  
  
 /**
@@ -177,6 +173,18 @@ interface SuitObjectModel {
     Suit : string;
     Position : PointModel;
     Size : number;
+}
+ 
+ 
+/**
+  * Data contract for Celler.App.Web.Game.Server.Models.SessionModel
+  */
+interface SessionModel {
+    Id : string;
+    Cells : CellModel[];
+    Homes : HomeModel[];
+    Sights : SightModel[];
+    Foods : FoodModel[];
 }
  
  

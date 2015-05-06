@@ -31,6 +31,11 @@ namespace Celler.App.Web.Game.Server.Clients
             Clients.All.TickCountUpdated( tickCount );
         }
 
+        public void FoodAdded( FoodModel foodModel )
+        {
+            Clients.All.FoodAdded( foodModel );
+        }
+
         private static IHubConnectionContext< dynamic > Clients
         {
             get { return Context.Clients; }

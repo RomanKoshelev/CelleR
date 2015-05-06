@@ -2,7 +2,7 @@
     export class PlayState extends Phaser.State {
 
         static background = "#004400";
-        session: Session;
+        session: SessionManager;
 
         constructor() {
             super();
@@ -18,7 +18,7 @@
         }
 
         create() {
-            this.session = new Session( this.game );
+            this.session = new SessionManager( this.game );
         }
 
         update() {

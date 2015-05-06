@@ -1,6 +1,6 @@
 ﻿module Celler {
 
-    export class Session {
+    export class SessionManager {
         game: Phaser.Game;
         id: string;
 
@@ -9,7 +9,8 @@
 
             app.server.getSession().done( ( sesion: SessionModel ) => {
                 this.fromModel( sesion );
-            } );
+            });
+            app.server.onFoodAdded.add( this.onFoodAdded, this );
         }
 
         private fromModel( model: SessionModel ) {
@@ -34,6 +35,10 @@
 
         private createFoods( arr: FoodModel[] ) {
             arr.map( model => { this.game.add.existing( new Food( this.game, model ) ); } );
+        }
+
+        private onFoodAdded( model: FoodModel ) {
+            this.game.add.existing( new Food( this.game, model ) );
         }
     }
 }
