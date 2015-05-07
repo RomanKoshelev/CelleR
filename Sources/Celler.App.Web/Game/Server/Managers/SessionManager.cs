@@ -7,11 +7,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Celler.App.Web.Game.Server.Entities;
 using Celler.App.Web.Game.Server.Models;
-using WebGrease.Css.Extensions;
 
 namespace Celler.App.Web.Game.Server.Managers
 {
-    public class SessionManager : IFoodManager
+    public class SessionManager : IFoodManager, IBodyManager
     {
         public string Id { get; set; }
         public List< Cell > Cells { get; set; }
@@ -86,12 +85,20 @@ namespace Celler.App.Web.Game.Server.Managers
 
         public void MoveCell( string id, PointModel position )
         {
-            Cells.Where( c => c.Id == id ).ForEach( c => { c.Position.FromModel( position ); } );
+            Cells.First( c => c.Id == id ).Position = new Point( position );
         }
 
         public void MoveSight( string id, PointModel position )
         {
-            Sights.Where( s => s.Id == id ).ForEach( s => { s.Position.FromModel( position ); } );
+            Sights.First( c => c.Id == id ).Position = new Point( position );
+        }
+
+        IList< IBody > IBodyManager.GetBodies()
+        {
+            return Homes
+                .Concat< IBody >( Cells )
+                .Concat< IBody >( Foods )
+                .ToList();
         }
     }
 }

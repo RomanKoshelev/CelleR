@@ -15,5 +15,6 @@ namespace Celler.App.Web.Game.Server.Logic
         DateTime CurrentTime { get; set; }
         IGameClient Clients { get; }
         Size GetBounds();
+        void Trace( string message, params object[] args );
     }
 }

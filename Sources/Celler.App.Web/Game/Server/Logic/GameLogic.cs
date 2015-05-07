@@ -8,24 +8,35 @@ using Celler.App.Web.Game.Server.Clients;
 using Celler.App.Web.Game.Server.Entities;
 using Celler.App.Web.Game.Server.Managers;
 using Celler.App.Web.Game.Server.Models;
+using NLog;
 
 namespace Celler.App.Web.Game.Server.Logic
 {
     public class GameLogic : IGameLogic, IGameManager
     {
+        #region Constructors
+
         public GameLogic()
         {
             _clients = GameApplication.Instance.GameClients;
             _sessionManager = new SessionManager();
+            _collisionLogic = new CollisionLogic( this, _sessionManager );
             _foodLogic = new FoodLogic( this, _sessionManager );
 
             InitSessionManager();
         }
 
+        #endregion
+
+
+        #region Public methods
+
         public static int GetTickInterval()
         {
             return TickInterval;
         }
+
+        #endregion
 
 
         #region IGameLogic
@@ -66,7 +77,10 @@ namespace Celler.App.Web.Game.Server.Logic
         void IGameLogic.Update()
         {
             UpdateTime();
+            
             _foodLogic.Update();
+            _collisionLogic.Update();
+
             _clients.TickCountUpdated( _sessionManager.TickCount++ );
         }
 
@@ -76,13 +90,22 @@ namespace Celler.App.Web.Game.Server.Logic
         #region IGameManager
 
         TimeSpan IGameManager.TimeAfterLastUpdate { get; set; }
-        DateTime IGameManager.LastTime { get;  set; }
+        DateTime IGameManager.LastTime { get; set; }
         DateTime IGameManager.CurrentTime { get; set; }
-        IGameClient IGameManager.Clients { get {return _clients;} }
+
+        IGameClient IGameManager.Clients
+        {
+            get { return _clients; }
+        }
 
         Size IGameManager.GetBounds()
         {
             return new Size( WorldWidth, WorldHeight );
+        }
+
+        void IGameManager.Trace( string message, params object[] args )
+        {
+            Logger.Trace( message, args );
         }
 
         #endregion
@@ -102,9 +125,11 @@ namespace Celler.App.Web.Game.Server.Logic
 
         #region Private fields
 
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IGameClient _clients;
         private readonly SessionManager _sessionManager;
         private readonly FoodLogic _foodLogic;
+        private CollisionLogic _collisionLogic;
 
         #endregion
 

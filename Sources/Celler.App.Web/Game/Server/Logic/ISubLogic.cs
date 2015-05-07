@@ -4,7 +4,7 @@
 
 namespace Celler.App.Web.Game.Server.Logic
 {
-    internal interface ISubLogic
+    internal interface ISublogic
     {
         void Update();
     }

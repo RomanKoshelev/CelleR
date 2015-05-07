@@ -9,29 +9,24 @@ namespace Celler.App.Web.Game.Server.Entities
 {
     public struct Point
     {
+        public double X;
+        public double Y;
+
         public Point( double x, double y )
         {
             X = x;
             Y = y;
         }
 
-        public double X;
-        public double Y;
-
-        public Point Clone()
+        public Point( PointModel point )
         {
-            return new Point( X, Y );
+            X = point.X;
+            Y = point.Y;
         }
 
         public PointModel ToModel()
         {
             return new PointModel { X = X, Y = Y };
-        }
-
-        public void FromModel( PointModel p )
-        {
-            X = p.X;
-            Y = p.Y;
         }
 
         private static readonly Random Random = new Random( ( int ) DateTime.Now.Ticks & 0x0000FFFF );
@@ -42,6 +37,11 @@ namespace Celler.App.Web.Game.Server.Entities
                 X = box.Width*Random.NextDouble(),
                 Y = box.Height*Random.NextDouble()
             };
+        }
+
+        public static double Distance( Point a, Point b )
+        {
+            return Math.Sqrt( ( a.X - b.X )*( a.X - b.X ) + ( a.Y - b.Y )*( a.Y - b.Y ) );
         }
     }
 }

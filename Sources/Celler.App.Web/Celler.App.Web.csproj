@@ -186,7 +186,10 @@
     <Compile Include="Game\Server\Entities\Sight.cs" />
     <Compile Include="Game\Server\Entities\Home.cs" />
     <Compile Include="Game\Server\Entities\Cell.cs" />
+    <Compile Include="Game\Server\Logic\CollisionLogic.cs" />
     <Compile Include="Game\Server\Logic\FoodLogic.cs" />
+    <Compile Include="Game\Server\Entities\IBody.cs" />
+    <Compile Include="Game\Server\Managers\IBodyManager.cs" />
     <Compile Include="Game\Server\Managers\IFoodManager.cs" />
     <Compile Include="Game\Server\Logic\IGameManager.cs" />
     <Compile Include="Game\Server\Logic\ISubLogic.cs" />
@@ -336,7 +339,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1656</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:2006/</IISUrl>
+          <IISUrl>http://localhost:2007/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

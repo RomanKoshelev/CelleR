@@ -7,7 +7,7 @@ using Celler.App.Web.Game.Server.Models;
 
 namespace Celler.App.Web.Game.Server.Entities
 {
-    public abstract class SuitObject
+    public abstract class SuitObject : IBody
     {
         public string Id { get; private set; }
         public Suit Suit { get; set; }

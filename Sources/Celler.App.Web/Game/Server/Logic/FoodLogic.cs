@@ -8,32 +8,59 @@ using Celler.App.Web.Game.Server.Managers;
 
 namespace Celler.App.Web.Game.Server.Logic
 {
-    internal class FoodLogic : ISubLogic
+    internal class FoodLogic : ISublogic
     {
+        #region Constructors
+
         public FoodLogic( IGameManager game, IFoodManager foodManager )
         {
             Game = game;
             FoodManager = foodManager;
         }
 
-        public IGameLogic GameLogic { get; set; }
+        #endregion
 
-        public IFoodManager FoodManager { get; set; }
+
+        #region ISubLogic
+
+        public void Update()
+        {
+            AddNewFoodIfNeed();
+        }
+
+        #endregion
+
+
+        #region Fields
+
+        private IFoodManager FoodManager { get; set; }
 
         private IGameManager Game { get; set; }
 
         private const double MinFoodSize = 20;
 
-        public void Update()
+        private DateTime _lastTimeFoodAdded = DateTime.Now;
+        private const int FoodCreationInterval = 10;
+
+        #endregion
+
+
+        #region Private Methods
+
+        private void AddNewFoodIfNeed()
         {
-            if( Game.TimeAfterLastUpdate <= TimeSpan.FromSeconds( 2 ) ) {
+            if( Game.CurrentTime - _lastTimeFoodAdded <= TimeSpan.FromSeconds( FoodCreationInterval ) ) {
                 return;
             }
+            _lastTimeFoodAdded = Game.CurrentTime;
+
             var m1 = FoodManager.AddFood( Suit.Blue, Point.RandomIn( Game.GetBounds() ), MinFoodSize ).ToModel();
             var m2 = FoodManager.AddFood( Suit.Red, Point.RandomIn( Game.GetBounds() ), MinFoodSize ).ToModel();
 
             Game.Clients.FoodAdded( m1 );
             Game.Clients.FoodAdded( m2 );
         }
+
+        #endregion
     }
 }
