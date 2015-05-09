@@ -7,20 +7,22 @@ using Celler.App.Web.Game.Server.Models;
 
 namespace Celler.App.Web.Game.Server.Entities.Structs
 {
-    public struct Size : IModelable< SizeModel >
+    public struct Size : IModelled< SizeModel >
     {
+        #region Properties
+
         public readonly double Width;
         public readonly double Height;
+
+        #endregion
+
+
+        #region Ctors
 
         public Size( double w, double h )
         {
             Width = w;
             Height = h;
-        }
-
-        public static implicit operator Size( SizeModel m )
-        {
-            return new Size( m );
         }
 
         public Size( SizeModel s )
@@ -29,9 +31,27 @@ namespace Celler.App.Web.Game.Server.Entities.Structs
             Height = s.Height;
         }
 
-        public SizeModel ToModel()
+        #endregion
+
+
+        #region IModelled
+
+        public SizeModel Model
         {
-            return new SizeModel { Width = Width, Height = Height };
+            get { return new SizeModel { Width = Width, Height = Height }; }
         }
+
+        #endregion
+
+
+        #region Convertors
+
+        public static implicit operator Size( SizeModel m )
+        {
+            return new Size( m );
+        }
+
+        #endregion
+
     }
 }

@@ -182,11 +182,11 @@
     <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Game\Server\Clients\GameClientsProxy.cs" />
     <Compile Include="Game\Server\App\GameApplication.cs" />
-    <Compile Include="Game\Server\Entities\Abstract\AbstractEntity.cs" />
+    <Compile Include="Game\Server\Entities\Abstract\Entity.cs" />
     <Compile Include="Game\Server\Entities\GameObjects\Food.cs" />
     <Compile Include="Game\Server\Entities\Interfaces\ISight.cs" />
     <Compile Include="Game\Server\Entities\Interfaces\ICell.cs" />
-    <Compile Include="Game\Server\Entities\Interfaces\IModelable.cs" />
+    <Compile Include="Game\Server\Entities\Interfaces\IModelled.cs" />
     <Compile Include="Game\Server\Entities\Interfaces\ISuit.cs" />
     <Compile Include="Game\Server\Entities\GameObjects\Sight.cs" />
     <Compile Include="Game\Server\Entities\GameObjects\Home.cs" />
@@ -207,11 +207,11 @@
     <Compile Include="Game\Server\Entities\Structs\Point.cs" />
     <Compile Include="Game\Server\Managers\SessionManager.cs" />
     <Compile Include="Game\Server\Entities\Enums\Suit.cs" />
-    <Compile Include="Game\Server\Entities\Abstract\AbstractSuitObject.cs" />
+    <Compile Include="Game\Server\Entities\Abstract\GameObject.cs" />
     <Compile Include="Game\Server\Logic\GameLogic.cs" />
     <Compile Include="Game\Server\Clients\IGameClient.cs" />
     <Compile Include="Game\Server\Logic\IGameLogic.cs" />
-    <Compile Include="Game\Server\Models\SuitObjectModel.cs" />
+    <Compile Include="Game\Server\Models\GameObjectModel.cs" />
     <Compile Include="Game\Server\Models\CellModel.cs" />
     <Compile Include="Game\Server\Models\SessionModel.cs" />
     <Compile Include="Game\Server\Models\SizeModel.cs" />

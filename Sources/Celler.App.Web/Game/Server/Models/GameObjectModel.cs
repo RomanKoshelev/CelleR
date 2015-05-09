@@ -1,10 +1,10 @@
 // Celler (c) 2015 Krokodev
 // Celler.App.Web
-// SuitObjectModel.cs
+// GameObjectModel.cs
 
 namespace Celler.App.Web.Game.Server.Models
 {
-    public class SuitObjectModel
+    public class GameObjectModel
     {
         public string Id { get; set; }
         public string Suit { get; set; }

@@ -79,8 +79,8 @@ namespace Celler.App.Web.Game.Server.Logic
             }
             _lastTimeFoodAdded = _timer.CurrentTime;
 
-            _foodManager.AddFood( Suit.Blue, Point.RandomIn( _game.GetBounds() ), MinFoodSize ).ToModel();
-            _foodManager.AddFood( Suit.Red, Point.RandomIn( _game.GetBounds() ), MinFoodSize ).ToModel();
+            _foodManager.AddFood( Suit.Blue, Point.RandomIn( _game.GetBounds() ), MinFoodSize );
+            _foodManager.AddFood( Suit.Red, Point.RandomIn( _game.GetBounds() ), MinFoodSize );
         }
 
         #endregion

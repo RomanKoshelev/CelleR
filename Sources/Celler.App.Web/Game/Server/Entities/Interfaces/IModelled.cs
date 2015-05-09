@@ -4,8 +4,8 @@
 
 namespace Celler.App.Web.Game.Server.Entities.Interfaces
 {
-    public interface IModelable<out T>
+    public interface IModelled<out T>
     {
-        T ToModel();
+        T Model { get; }
     }
 }

@@ -8,7 +8,7 @@ using Celler.App.Web.Game.Server.Models;
 
 namespace Celler.App.Web.Game.Server.Entities.GameObjects
 {
-    public class Cell : AbstractSuitObject< CellModel >, ICell
+    public class Cell : GameObject< CellModel >, ICell
     {
         #region ICell
 
@@ -23,14 +23,14 @@ namespace Celler.App.Web.Game.Server.Entities.GameObjects
 
 
 
-        #region AbstractEntity
+        #region Overrrides
 
-        public override CellModel ToModel()
+        protected override CellModel ToModel()
         {
             return new CellModel {
                 HomeId = ICell.HomeId,
                 SightId = ICell.SightId,
-                Base = ToSuitObjectModel()
+                Base = ToGameObjectModel()
             };
         }
 

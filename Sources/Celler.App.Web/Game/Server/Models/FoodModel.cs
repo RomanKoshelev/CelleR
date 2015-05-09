@@ -6,6 +6,6 @@ namespace Celler.App.Web.Game.Server.Models
 {
     public class FoodModel
     {
-        public SuitObjectModel Base { get; set; }
+        public GameObjectModel Base { get; set; }
     }
 }

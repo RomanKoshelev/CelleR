@@ -16,7 +16,7 @@ using Celler.App.Web.Game.Server.Models;
 
 namespace Celler.App.Web.Game.Server.Managers
 {
-    public class SessionManager : AbstractEntity< SessionModel >, IFoodManager, IBodyManager
+    public class SessionManager : Entity< SessionModel >, IFoodManager, IBodyManager
     {
         #region Constructor
 
@@ -59,7 +59,7 @@ namespace Celler.App.Web.Game.Server.Managers
                 Size = size
             };
             _foods.Add( food );
-            _clients.FoodAdded( food.ToModel() );
+            _clients.FoodAdded( food.IModelled.Model );
             return food;
         }
 
@@ -86,14 +86,14 @@ namespace Celler.App.Web.Game.Server.Managers
 
         #region IEntity
 
-        public override SessionModel ToModel()
+        protected override SessionModel ToModel()
         {
             return new SessionModel {
                 Id = _id,
-                Cells = _cells.Select( o => o.ToModel() ).ToArray(),
-                Homes = _homes.Select( o => o.ToModel() ).ToArray(),
-                Sights = _sights.Select( o => o.ToModel() ).ToArray(),
-                Foods = _foods.Select( o => o.ToModel() ).ToArray()
+                Cells = _cells.Select( o => o.IModelled.Model ).ToArray(),
+                Homes = _homes.Select( o => o.IModelled.Model ).ToArray(),
+                Sights = _sights.Select( o => o.IModelled.Model ).ToArray(),
+                Foods = _foods.Select( o => o.IModelled.Model ).ToArray()
             };
         }
 

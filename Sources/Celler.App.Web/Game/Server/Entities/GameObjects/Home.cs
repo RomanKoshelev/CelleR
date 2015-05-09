@@ -7,12 +7,12 @@ using Celler.App.Web.Game.Server.Models;
 
 namespace Celler.App.Web.Game.Server.Entities.GameObjects
 {
-    public class Home : AbstractSuitObject<HomeModel>
+    public class Home : GameObject<HomeModel>
     {
-        public override HomeModel ToModel()
+        protected override HomeModel ToModel()
         {
             return new HomeModel {
-                Base = ToSuitObjectModel()
+                Base = ToGameObjectModel()
             };
         }
     }

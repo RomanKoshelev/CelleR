@@ -85,7 +85,7 @@ namespace Celler.App.Web.Game.Server.Logic
 
         SessionModel IGameLogic.GetSession()
         {
-            return _sessionManager.ToModel();
+            return _sessionManager.IModelled.Model;
         }
 
         void IGameLogic.Update()

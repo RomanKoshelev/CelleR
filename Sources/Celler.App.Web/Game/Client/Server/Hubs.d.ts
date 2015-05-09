@@ -161,14 +161,14 @@ interface GameHubClient
   * Data contract for Celler.App.Web.Game.Server.Models.FoodModel
   */
 interface FoodModel {
-    Base : SuitObjectModel;
+    Base : GameObjectModel;
 }
  
  
 /**
-  * Data contract for Celler.App.Web.Game.Server.Models.SuitObjectModel
+  * Data contract for Celler.App.Web.Game.Server.Models.GameObjectModel
   */
-interface SuitObjectModel {
+interface GameObjectModel {
     Id : string;
     Suit : string;
     Position : PointModel;
@@ -192,7 +192,7 @@ interface SessionModel {
   * Data contract for Celler.App.Web.Game.Server.Models.SightModel
   */
 interface SightModel {
-    Base : SuitObjectModel;
+    Base : GameObjectModel;
     CellId : string;
 }
  
@@ -201,7 +201,7 @@ interface SightModel {
   * Data contract for Celler.App.Web.Game.Server.Models.HomeModel
   */
 interface HomeModel {
-    Base : SuitObjectModel;
+    Base : GameObjectModel;
 }
  
  
@@ -209,7 +209,7 @@ interface HomeModel {
   * Data contract for Celler.App.Web.Game.Server.Models.CellModel
   */
 interface CellModel {
-    Base : SuitObjectModel;
+    Base : GameObjectModel;
     HomeId : string;
     SightId : string;
 }

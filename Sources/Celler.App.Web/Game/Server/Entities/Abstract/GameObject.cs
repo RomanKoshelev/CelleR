@@ -1,6 +1,6 @@
 // Celler (c) 2015 Krokodev
 // Celler.App.Web
-// AbstractSuitObject.cs
+// GameObject.cs
 
 using Celler.App.Web.Game.Server.Entities.Enums;
 using Celler.App.Web.Game.Server.Entities.Interfaces;
@@ -9,7 +9,7 @@ using Celler.App.Web.Game.Server.Models;
 
 namespace Celler.App.Web.Game.Server.Entities.Abstract
 {
-    public abstract class AbstractSuitObject<T> : AbstractEntity< T >, IBody, ISuit
+    public abstract class GameObject<T> : Entity< T >, IBody, ISuit
 
     {
         #region ISuit
@@ -26,11 +26,6 @@ namespace Celler.App.Web.Game.Server.Entities.Abstract
             get { return this; }
         }
 
-        string IBody.Id
-        {
-            get { return IIdentifiable.Id; }
-        }
-
         public Point Position { get; set; }
         public double Size { get; set; }
 
@@ -39,12 +34,12 @@ namespace Celler.App.Web.Game.Server.Entities.Abstract
 
         #region Protected
 
-        protected SuitObjectModel ToSuitObjectModel()
+        protected GameObjectModel ToGameObjectModel()
         {
-            return new SuitObjectModel {
+            return new GameObjectModel {
                 Id = IIdentifiable.Id,
                 Suit = Suit.ToString(),
-                Position = IBody.Position.ToModel(),
+                Position = IBody.Position.Model,
                 Size = IBody.Size
             };
         }

@@ -8,10 +8,17 @@ using Celler.App.Web.Game.Server.Models;
 
 namespace Celler.App.Web.Game.Server.Entities.Structs
 {
-    public struct Point: IModelable<PointModel>
+    public struct Point: IModelled<PointModel>
     {
+        #region Properties
+
         public readonly double X;
         public readonly double Y;
+
+        #endregion
+
+
+        #region Ctors
 
         public Point( double x, double y )
         {
@@ -25,17 +32,30 @@ namespace Celler.App.Web.Game.Server.Entities.Structs
             Y = point.Y;
         }
 
-        public PointModel ToModel()
+        #endregion
+
+
+        #region IModelled
+
+        public PointModel Model
         {
-            return new PointModel { X = X, Y = Y };
+            get { return new PointModel { X = X, Y = Y }; }
         }
+
+        #endregion
+
+
+        #region Convertors
 
         public static implicit operator Point( PointModel m )
         {
             return new Point( m );
         }
 
-        private static readonly Random Random = new Random( ( int ) DateTime.Now.Ticks & 0x0000FFFF );
+        #endregion
+
+
+        #region API
 
         public static Point RandomIn( Size box )
         {
@@ -46,5 +66,14 @@ namespace Celler.App.Web.Game.Server.Entities.Structs
         {
             return Math.Sqrt( ( a.X - b.X )*( a.X - b.X ) + ( a.Y - b.Y )*( a.Y - b.Y ) );
         }
+
+        #endregion
+
+
+        #region Utils
+
+        private static readonly Random Random = new Random( ( int ) DateTime.Now.Ticks & 0x0000FFFF );
+
+        #endregion
     }
 }

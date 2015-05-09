@@ -8,7 +8,7 @@ using Celler.App.Web.Game.Server.Models;
 
 namespace Celler.App.Web.Game.Server.Entities.GameObjects
 {
-    public class Sight : AbstractSuitObject< SightModel >, ISight
+    public class Sight : GameObject< SightModel >, ISight
     {
         #region ISight
 
@@ -24,11 +24,11 @@ namespace Celler.App.Web.Game.Server.Entities.GameObjects
 
         #region Overrides
 
-        public override SightModel ToModel()
+        protected override SightModel ToModel()
         {
             return new SightModel {
                 CellId = ISight.CellId,
-                Base = ToSuitObjectModel()
+                Base = ToGameObjectModel()
             };
         }
 
