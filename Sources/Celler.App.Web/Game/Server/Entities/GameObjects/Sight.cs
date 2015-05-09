@@ -2,19 +2,20 @@
 // Celler.App.Web
 // Sight.cs
 
+using Celler.App.Web.Game.Server.Entities.Abstract;
 using Celler.App.Web.Game.Server.Models;
 
-namespace Celler.App.Web.Game.Server.Entities
+namespace Celler.App.Web.Game.Server.Entities.Objects
 {
-    public class Sight : SuitObject
+    public class Sight : AbstractSuitObject<SightModel>
     {
         public string CellId { get; set; }
 
-        public new SightModel ToModel()
+        public override SightModel ToModel()
         {
             return new SightModel {
                 CellId = CellId,
-                Base = base.ToModel()
+                Base = ToSuitObjectModel()
             };
         }
     }

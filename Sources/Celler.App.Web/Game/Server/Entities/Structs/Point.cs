@@ -3,11 +3,12 @@
 // Point.cs
 
 using System;
+using Celler.App.Web.Game.Server.Entities.Interfaces;
 using Celler.App.Web.Game.Server.Models;
 
-namespace Celler.App.Web.Game.Server.Entities
+namespace Celler.App.Web.Game.Server.Entities.Structs
 {
-    public struct Point
+    public struct Point: IModel<PointModel>
     {
         public readonly double X;
         public readonly double Y;

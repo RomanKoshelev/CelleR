@@ -11,30 +11,38 @@ namespace Celler.App.Web.Game.Server.Clients
 {
     public class GameClientsProxy : IGameClient
     {
-        public void CellMoved( string id, PointModel position )
+        #region IGameHubClient
+
+        void IGameHubClient.CellMoved( string id, PointModel position )
         {
             Clients.All.CellMoved( id, position );
         }
 
-        public void SightPositionHinted( string id, PointModel position )
+        void IGameHubClient.SightPositionHinted( string id, PointModel position )
         {
             Clients.All.SightPositionHinted( id, position );
         }
 
-        public void SightMoved( string id, PointModel position )
+        void IGameHubClient.SightMoved( string id, PointModel position )
         {
             Clients.All.SightMoved( id, position );
         }
 
-        public void TickCountUpdated( int tickCount )
+        void IGameHubClient.TickCountUpdated( int tickCount )
         {
             Clients.All.TickCountUpdated( tickCount );
         }
 
-        public void FoodAdded( FoodModel foodModel )
+        void IGameHubClient.FoodAdded( FoodModel foodModel )
         {
             Clients.All.FoodAdded( foodModel );
         }
+
+        #endregion
+
+
+
+        #region Static
 
         private static IHubConnectionContext< dynamic > Clients
         {
@@ -45,5 +53,8 @@ namespace Celler.App.Web.Game.Server.Clients
         {
             get { return GlobalHost.ConnectionManager.GetHubContext< GameHub >(); }
         }
+
+        #endregion
+
     }
 }

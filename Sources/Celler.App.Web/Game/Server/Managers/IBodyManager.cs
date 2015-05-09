@@ -4,6 +4,7 @@
 
 using System.Collections.Generic;
 using Celler.App.Web.Game.Server.Entities;
+using Celler.App.Web.Game.Server.Entities.Interfaces;
 
 namespace Celler.App.Web.Game.Server.Managers
 {

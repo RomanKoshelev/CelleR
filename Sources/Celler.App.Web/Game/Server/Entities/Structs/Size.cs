@@ -2,11 +2,12 @@
 // Celler.App.Web
 // Size.cs
 
+using Celler.App.Web.Game.Server.Entities.Interfaces;
 using Celler.App.Web.Game.Server.Models;
 
-namespace Celler.App.Web.Game.Server.Entities
+namespace Celler.App.Web.Game.Server.Entities.Structs
 {
-    public struct Size
+    public struct Size : IModel< SizeModel >
     {
         public readonly double Width;
         public readonly double Height;
@@ -26,6 +27,11 @@ namespace Celler.App.Web.Game.Server.Entities
         {
             Width = s.Width;
             Height = s.Height;
+        }
+
+        public SizeModel ToModel()
+        {
+            return new SizeModel { Width = Width, Height = Height };
         }
     }
 }

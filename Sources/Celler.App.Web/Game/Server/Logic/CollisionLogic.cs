@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Celler.App.Web.Game.Server.Entities;
+using Celler.App.Web.Game.Server.Entities.Interfaces;
+using Celler.App.Web.Game.Server.Entities.Structs;
 using Celler.App.Web.Game.Server.Managers;
 
 namespace Celler.App.Web.Game.Server.Logic
@@ -16,9 +18,8 @@ namespace Celler.App.Web.Game.Server.Logic
 
         #region Constructor
 
-        public CollisionLogic( ITimeLogic game, IBodyManager bodyManager )
+        public CollisionLogic( IBodyManager bodyManager )
         {
-            _game = game;
             _bodyManager = bodyManager;
         }
 
@@ -44,15 +45,14 @@ namespace Celler.App.Web.Game.Server.Logic
 
 
 
-        #region Private Fields
+        #region Fields
 
         private readonly IBodyManager _bodyManager;
-        private ITimeLogic _game;
 
         #endregion
 
 
-        #region Private Methods
+        #region Methods
 
         private void ProcCollisions()
         {

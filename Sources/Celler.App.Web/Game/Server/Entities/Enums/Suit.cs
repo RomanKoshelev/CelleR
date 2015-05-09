@@ -2,7 +2,7 @@
 // Celler.App.Web
 // Suit.cs
 
-namespace Celler.App.Web.Game.Server.Entities
+namespace Celler.App.Web.Game.Server.Entities.Enums
 {
     public enum Suit
     {

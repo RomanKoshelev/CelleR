@@ -3,6 +3,9 @@
 // IFoodManager.cs
 
 using Celler.App.Web.Game.Server.Entities;
+using Celler.App.Web.Game.Server.Entities.Enums;
+using Celler.App.Web.Game.Server.Entities.Objects;
+using Celler.App.Web.Game.Server.Entities.Structs;
 
 namespace Celler.App.Web.Game.Server.Managers
 {

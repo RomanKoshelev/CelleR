@@ -4,19 +4,24 @@
 
 using System;
 using Celler.App.Web.Game.Server.Entities;
+using Celler.App.Web.Game.Server.Entities.Enums;
+using Celler.App.Web.Game.Server.Entities.GameObjects;
+using Celler.App.Web.Game.Server.Entities.Interfaces;
+using Celler.App.Web.Game.Server.Entities.Objects;
+using Celler.App.Web.Game.Server.Entities.Structs;
 using Celler.App.Web.Game.Server.Managers;
 
 namespace Celler.App.Web.Game.Server.Logic
 {
     internal class FoodLogic : IAuxLogic
     {
-        #region Constructors
+        #region Ctor
 
         public FoodLogic( IGameLogic game, ITimeLogic timer, ICollisionLogic collider, IFoodManager foodManager )
         {
             _timer = timer;
             _game = game;
-            FoodManager = foodManager;
+            _foodManager = foodManager;
             collider.onCollision += onCollision;
         }
 
@@ -37,22 +42,22 @@ namespace Celler.App.Web.Game.Server.Logic
 
         private const double MinFoodSize = 20;
 
-        private const int FoodCreationInterval = 10;
+        private const int FoodCreationInterval = 5;
 
         #endregion
 
 
-        #region Private Fields
+        #region Fields
 
         private readonly ITimeLogic _timer;
         private readonly IGameLogic _game;
-        private IFoodManager FoodManager { get; set; }
+        private readonly IFoodManager _foodManager;
         private DateTime _lastTimeFoodAdded = DateTime.Now;
 
         #endregion
 
 
-        #region Private Methods
+        #region Methods
 
         private void onCollision( IBody a, IBody b )
         {
@@ -65,7 +70,7 @@ namespace Celler.App.Web.Game.Server.Logic
 
         private void ProcCollisionFoodWithCell( Food food, Cell cell )
         {
-            FoodManager.RemoveFood( food );
+            _foodManager.RemoveFood( food );
         }
 
         private void AddNewFoodIfNeed()
@@ -75,8 +80,8 @@ namespace Celler.App.Web.Game.Server.Logic
             }
             _lastTimeFoodAdded = _timer.CurrentTime;
 
-            FoodManager.AddFood( Suit.Blue, Point.RandomIn( _game.GetBounds() ), MinFoodSize ).ToModel();
-            FoodManager.AddFood( Suit.Red, Point.RandomIn( _game.GetBounds() ), MinFoodSize ).ToModel();
+            _foodManager.AddFood( Suit.Blue, Point.RandomIn( _game.GetBounds() ), MinFoodSize ).ToModel();
+            _foodManager.AddFood( Suit.Red, Point.RandomIn( _game.GetBounds() ), MinFoodSize ).ToModel();
         }
 
         #endregion

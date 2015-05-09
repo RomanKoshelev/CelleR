@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using Celler.App.Web.Game.Server.Clients;
 using Celler.App.Web.Game.Server.Entities;
+using Celler.App.Web.Game.Server.Entities.Enums;
+using Celler.App.Web.Game.Server.Entities.Structs;
 using Celler.App.Web.Game.Server.Managers;
 using Celler.App.Web.Game.Server.Models;
 using NLog;
@@ -14,17 +16,23 @@ namespace Celler.App.Web.Game.Server.Logic
 {
     public class GameLogic : IGameLogic, ITimeLogic
     {
-        #region Constructors
+        #region Ctor
 
         public GameLogic( IGameClient clients )
         {
-            _clients = clients;
-            _sessionManager = new SessionManager( _clients );
+            Logger.Trace( "GameLogic" );
 
-            var collisionLogic = new CollisionLogic( this, _sessionManager );
-            
+            _clients = clients;
+            _sessionManager = new SessionManager( clients : _clients );
+
+            var collisionLogic = new CollisionLogic( bodyManager : _sessionManager );
             _auxLlogics.Add( collisionLogic );
-            _auxLlogics.Add( new FoodLogic( game : this, timer : this, collider : collisionLogic , foodManager : _sessionManager ) );
+
+            _auxLlogics.Add( new FoodLogic(
+                game : this,
+                timer : this,
+                collider : collisionLogic,
+                foodManager : _sessionManager ) );
 
             InitSessionManager();
         }
@@ -89,7 +97,7 @@ namespace Celler.App.Web.Game.Server.Logic
         #endregion
 
 
-        #region Private constants
+        #region Constants
 
         private const int TickInterval = 1000;
         private const double WorldWidth = 720;
@@ -101,7 +109,7 @@ namespace Celler.App.Web.Game.Server.Logic
         #endregion
 
 
-        #region Private fields
+        #region Fields
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IGameClient _clients;
@@ -112,7 +120,7 @@ namespace Celler.App.Web.Game.Server.Logic
         #endregion
 
 
-        #region Private methods
+        #region Methods
 
         private void UpdateTime()
         {
@@ -133,9 +141,9 @@ namespace Celler.App.Web.Game.Server.Logic
             var home = sessionManager.AddHome( suit, place, HomeSize );
             var cell = sessionManager.AddCell( suit, place, CellSize );
             var sight = sessionManager.AddSight( suit, place, SightSize );
-            cell.HomeId = home.Id;
-            cell.SightId = sight.Id;
-            sight.CellId = cell.Id;
+            cell.HomeId = home.AsEntity.Id;
+            cell.SightId = sight.AsEntity.Id;
+            sight.CellId = cell.AsEntity.Id;
         }
 
         private static void KeepPositionInBounds( PointModel position )
