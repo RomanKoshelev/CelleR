@@ -5,7 +5,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Celler.App.Web.Game.Server.Entities;
 using Celler.App.Web.Game.Server.Entities.Interfaces;
 using Celler.App.Web.Game.Server.Entities.Structs;
 using Celler.App.Web.Game.Server.Managers;
@@ -14,8 +13,6 @@ namespace Celler.App.Web.Game.Server.Logic
 {
     public class CollisionLogic : IAuxLogic, ICollisionLogic
     {
-
-
         #region Constructor
 
         public CollisionLogic( IBodyManager bodyManager )
@@ -43,8 +40,6 @@ namespace Celler.App.Web.Game.Server.Logic
         #endregion
 
 
-
-
         #region Fields
 
         private readonly IBodyManager _bodyManager;
@@ -70,7 +65,7 @@ namespace Celler.App.Web.Game.Server.Logic
 
         private static bool Intersects( IBody a, IBody b )
         {
-            return ( Point.Distance( a.Position, b.Position ) < a.Size + b.Size );
+            return ( Point.Distance( a.Position, b.Position ) < (a.Size + b.Size)/2 );
         }
 
         private static IEnumerable< Tuple< IBody, IBody > > MakePairs( IList< IBody > bodies )
@@ -83,6 +78,5 @@ namespace Celler.App.Web.Game.Server.Logic
         }
 
         #endregion
-
-   }
+    }
 }

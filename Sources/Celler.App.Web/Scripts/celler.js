@@ -1,5 +1,45 @@
 var Celler;
 (function (Celler) {
+    var App = (function () {
+        function App() {
+            this.playerId = "";
+            this.playerSuit = 0 /* Blue */;
+            this.server = new Celler.ServerAdapter();
+            this.server.onStarted.addOnce(this.init, this);
+            this.server.onTickCountUpdated.add(this.onTickCountUpdated, this);
+        }
+        App.prototype.create = function () {
+            this.game.state.add("Room", Celler.PlayState, true);
+        };
+        App.prototype.init = function () {
+            var _this = this;
+            this.server.getPlayerId().done(function (id) {
+                _this.playerId = id;
+            });
+            this.server.getBounds().done(function (bounds) {
+                _this.createGame(bounds.Width, bounds.Height);
+            });
+        };
+        App.prototype.createGame = function (width, height) {
+            this.game = new Phaser.Game(width, height, Phaser.AUTO, "celler-playground", { create: this.create });
+        };
+        App.prototype.onTickCountUpdated = function (count) {
+            this.tickCount = count;
+        };
+        return App;
+    })();
+    Celler.App = App;
+    Celler.app;
+    function initApp() {
+        Celler.app = new App();
+    }
+    Celler.initApp = initApp;
+})(Celler || (Celler = {}));
+window.onload = function () {
+    Celler.initApp();
+};
+var Celler;
+(function (Celler) {
     var Assets;
     (function (Assets) {
         (function (Type) {
@@ -33,166 +73,6 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var Celler;
-(function (Celler) {
-    var SuitSprite = (function (_super) {
-        __extends(SuitSprite, _super);
-        function SuitSprite(game, suit, assetType, size) {
-            if (size === void 0) { size = 0; }
-            _super.call(this, game, 0, 0, Celler.Assets.Sprites.getKey(suit, assetType));
-            this.suit = suit;
-            this.anchor.set(0.5);
-            if (size !== 0) {
-                this.scale.set(size / this.width);
-            }
-        }
-        return SuitSprite;
-    })(Phaser.Sprite);
-    Celler.SuitSprite = SuitSprite;
-})(Celler || (Celler = {}));
-/// <reference path="SuitSprite.ts"/>
-var Celler;
-(function (Celler) {
-    var Food = (function (_super) {
-        __extends(Food, _super);
-        function Food(game, model) {
-            _super.call(this, game, Celler.Suit[model.Base.Suit], 4 /* Food */, model.Base.Size);
-            this.id = model.Base.Id;
-            this.position = Celler.modelToPoint(model.Base.Position);
-            this.inputEnabled = true;
-            this.input.enableDrag();
-            this.events.onDragStop.add(this.onDragStop, this);
-            Celler.app.server.onSightMoved.add(this.onSightMoved, this);
-        }
-        Food.prototype.onSightMoved = function (id, position) {
-        };
-        Food.prototype.onDragStop = function () {
-        };
-        Food.minHintDistance = 4;
-        Food.shiftPerKeypoardClick = 10;
-        return Food;
-    })(Celler.SuitSprite);
-    Celler.Food = Food;
-})(Celler || (Celler = {}));
-var Celler;
-(function (Celler) {
-    var SessionManager = (function () {
-        function SessionManager(game) {
-            var _this = this;
-            this.foods = new Array();
-            this.game = game;
-            Celler.app.server.getSession().done(function (sesion) {
-                _this.fromModel(sesion);
-            });
-            Celler.app.server.onFoodAdded.add(this.onFoodAdded, this);
-            Celler.app.server.onFoodRemoved.add(this.onFoodRemoved, this);
-        }
-        SessionManager.prototype.fromModel = function (model) {
-            this.id = model.Id;
-            this.createHomes(model.Homes);
-            this.createCells(model.Cells);
-            this.createSights(model.Sights);
-            this.createFoods(model.Foods);
-        };
-        SessionManager.prototype.createHomes = function (arr) {
-            var _this = this;
-            arr.map(function (model) {
-                _this.game.add.existing(new Celler.Home(_this.game, model));
-            });
-        };
-        SessionManager.prototype.createCells = function (arr) {
-            var _this = this;
-            arr.map(function (model) {
-                _this.game.add.existing(new Celler.Cell(_this.game, model));
-            });
-        };
-        SessionManager.prototype.createSights = function (arr) {
-            var _this = this;
-            arr.map(function (model) {
-                _this.game.add.existing(new Celler.Sight(_this.game, model));
-            });
-        };
-        SessionManager.prototype.createFoods = function (arr) {
-            var _this = this;
-            arr.map(function (model) { return _this.addFood(model); });
-        };
-        SessionManager.prototype.addFood = function (model) {
-            var food = new Celler.Food(this.game, model);
-            this.foods.push(food);
-            this.game.add.existing(food);
-        };
-        SessionManager.prototype.onFoodAdded = function (model) {
-            this.addFood(model);
-        };
-        SessionManager.prototype.onFoodRemoved = function (id) {
-            var _this = this;
-            this.foods.filter(function (f) { return f.id === id; }).forEach(function (f) {
-                _this.game.world.remove(f);
-                f.destroy(true);
-            });
-        };
-        return SessionManager;
-    })();
-    Celler.SessionManager = SessionManager;
-})(Celler || (Celler = {}));
-var Celler;
-(function (Celler) {
-    var PlayState = (function (_super) {
-        __extends(PlayState, _super);
-        function PlayState() {
-            _super.call(this);
-        }
-        PlayState.prototype.init = function () {
-            this.game.stage.backgroundColor = PlayState.background;
-        };
-        PlayState.prototype.preload = function () {
-            this.preloadSprites(0 /* Blue */);
-            this.preloadSprites(1 /* Red */);
-        };
-        PlayState.prototype.create = function () {
-            this.session = new Celler.SessionManager(this.game);
-        };
-        PlayState.prototype.update = function () {
-            this.game.debug.text("" + this.session.id + " [" + Celler.app.tickCount + "]", 10, 20);
-        };
-        PlayState.prototype.preloadSprites = function (suit) {
-            Celler.Assets.Sprites.load(suit, 3 /* Home */);
-            Celler.Assets.Sprites.load(suit, 0 /* CellBody */);
-            Celler.Assets.Sprites.load(suit, 1 /* CellEye */);
-            Celler.Assets.Sprites.load(suit, 2 /* Sight */);
-            Celler.Assets.Sprites.load(suit, 4 /* Food */);
-        };
-        PlayState.background = "#004400";
-        return PlayState;
-    })(Phaser.State);
-    Celler.PlayState = PlayState;
-})(Celler || (Celler = {}));
-/// <reference path="SuitSprite.ts"/>
-var Celler;
-(function (Celler) {
-    var Home = (function (_super) {
-        __extends(Home, _super);
-        function Home(game, model) {
-            _super.call(this, game, Celler.Suit[model.Base.Suit], 3 /* Home */, model.Base.Size);
-            this.id = model.Base.Id;
-            this.position = Celler.modelToPoint(model.Base.Position);
-        }
-        return Home;
-    })(Celler.SuitSprite);
-    Celler.Home = Home;
-})(Celler || (Celler = {}));
-var Celler;
-(function (Celler) {
-    (function (Suit) {
-        Suit[Suit["Blue"] = 0] = "Blue";
-        Suit[Suit["Red"] = 1] = "Red";
-    })(Celler.Suit || (Celler.Suit = {}));
-    var Suit = Celler.Suit;
-    function toSuit(str) {
-        return Suit[str];
-    }
-    Celler.toSuit = toSuit;
-})(Celler || (Celler = {}));
 var Celler;
 (function (Celler) {
     var Cell = (function (_super) {
@@ -253,6 +133,51 @@ var Celler;
         return Cell;
     })(Phaser.Group);
     Celler.Cell = Cell;
+})(Celler || (Celler = {}));
+var Celler;
+(function (Celler) {
+    var SuitSprite = (function (_super) {
+        __extends(SuitSprite, _super);
+        function SuitSprite(game, suit, assetType, size) {
+            if (size === void 0) { size = 0; }
+            _super.call(this, game, 0, 0, Celler.Assets.Sprites.getKey(suit, assetType));
+            this.suit = suit;
+            this.anchor.set(0.5);
+            if (size !== 0) {
+                this.scale.set(size / this.width);
+            }
+        }
+        return SuitSprite;
+    })(Phaser.Sprite);
+    Celler.SuitSprite = SuitSprite;
+})(Celler || (Celler = {}));
+/// <reference path="SuitSprite.ts"/>
+var Celler;
+(function (Celler) {
+    var Food = (function (_super) {
+        __extends(Food, _super);
+        function Food(game, model) {
+            _super.call(this, game, Celler.Suit[model.Base.Suit], 4 /* Food */, model.Base.Size);
+            this.id = model.Base.Id;
+            this.position = Celler.modelToPoint(model.Base.Position);
+        }
+        return Food;
+    })(Celler.SuitSprite);
+    Celler.Food = Food;
+})(Celler || (Celler = {}));
+/// <reference path="SuitSprite.ts"/>
+var Celler;
+(function (Celler) {
+    var Home = (function (_super) {
+        __extends(Home, _super);
+        function Home(game, model) {
+            _super.call(this, game, Celler.Suit[model.Base.Suit], 3 /* Home */, model.Base.Size);
+            this.id = model.Base.Id;
+            this.position = Celler.modelToPoint(model.Base.Position);
+        }
+        return Home;
+    })(Celler.SuitSprite);
+    Celler.Home = Home;
 })(Celler || (Celler = {}));
 /// <reference path="SuitSprite.ts"/>
 var Celler;
@@ -342,51 +267,77 @@ var Celler;
 })(Celler || (Celler = {}));
 var Celler;
 (function (Celler) {
-    function modelToPoint(model) {
-        return new Phaser.Point(model.X, model.Y);
+    (function (Suit) {
+        Suit[Suit["Blue"] = 0] = "Blue";
+        Suit[Suit["Red"] = 1] = "Red";
+    })(Celler.Suit || (Celler.Suit = {}));
+    var Suit = Celler.Suit;
+    function toSuit(str) {
+        return Suit[str];
     }
-    Celler.modelToPoint = modelToPoint;
+    Celler.toSuit = toSuit;
 })(Celler || (Celler = {}));
 var Celler;
 (function (Celler) {
-    var App = (function () {
-        function App() {
-            this.playerId = "";
-            this.playerSuit = 0 /* Blue */;
-            this.server = new Celler.ServerAdapter();
-            this.server.onStarted.addOnce(this.init, this);
-            this.server.onTickCountUpdated.add(this.onTickCountUpdated, this);
-        }
-        App.prototype.create = function () {
-            this.game.state.add("Room", Celler.PlayState, true);
-        };
-        App.prototype.init = function () {
+    var SessionManager = (function () {
+        function SessionManager(game) {
             var _this = this;
-            this.server.getPlayerId().done(function (id) {
-                _this.playerId = id;
+            this.foods = new Array();
+            this.game = game;
+            Celler.app.server.getSession().done(function (sesion) {
+                _this.fromModel(sesion);
             });
-            this.server.getBounds().done(function (bounds) {
-                _this.createGame(bounds.Width, bounds.Height);
+            Celler.app.server.onFoodAdded.add(this.onFoodAdded, this);
+            Celler.app.server.onFoodRemoved.add(this.onFoodRemoved, this);
+        }
+        SessionManager.prototype.fromModel = function (model) {
+            this.id = model.Id;
+            this.createHomes(model.Homes);
+            this.createCells(model.Cells);
+            this.createSights(model.Sights);
+            this.createFoods(model.Foods);
+        };
+        SessionManager.prototype.createHomes = function (arr) {
+            var _this = this;
+            arr.map(function (model) {
+                _this.game.add.existing(new Celler.Home(_this.game, model));
             });
         };
-        App.prototype.createGame = function (width, height) {
-            this.game = new Phaser.Game(width, height, Phaser.AUTO, "celler-playground", { create: this.create });
+        SessionManager.prototype.createCells = function (arr) {
+            var _this = this;
+            arr.map(function (model) {
+                _this.game.add.existing(new Celler.Cell(_this.game, model));
+            });
         };
-        App.prototype.onTickCountUpdated = function (count) {
-            this.tickCount = count;
+        SessionManager.prototype.createSights = function (arr) {
+            var _this = this;
+            arr.map(function (model) {
+                _this.game.add.existing(new Celler.Sight(_this.game, model));
+            });
         };
-        return App;
+        SessionManager.prototype.createFoods = function (arr) {
+            var _this = this;
+            arr.map(function (model) { return _this.addFood(model); });
+        };
+        SessionManager.prototype.addFood = function (model) {
+            var food = new Celler.Food(this.game, model);
+            this.foods.push(food);
+            this.game.add.existing(food);
+        };
+        SessionManager.prototype.onFoodAdded = function (model) {
+            this.addFood(model);
+        };
+        SessionManager.prototype.onFoodRemoved = function (id) {
+            var _this = this;
+            this.foods.filter(function (f) { return f.id === id; }).forEach(function (f) {
+                _this.game.world.remove(f);
+                f.destroy(true);
+            });
+        };
+        return SessionManager;
     })();
-    Celler.App = App;
-    Celler.app;
-    function initApp() {
-        Celler.app = new App();
-    }
-    Celler.initApp = initApp;
+    Celler.SessionManager = SessionManager;
 })(Celler || (Celler = {}));
-window.onload = function () {
-    Celler.initApp();
-};
 var Celler;
 (function (Celler) {
     var ServerAdapter = (function () {
@@ -472,5 +423,44 @@ var Celler;
         return ServerAdapter;
     })();
     Celler.ServerAdapter = ServerAdapter;
+})(Celler || (Celler = {}));
+var Celler;
+(function (Celler) {
+    var PlayState = (function (_super) {
+        __extends(PlayState, _super);
+        function PlayState() {
+            _super.call(this);
+        }
+        PlayState.prototype.init = function () {
+            this.game.stage.backgroundColor = PlayState.background;
+        };
+        PlayState.prototype.preload = function () {
+            this.preloadSprites(0 /* Blue */);
+            this.preloadSprites(1 /* Red */);
+        };
+        PlayState.prototype.create = function () {
+            this.session = new Celler.SessionManager(this.game);
+        };
+        PlayState.prototype.update = function () {
+            this.game.debug.text("" + this.session.id + " [" + Celler.app.tickCount + "]", 10, 20);
+        };
+        PlayState.prototype.preloadSprites = function (suit) {
+            Celler.Assets.Sprites.load(suit, 3 /* Home */);
+            Celler.Assets.Sprites.load(suit, 0 /* CellBody */);
+            Celler.Assets.Sprites.load(suit, 1 /* CellEye */);
+            Celler.Assets.Sprites.load(suit, 2 /* Sight */);
+            Celler.Assets.Sprites.load(suit, 4 /* Food */);
+        };
+        PlayState.background = "#004400";
+        return PlayState;
+    })(Phaser.State);
+    Celler.PlayState = PlayState;
+})(Celler || (Celler = {}));
+var Celler;
+(function (Celler) {
+    function modelToPoint(model) {
+        return new Phaser.Point(model.X, model.Y);
+    }
+    Celler.modelToPoint = modelToPoint;
 })(Celler || (Celler = {}));
 //# sourceMappingURL=celler.js.map
