@@ -4,7 +4,6 @@
 
 using System;
 using System.Collections.Generic;
-using Celler.App.Web.Game.Server.App;
 using Celler.App.Web.Game.Server.Clients;
 using Celler.App.Web.Game.Server.Entities;
 using Celler.App.Web.Game.Server.Managers;
@@ -17,15 +16,15 @@ namespace Celler.App.Web.Game.Server.Logic
     {
         #region Constructors
 
-        public GameLogic()
+        public GameLogic( IGameClient clients )
         {
-            _clients = GameApplication.Instance.GameClients;
+            _clients = clients;
             _sessionManager = new SessionManager( _clients );
 
-            _collisionLogic = new CollisionLogic( this, _sessionManager );
+            var collisionLogic = new CollisionLogic( this, _sessionManager );
             
-            _auxLlogics.Add( _collisionLogic );
-            _auxLlogics.Add( new FoodLogic( this, this, _collisionLogic , _sessionManager ) );
+            _auxLlogics.Add( collisionLogic );
+            _auxLlogics.Add( new FoodLogic( game : this, timer : this, collider : collisionLogic , foodManager : _sessionManager ) );
 
             InitSessionManager();
         }
@@ -36,6 +35,12 @@ namespace Celler.App.Web.Game.Server.Logic
         #region ITimeLogic
 
         DateTime ITimeLogic.LastTime { get; set; }
+
+        int ITimeLogic.GetTickInterval()
+        {
+            return TickInterval;
+        }
+
         DateTime ITimeLogic.CurrentTime { get; set; }
 
         #endregion
@@ -47,7 +52,6 @@ namespace Celler.App.Web.Game.Server.Logic
         {
             KeepPositionInBounds( position );
             _sessionManager.MoveCell( id, position );
-            _clients.CellMoved( id, position );
         }
 
         void IGameLogic.HintSightPosition( string id, PointModel position )
@@ -60,7 +64,6 @@ namespace Celler.App.Web.Game.Server.Logic
         {
             KeepPositionInBounds( position );
             _sessionManager.MoveSight( id, position );
-            _clients.SightMoved( id, position );
         }
 
         SizeModel IGameLogic.GetBounds()
@@ -86,16 +89,6 @@ namespace Celler.App.Web.Game.Server.Logic
         #endregion
 
 
-        #region Public methods
-
-        public static int GetTickInterval()
-        {
-            return TickInterval;
-        }
-
-        #endregion
-
-
         #region Private constants
 
         private const int TickInterval = 1000;
@@ -114,7 +107,6 @@ namespace Celler.App.Web.Game.Server.Logic
         private readonly IGameClient _clients;
         private readonly SessionManager _sessionManager;
         private readonly List< IAuxLogic > _auxLlogics = new List< IAuxLogic >();
-        private readonly CollisionLogic _collisionLogic;
         private int _tickCount;
 
         #endregion

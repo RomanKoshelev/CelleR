@@ -12,6 +12,8 @@ namespace Celler.App.Web.Game.Server.App
 {
     public class GameApplication : IRegisteredObject
     {
+        #region Ctor
+
         public static GameApplication Instance { get; set; }
 
         public GameApplication()
@@ -21,24 +23,56 @@ namespace Celler.App.Web.Game.Server.App
             CreateTickTimer();
         }
 
-        public IGameLogic GameLogic
+        #endregion
+
+
+        #region IRegisteredObject
+
+        void IRegisteredObject.Stop( bool immediate )
         {
-            get { return _gameLogic ?? ( _gameLogic = new GameLogic() ); }
+            _tickTimer.Dispose();
         }
 
-        public IGameClient GameClients
+        #endregion
+
+
+        #region Public properties
+
+        public IGameLogic GameLogic
+        {
+            get { return _gameLogic ?? ( _gameLogic = new GameLogic( GameClients ) ); }
+        }
+
+        #endregion
+
+
+        #region Private properties
+
+        private GameLogic _gameLogic;
+
+        private IGameClient GameClients
         {
             get { return _gameClients ?? ( _gameClients = new GameClientsProxy() ); }
         }
 
-        private IGameLogic _gameLogic;
         private IGameClient _gameClients;
         private Timer _tickTimer;
+
+        private ITimeLogic TimeLogic
+        {
+            get { return ( ITimeLogic ) GameLogic; }
+        }
+
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        #endregion
+
+
+        #region Private methods
 
         private void CreateTickTimer()
         {
-            _tickTimer = new Timer( onTickTimer, null, 0, Logic.GameLogic.GetTickInterval() );
+            _tickTimer = new Timer( onTickTimer, null, 0, ( TimeLogic.GetTickInterval() ) );
         }
 
         private void onTickTimer( object _ )
@@ -46,9 +80,6 @@ namespace Celler.App.Web.Game.Server.App
             GameLogic.Update();
         }
 
-        public void Stop( bool immediate )
-        {
-            _tickTimer.Dispose();
-        }
+        #endregion
     }
 }

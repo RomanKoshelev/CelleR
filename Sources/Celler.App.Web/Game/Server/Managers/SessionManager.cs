@@ -22,7 +22,7 @@ namespace Celler.App.Web.Game.Server.Managers
             Homes = new List< Home >();
             Sights = new List< Sight >();
             Foods = new List< Food >();
-            Clients = clients;
+            _clients = clients;
         }
 
         #endregion
@@ -54,7 +54,7 @@ namespace Celler.App.Web.Game.Server.Managers
                 Size = size
             };
             Foods.Add( food );
-            Clients.FoodAdded( food.ToModel() );
+            _clients.FoodAdded( food.ToModel() );
             return food;
         }
 
@@ -117,11 +117,13 @@ namespace Celler.App.Web.Game.Server.Managers
         public void MoveCell( string id, PointModel position )
         {
             Cells.First( c => c.Id == id ).Position = new Point( position );
+            _clients.CellMoved( id, position );
         }
 
         public void MoveSight( string id, PointModel position )
         {
-            Sights.First( c => c.Id == id ).Position = new Point( position );
+            Sights.First( c => c.Id == id ).Position = new Point( position );            
+            _clients.SightMoved( id, position );
         }
 
         #endregion
@@ -134,7 +136,7 @@ namespace Celler.App.Web.Game.Server.Managers
         private List< Home > Homes { get; set; }
         private List< Sight > Sights { get; set; }
         private List< Food > Foods { get; set; }
-        private IGameClient Clients { get; set; }
+        private readonly IGameClient _clients;
 
         #endregion
     }
