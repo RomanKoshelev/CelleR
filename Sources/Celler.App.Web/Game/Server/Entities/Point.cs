@@ -9,8 +9,8 @@ namespace Celler.App.Web.Game.Server.Entities
 {
     public struct Point
     {
-        public double X;
-        public double Y;
+        public readonly double X;
+        public readonly double Y;
 
         public Point( double x, double y )
         {
@@ -29,14 +29,16 @@ namespace Celler.App.Web.Game.Server.Entities
             return new PointModel { X = X, Y = Y };
         }
 
+        public static implicit operator Point( PointModel m )
+        {
+            return new Point( m );
+        }
+
         private static readonly Random Random = new Random( ( int ) DateTime.Now.Ticks & 0x0000FFFF );
 
         public static Point RandomIn( Size box )
         {
-            return new Point {
-                X = box.Width*Random.NextDouble(),
-                Y = box.Height*Random.NextDouble()
-            };
+            return new Point( box.Width*Random.NextDouble(), box.Height*Random.NextDouble() );
         }
 
         public static double Distance( Point a, Point b )

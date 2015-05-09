@@ -9,5 +9,6 @@ namespace Celler.App.Web.Game.Server.Managers
     public interface IFoodManager
     {
         Food AddFood( Suit suit, Point position, double size );
+        void RemoveFood( Food food );
     }
 }

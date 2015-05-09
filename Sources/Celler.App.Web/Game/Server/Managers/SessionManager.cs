@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Celler.App.Web.Game.Server.Clients;
 using Celler.App.Web.Game.Server.Entities;
 using Celler.App.Web.Game.Server.Models;
 
@@ -12,32 +13,22 @@ namespace Celler.App.Web.Game.Server.Managers
 {
     public class SessionManager : IFoodManager, IBodyManager
     {
-        public string Id { get; set; }
-        public List< Cell > Cells { get; set; }
-        public List< Home > Homes { get; set; }
-        public List< Sight > Sights { get; set; }
-        public List< Food > Foods { get; set; }
-        public int TickCount { get; set; }
+        #region Constructor
 
-        public SessionModel ToModel()
-        {
-            return new SessionModel {
-                Id = Id,
-                Cells = Cells.Select( o => o.ToModel() ).ToArray(),
-                Homes = Homes.Select( o => o.ToModel() ).ToArray(),
-                Sights = Sights.Select( o => o.ToModel() ).ToArray(),
-                Foods = Foods.Select( o => o.ToModel() ).ToArray()
-            };
-        }
-
-        public SessionManager()
+        public SessionManager( IGameClient clients )
         {
             Id = Guid.NewGuid().ToString();
             Cells = new List< Cell >();
             Homes = new List< Home >();
             Sights = new List< Sight >();
             Foods = new List< Food >();
+            Clients = clients;
         }
+
+        #endregion
+
+
+        #region ICellManager
 
         public Cell AddCell( Suit suit, Point position, double size )
         {
@@ -48,6 +39,57 @@ namespace Celler.App.Web.Game.Server.Managers
             };
             Cells.Add( obj );
             return obj;
+        }
+
+        #endregion
+
+
+        #region IFoodManager
+
+        Food IFoodManager.AddFood( Suit suit, Point position, double size )
+        {
+            var food = new Food {
+                Suit = suit,
+                Position = position,
+                Size = size
+            };
+            Foods.Add( food );
+            Clients.FoodAdded( food.ToModel() );
+            return food;
+        }
+
+        void IFoodManager.RemoveFood( Food food )
+        {
+            Foods.RemoveAll( f => f.Id == food.Id );
+        }
+
+        #endregion
+
+
+        #region IBodyManager
+
+        IList< IBody > IBodyManager.GetBodies()
+        {
+            return Homes
+                .Concat< IBody >( Cells )
+                .Concat< IBody >( Foods )
+                .ToList();
+        }
+
+        #endregion
+
+
+        #region Public Methods
+
+        public SessionModel ToModel()
+        {
+            return new SessionModel {
+                Id = Id,
+                Cells = Cells.Select( o => o.ToModel() ).ToArray(),
+                Homes = Homes.Select( o => o.ToModel() ).ToArray(),
+                Sights = Sights.Select( o => o.ToModel() ).ToArray(),
+                Foods = Foods.Select( o => o.ToModel() ).ToArray()
+            };
         }
 
         public Home AddHome( Suit suit, Point position, double size )
@@ -72,17 +114,6 @@ namespace Celler.App.Web.Game.Server.Managers
             return obj;
         }
 
-        public Food AddFood( Suit suit, Point position, double size )
-        {
-            var obj = new Food {
-                Suit = suit,
-                Position = position,
-                Size = size
-            };
-            Foods.Add( obj );
-            return obj;
-        }
-
         public void MoveCell( string id, PointModel position )
         {
             Cells.First( c => c.Id == id ).Position = new Point( position );
@@ -93,12 +124,18 @@ namespace Celler.App.Web.Game.Server.Managers
             Sights.First( c => c.Id == id ).Position = new Point( position );
         }
 
-        IList< IBody > IBodyManager.GetBodies()
-        {
-            return Homes
-                .Concat< IBody >( Cells )
-                .Concat< IBody >( Foods )
-                .ToList();
-        }
+        #endregion
+
+
+        #region Private Properties
+
+        private string Id { get; set; }
+        private List< Cell > Cells { get; set; }
+        private List< Home > Homes { get; set; }
+        private List< Sight > Sights { get; set; }
+        private List< Food > Foods { get; set; }
+        private IGameClient Clients { get; set; }
+
+        #endregion
     }
 }

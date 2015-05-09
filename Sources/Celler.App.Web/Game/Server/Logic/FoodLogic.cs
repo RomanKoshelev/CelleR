@@ -8,22 +8,24 @@ using Celler.App.Web.Game.Server.Managers;
 
 namespace Celler.App.Web.Game.Server.Logic
 {
-    internal class FoodLogic : ISublogic
+    internal class FoodLogic : IAuxLogic
     {
         #region Constructors
 
-        public FoodLogic( IGameManager game, IFoodManager foodManager )
+        public FoodLogic( IGameLogic game, ITimeLogic timer, ICollisionLogic collider, IFoodManager foodManager )
         {
-            Game = game;
+            _timer = timer;
+            _game = game;
             FoodManager = foodManager;
+            collider.onCollision += onCollision;
         }
 
         #endregion
 
 
-        #region ISubLogic
+        #region IAuxLogic
 
-        public void Update()
+        void IAuxLogic.Update()
         {
             AddNewFoodIfNeed();
         }
@@ -31,34 +33,50 @@ namespace Celler.App.Web.Game.Server.Logic
         #endregion
 
 
-        #region Fields
-
-        private IFoodManager FoodManager { get; set; }
-
-        private IGameManager Game { get; set; }
+        #region Constants
 
         private const double MinFoodSize = 20;
 
-        private DateTime _lastTimeFoodAdded = DateTime.Now;
         private const int FoodCreationInterval = 10;
+
+        #endregion
+
+
+        #region Private Fields
+
+        private readonly ITimeLogic _timer;
+        private readonly IGameLogic _game;
+        private IFoodManager FoodManager { get; set; }
+        private DateTime _lastTimeFoodAdded = DateTime.Now;
 
         #endregion
 
 
         #region Private Methods
 
+        private void onCollision( IBody a, IBody b )
+        {
+            if( a is Food && b is Cell ) {
+                ProcCollisionFoodWithCell( a as Food, b as Cell );
+            } else if( b is Food && a is Cell ) {
+                ProcCollisionFoodWithCell( b as Food, a as Cell );
+            }
+        }
+
+        private void ProcCollisionFoodWithCell( Food food, Cell cell )
+        {
+            FoodManager.RemoveFood( food );
+        }
+
         private void AddNewFoodIfNeed()
         {
-            if( Game.CurrentTime - _lastTimeFoodAdded <= TimeSpan.FromSeconds( FoodCreationInterval ) ) {
+            if( _timer.CurrentTime - _lastTimeFoodAdded <= TimeSpan.FromSeconds( FoodCreationInterval ) ) {
                 return;
             }
-            _lastTimeFoodAdded = Game.CurrentTime;
+            _lastTimeFoodAdded = _timer.CurrentTime;
 
-            var m1 = FoodManager.AddFood( Suit.Blue, Point.RandomIn( Game.GetBounds() ), MinFoodSize ).ToModel();
-            var m2 = FoodManager.AddFood( Suit.Red, Point.RandomIn( Game.GetBounds() ), MinFoodSize ).ToModel();
-
-            Game.Clients.FoodAdded( m1 );
-            Game.Clients.FoodAdded( m2 );
+            FoodManager.AddFood( Suit.Blue, Point.RandomIn( _game.GetBounds() ), MinFoodSize ).ToModel();
+            FoodManager.AddFood( Suit.Red, Point.RandomIn( _game.GetBounds() ), MinFoodSize ).ToModel();
         }
 
         #endregion

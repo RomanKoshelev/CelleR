@@ -3,6 +3,7 @@
 // GameLogic.cs
 
 using System;
+using System.Collections.Generic;
 using Celler.App.Web.Game.Server.App;
 using Celler.App.Web.Game.Server.Clients;
 using Celler.App.Web.Game.Server.Entities;
@@ -12,16 +13,19 @@ using NLog;
 
 namespace Celler.App.Web.Game.Server.Logic
 {
-    public class GameLogic : IGameLogic, IGameManager
+    public class GameLogic : IGameLogic, ITimeLogic
     {
         #region Constructors
 
         public GameLogic()
         {
             _clients = GameApplication.Instance.GameClients;
-            _sessionManager = new SessionManager();
+            _sessionManager = new SessionManager( _clients );
+
             _collisionLogic = new CollisionLogic( this, _sessionManager );
-            _foodLogic = new FoodLogic( this, _sessionManager );
+            
+            _auxLlogics.Add( _collisionLogic );
+            _auxLlogics.Add( new FoodLogic( this, this, _collisionLogic , _sessionManager ) );
 
             InitSessionManager();
         }
@@ -29,12 +33,10 @@ namespace Celler.App.Web.Game.Server.Logic
         #endregion
 
 
-        #region Public methods
+        #region ITimeLogic
 
-        public static int GetTickInterval()
-        {
-            return TickInterval;
-        }
+        DateTime ITimeLogic.LastTime { get; set; }
+        DateTime ITimeLogic.CurrentTime { get; set; }
 
         #endregion
 
@@ -77,35 +79,18 @@ namespace Celler.App.Web.Game.Server.Logic
         void IGameLogic.Update()
         {
             UpdateTime();
-            
-            _foodLogic.Update();
-            _collisionLogic.Update();
-
-            _clients.TickCountUpdated( _sessionManager.TickCount++ );
+            _auxLlogics.ForEach( l => l.Update() );
+            _clients.TickCountUpdated( _tickCount++ );
         }
 
         #endregion
 
 
-        #region IGameManager
+        #region Public methods
 
-        TimeSpan IGameManager.TimeAfterLastUpdate { get; set; }
-        DateTime IGameManager.LastTime { get; set; }
-        DateTime IGameManager.CurrentTime { get; set; }
-
-        IGameClient IGameManager.Clients
+        public static int GetTickInterval()
         {
-            get { return _clients; }
-        }
-
-        Size IGameManager.GetBounds()
-        {
-            return new Size( WorldWidth, WorldHeight );
-        }
-
-        void IGameManager.Trace( string message, params object[] args )
-        {
-            Logger.Trace( message, args );
+            return TickInterval;
         }
 
         #endregion
@@ -128,8 +113,9 @@ namespace Celler.App.Web.Game.Server.Logic
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IGameClient _clients;
         private readonly SessionManager _sessionManager;
-        private readonly FoodLogic _foodLogic;
-        private CollisionLogic _collisionLogic;
+        private readonly List< IAuxLogic > _auxLlogics = new List< IAuxLogic >();
+        private readonly CollisionLogic _collisionLogic;
+        private int _tickCount;
 
         #endregion
 
@@ -138,8 +124,7 @@ namespace Celler.App.Web.Game.Server.Logic
 
         private void UpdateTime()
         {
-            var m = this as IGameManager;
-            m.TimeAfterLastUpdate = DateTime.Now - m.LastTime;
+            var m = this as ITimeLogic;
             m.LastTime = m.CurrentTime;
             m.CurrentTime = DateTime.Now;
         }

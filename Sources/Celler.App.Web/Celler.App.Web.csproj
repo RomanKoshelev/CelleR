@@ -189,10 +189,11 @@
     <Compile Include="Game\Server\Logic\CollisionLogic.cs" />
     <Compile Include="Game\Server\Logic\FoodLogic.cs" />
     <Compile Include="Game\Server\Entities\IBody.cs" />
+    <Compile Include="Game\Server\Logic\ICollisionLogic.cs" />
     <Compile Include="Game\Server\Managers\IBodyManager.cs" />
     <Compile Include="Game\Server\Managers\IFoodManager.cs" />
-    <Compile Include="Game\Server\Logic\IGameManager.cs" />
-    <Compile Include="Game\Server\Logic\ISubLogic.cs" />
+    <Compile Include="Game\Server\Logic\ITimeLogic.cs" />
+    <Compile Include="Game\Server\Logic\IAuxLogic.cs" />
     <Compile Include="Game\Server\Entities\Size.cs" />
     <Compile Include="Game\Server\Models\FoodModel.cs" />
     <Compile Include="Game\Server\Models\SightModel.cs" />
