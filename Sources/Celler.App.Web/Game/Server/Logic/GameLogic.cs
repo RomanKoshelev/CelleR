@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Celler.App.Web.Game.Server.Clients;
 using Celler.App.Web.Game.Server.Entities;
 using Celler.App.Web.Game.Server.Entities.Enums;
+using Celler.App.Web.Game.Server.Entities.Interfaces;
 using Celler.App.Web.Game.Server.Entities.Structs;
 using Celler.App.Web.Game.Server.Managers;
 using Celler.App.Web.Game.Server.Models;
@@ -141,9 +142,9 @@ namespace Celler.App.Web.Game.Server.Logic
             var home = sessionManager.AddHome( suit, place, HomeSize );
             var cell = sessionManager.AddCell( suit, place, CellSize );
             var sight = sessionManager.AddSight( suit, place, SightSize );
-            cell.HomeId = home.AsEntity.Id;
-            cell.SightId = sight.AsEntity.Id;
-            sight.CellId = cell.AsEntity.Id;
+            cell.ICell.HomeId = home.IIdentifiable.Id;
+            cell.ICell.SightId = sight.IIdentifiable.Id;
+            sight.ISight.CellId = cell.IIdentifiable.Id;
         }
 
         private static void KeepPositionInBounds( PointModel position )

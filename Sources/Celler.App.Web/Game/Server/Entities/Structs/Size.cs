@@ -7,7 +7,7 @@ using Celler.App.Web.Game.Server.Models;
 
 namespace Celler.App.Web.Game.Server.Entities.Structs
 {
-    public struct Size : IModel< SizeModel >
+    public struct Size : IModelable< SizeModel >
     {
         public readonly double Width;
         public readonly double Height;

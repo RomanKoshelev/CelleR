@@ -1,11 +1,11 @@
 // Celler (c) 2015 Krokodev
 // Celler.App.Web
-// IModel.cs
+// ISight.cs
 
 namespace Celler.App.Web.Game.Server.Entities.Interfaces
 {
-    public interface IModel<out T>
+    public interface ISight
     {
-        T ToModel();
+        string CellId { get; set; }
     }
 }

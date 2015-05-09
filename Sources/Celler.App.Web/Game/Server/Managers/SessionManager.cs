@@ -11,7 +11,6 @@ using Celler.App.Web.Game.Server.Entities.Abstract;
 using Celler.App.Web.Game.Server.Entities.Enums;
 using Celler.App.Web.Game.Server.Entities.GameObjects;
 using Celler.App.Web.Game.Server.Entities.Interfaces;
-using Celler.App.Web.Game.Server.Entities.Objects;
 using Celler.App.Web.Game.Server.Entities.Structs;
 using Celler.App.Web.Game.Server.Models;
 
@@ -66,7 +65,7 @@ namespace Celler.App.Web.Game.Server.Managers
 
         void IFoodManager.RemoveFood( Food food )
         {
-            _foods.RemoveAll( f => f.AsEntity.Id == food.AsEntity.Id );
+            _foods.RemoveAll( f => f.IIdentifiable.Id == food.IIdentifiable.Id );
         }
 
         #endregion
@@ -127,13 +126,13 @@ namespace Celler.App.Web.Game.Server.Managers
 
         public void MoveCell( string id, PointModel position )
         {
-            _cells.First( c => c.AsEntity.Id == id ).Position = new Point( position );
+            _cells.First( c => c.IIdentifiable.Id == id ).Position = new Point( position );
             _clients.CellMoved( id, position );
         }
 
         public void MoveSight( string id, PointModel position )
         {
-            _sights.First( c => c.AsEntity.Id == id ).Position = new Point( position );
+            _sights.First( c => c.IIdentifiable.Id == id ).Position = new Point( position );
             _clients.SightMoved( id, position );
         }
 

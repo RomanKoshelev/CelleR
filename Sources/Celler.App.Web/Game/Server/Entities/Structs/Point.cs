@@ -8,7 +8,7 @@ using Celler.App.Web.Game.Server.Models;
 
 namespace Celler.App.Web.Game.Server.Entities.Structs
 {
-    public struct Point: IModel<PointModel>
+    public struct Point: IModelable<PointModel>
     {
         public readonly double X;
         public readonly double Y;

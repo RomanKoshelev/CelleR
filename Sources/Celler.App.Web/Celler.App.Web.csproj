@@ -184,7 +184,9 @@
     <Compile Include="Game\Server\App\GameApplication.cs" />
     <Compile Include="Game\Server\Entities\Abstract\AbstractEntity.cs" />
     <Compile Include="Game\Server\Entities\GameObjects\Food.cs" />
-    <Compile Include="Game\Server\Entities\Interfaces\IModel.cs" />
+    <Compile Include="Game\Server\Entities\Interfaces\ISight.cs" />
+    <Compile Include="Game\Server\Entities\Interfaces\ICell.cs" />
+    <Compile Include="Game\Server\Entities\Interfaces\IModelable.cs" />
     <Compile Include="Game\Server\Entities\Interfaces\ISuit.cs" />
     <Compile Include="Game\Server\Entities\GameObjects\Sight.cs" />
     <Compile Include="Game\Server\Entities\GameObjects\Home.cs" />
@@ -194,7 +196,7 @@
     <Compile Include="Game\Server\Entities\Interfaces\IBody.cs" />
     <Compile Include="Game\Server\Logic\ICollisionLogic.cs" />
     <Compile Include="Game\Server\Managers\IBodyManager.cs" />
-    <Compile Include="Game\Server\Entities\Interfaces\IEntity.cs" />
+    <Compile Include="Game\Server\Entities\Interfaces\IIdentifiable.cs" />
     <Compile Include="Game\Server\Managers\IFoodManager.cs" />
     <Compile Include="Game\Server\Logic\ITimeLogic.cs" />
     <Compile Include="Game\Server\Logic\IAuxLogic.cs" />

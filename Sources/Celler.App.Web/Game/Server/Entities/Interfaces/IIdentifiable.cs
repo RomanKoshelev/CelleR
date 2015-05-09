@@ -1,10 +1,10 @@
 // Celler (c) 2015 Krokodev
 // Celler.App.Web
-// IEntity.cs
+// IIdentifiable.cs
 
 namespace Celler.App.Web.Game.Server.Entities.Interfaces
 {
-    public interface IEntity<out TModel> : IModel< TModel >
+    public interface IIdentifiable
     {
         string Id { get; set; }
     }
