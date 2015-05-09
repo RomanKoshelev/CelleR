@@ -38,6 +38,11 @@ namespace Celler.App.Web.Game.Server.Clients
             Clients.All.FoodAdded( foodModel );
         }
 
+        void IGameHubClient.FoodRemoved( string id )
+        {
+            Clients.All.FoodRemoved( id );
+        }
+
         #endregion
 
 

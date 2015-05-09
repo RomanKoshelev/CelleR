@@ -38,7 +38,10 @@ declare module Celler {
         private createCells(arr);
         private createSights(arr);
         private createFoods(arr);
+        foods: Food[];
+        private addFood(model);
         private onFoodAdded(model);
+        private onFoodRemoved(id);
     }
 }
 declare module Celler {
@@ -142,6 +145,7 @@ declare module Celler {
         onSightMoved: Phaser.Signal;
         onStarted: Phaser.Signal;
         onFoodAdded: Phaser.Signal;
+        onFoodRemoved: Phaser.Signal;
         onTickCountUpdated: Phaser.Signal;
         private client;
         private init();
@@ -150,5 +154,6 @@ declare module Celler {
         sightMoved(id: string, position: PointModel): void;
         foodAdded(foodModel: FoodModel): void;
         tickCountUpdated(count: number): void;
+        foodRemoved(id: string): void;
     }
 }

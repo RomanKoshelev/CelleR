@@ -13,5 +13,6 @@ namespace Celler.App.Web.Game.Server.Hub
         void SightMoved( string id, PointModel position );
         void TickCountUpdated( int tickCount );
         void FoodAdded( FoodModel foodModel );
+        void FoodRemoved( string id );
     }
 }

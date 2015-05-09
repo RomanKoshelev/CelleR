@@ -9,8 +9,9 @@
 
             app.server.getSession().done( ( sesion: SessionModel ) => {
                 this.fromModel( sesion );
-            });
+            } );
             app.server.onFoodAdded.add( this.onFoodAdded, this );
+            app.server.onFoodRemoved.add( this.onFoodRemoved, this );
         }
 
         private fromModel( model: SessionModel ) {
@@ -34,11 +35,27 @@
         }
 
         private createFoods( arr: FoodModel[] ) {
-            arr.map( model => { this.game.add.existing( new Food( this.game, model ) ); } );
+            arr.map( model => this.addFood(model) );
+        }
+
+
+        foods = new Array<Food>();
+
+        private addFood( model: FoodModel ) {
+            var food = new Food( this.game, model );
+            this.foods.push(food);
+            this.game.add.existing( food );
         }
 
         private onFoodAdded( model: FoodModel ) {
-            this.game.add.existing( new Food( this.game, model ) );
+            this.addFood(model);
+        }
+
+        private onFoodRemoved( id: string ) {
+            this.foods.filter(f=>f.id===id).forEach(f => {
+                this.game.world.remove( f );
+                f.destroy( true );
+            });
         }
     }
 }

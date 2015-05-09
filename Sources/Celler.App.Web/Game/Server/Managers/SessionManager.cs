@@ -66,6 +66,7 @@ namespace Celler.App.Web.Game.Server.Managers
         void IFoodManager.RemoveFood( Food food )
         {
             _foods.RemoveAll( f => f.IIdentifiable.Id == food.IIdentifiable.Id );
+            _clients.FoodRemoved( food.IIdentifiable.Id );
         }
 
         #endregion

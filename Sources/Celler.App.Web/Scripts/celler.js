@@ -79,11 +79,13 @@ var Celler;
     var SessionManager = (function () {
         function SessionManager(game) {
             var _this = this;
+            this.foods = new Array();
             this.game = game;
             Celler.app.server.getSession().done(function (sesion) {
                 _this.fromModel(sesion);
             });
             Celler.app.server.onFoodAdded.add(this.onFoodAdded, this);
+            Celler.app.server.onFoodRemoved.add(this.onFoodRemoved, this);
         }
         SessionManager.prototype.fromModel = function (model) {
             this.id = model.Id;
@@ -112,12 +114,22 @@ var Celler;
         };
         SessionManager.prototype.createFoods = function (arr) {
             var _this = this;
-            arr.map(function (model) {
-                _this.game.add.existing(new Celler.Food(_this.game, model));
-            });
+            arr.map(function (model) { return _this.addFood(model); });
+        };
+        SessionManager.prototype.addFood = function (model) {
+            var food = new Celler.Food(this.game, model);
+            this.foods.push(food);
+            this.game.add.existing(food);
         };
         SessionManager.prototype.onFoodAdded = function (model) {
-            this.game.add.existing(new Celler.Food(this.game, model));
+            this.addFood(model);
+        };
+        SessionManager.prototype.onFoodRemoved = function (id) {
+            var _this = this;
+            this.foods.filter(function (f) { return f.id === id; }).forEach(function (f) {
+                _this.game.world.remove(f);
+                f.destroy(true);
+            });
         };
         return SessionManager;
     })();
@@ -389,6 +401,7 @@ var Celler;
             this.onSightMoved = new Phaser.Signal();
             this.onStarted = new Phaser.Signal();
             this.onFoodAdded = new Phaser.Signal();
+            this.onFoodRemoved = new Phaser.Signal();
             this.onTickCountUpdated = new Phaser.Signal();
             this.client = $.connection.gameHub.client;
             this.init();
@@ -428,6 +441,9 @@ var Celler;
             this.client.foodAdded = function (food) {
                 _this.foodAdded(food);
             };
+            this.client.foodRemoved = function (id) {
+                _this.foodRemoved(id);
+            };
             this.client.tickCountUpdated = function (count) {
                 _this.tickCountUpdated(count);
             };
@@ -449,6 +465,9 @@ var Celler;
         };
         ServerAdapter.prototype.tickCountUpdated = function (count) {
             this.onTickCountUpdated.dispatch(count);
+        };
+        ServerAdapter.prototype.foodRemoved = function (id) {
+            this.onFoodRemoved.dispatch(id);
         };
         return ServerAdapter;
     })();

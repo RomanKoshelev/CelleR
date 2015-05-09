@@ -143,6 +143,14 @@ interface GameHubClient
       * @return {void}
       */
     foodAdded : (foodModel : FoodModel) => void;
+ 
+    /**
+      * Set this function with a "function(id : string){}" to receive the "foodRemoved" message from the GameHub hub.
+      * Contract Documentation: ---
+      * @param id {string} 
+      * @return {void}
+      */
+    foodRemoved : (id : string) => void;
 }
  
 //#endregion GameHub hub
