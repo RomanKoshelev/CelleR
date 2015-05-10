@@ -65,7 +65,7 @@ namespace Celler.App.Web.Game.Server.Logic
 
         private static bool Intersects( IBody a, IBody b )
         {
-            return ( Point.Distance( a.Position, b.Position ) < (a.Size + b.Size)/2 );
+            return ( Point.Distance( a.Position, b.Position ) < ( a.Size + b.Size )/2 );
         }
 
         private static IEnumerable< Tuple< IBody, IBody > > MakePairs( IList< IBody > bodies )

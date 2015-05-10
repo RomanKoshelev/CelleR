@@ -52,6 +52,5 @@ namespace Celler.App.Web.Game.Server.Entities.Structs
         }
 
         #endregion
-
     }
 }

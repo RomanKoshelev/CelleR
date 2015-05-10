@@ -8,7 +8,7 @@ using Celler.App.Web.Game.Server.Models;
 
 namespace Celler.App.Web.Game.Server.Entities.Structs
 {
-    public struct Point: IModelled<PointModel>
+    public struct Point : IModelled< PointModel >
     {
         #region Properties
 

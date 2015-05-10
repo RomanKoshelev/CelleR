@@ -46,7 +46,6 @@ namespace Celler.App.Web.Game.Server.Clients
         #endregion
 
 
-
         #region Static
 
         private static IHubConnectionContext< dynamic > Clients
@@ -60,6 +59,5 @@ namespace Celler.App.Web.Game.Server.Clients
         }
 
         #endregion
-
     }
 }

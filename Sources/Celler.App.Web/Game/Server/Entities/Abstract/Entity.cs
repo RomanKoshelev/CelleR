@@ -32,11 +32,13 @@ namespace Celler.App.Web.Game.Server.Entities.Abstract
 
 
         #region IModelled
-        public IModelled<T> IModelled
+
+        public IModelled< T > IModelled
         {
             get { return this; }
         }
-        T IModelled<T>.Model
+
+        T IModelled< T >.Model
         {
             get { return ToModel(); }
         }
@@ -49,6 +51,5 @@ namespace Celler.App.Web.Game.Server.Entities.Abstract
         protected abstract T ToModel();
 
         #endregion
-
     }
 }

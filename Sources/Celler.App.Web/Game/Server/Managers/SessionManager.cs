@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Celler.App.Web.Game.Server.Clients;
-using Celler.App.Web.Game.Server.Entities;
 using Celler.App.Web.Game.Server.Entities.Abstract;
 using Celler.App.Web.Game.Server.Entities.Enums;
 using Celler.App.Web.Game.Server.Entities.GameObjects;
@@ -69,6 +68,11 @@ namespace Celler.App.Web.Game.Server.Managers
             _clients.FoodRemoved( food.IIdentifiable.Id );
         }
 
+        int IFoodManager.GetFoodCount()
+        {
+            return _foods.Count();
+        }
+
         #endregion
 
 
@@ -127,7 +131,12 @@ namespace Celler.App.Web.Game.Server.Managers
 
         public void MoveCell( string id, PointModel position )
         {
-            _cells.First( c => c.IIdentifiable.Id == id ).Position = new Point( position );
+            var cell = _cells.FirstOrDefault( c => c.IIdentifiable.Id == id );
+            if( cell == null ) {
+                // Todo: log error
+                return;
+            }
+            cell.Position = new Point( position );
             _clients.CellMoved( id, position );
         }
 

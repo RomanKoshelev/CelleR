@@ -98,7 +98,7 @@ module Celler {
 
             if( keyboard.isDown( Phaser.Keyboard.ENTER ) || keyboard.isDown( Phaser.Keyboard.SPACEBAR ) ) {
                 app.server.moveSight( this.id, this.toPointModel() );
-                app.server.moveCell( this.id, this.toPointModel() );
+                app.server.moveCell( this.cellId, this.toPointModel() );
             }
         }
     }

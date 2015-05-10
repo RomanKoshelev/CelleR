@@ -2,7 +2,6 @@
 // Celler.App.Web
 // IFoodManager.cs
 
-using Celler.App.Web.Game.Server.Entities;
 using Celler.App.Web.Game.Server.Entities.Enums;
 using Celler.App.Web.Game.Server.Entities.GameObjects;
 using Celler.App.Web.Game.Server.Entities.Structs;
@@ -13,5 +12,6 @@ namespace Celler.App.Web.Game.Server.Managers
     {
         Food AddFood( Suit suit, Point position, double size );
         void RemoveFood( Food food );
+        int GetFoodCount();
     }
 }

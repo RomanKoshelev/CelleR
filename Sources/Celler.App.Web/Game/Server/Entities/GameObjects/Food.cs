@@ -7,7 +7,7 @@ using Celler.App.Web.Game.Server.Models;
 
 namespace Celler.App.Web.Game.Server.Entities.GameObjects
 {
-    public class Food : GameObject<FoodModel >
+    public class Food : GameObject< FoodModel >
     {
         protected override FoodModel ToModel()
         {

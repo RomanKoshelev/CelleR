@@ -3,7 +3,6 @@
 // FoodLogic.cs
 
 using System;
-using Celler.App.Web.Game.Server.Entities;
 using Celler.App.Web.Game.Server.Entities.Enums;
 using Celler.App.Web.Game.Server.Entities.GameObjects;
 using Celler.App.Web.Game.Server.Entities.Interfaces;
@@ -40,8 +39,8 @@ namespace Celler.App.Web.Game.Server.Logic
         #region Constants
 
         private const double MinFoodSize = 20;
-
-        private const int FoodCreationInterval = 5;
+        private const int FoodCreationInterval = 2;
+        private const int MaxFoodCount = 5;
 
         #endregion
 
@@ -52,11 +51,12 @@ namespace Celler.App.Web.Game.Server.Logic
         private readonly IGameLogic _game;
         private readonly IFoodManager _foodManager;
         private DateTime _lastTimeFoodAdded = DateTime.Now;
+        private static readonly Random Random = new Random();
 
         #endregion
 
 
-        #region Methods
+        #region Event Handlers
 
         private void onCollision( IBody a, IBody b )
         {
@@ -67,20 +67,64 @@ namespace Celler.App.Web.Game.Server.Logic
             }
         }
 
-        private void ProcCollisionFoodWithCell( Food food, Cell cell )
-        {
-            _foodManager.RemoveFood( food );
-        }
+        #endregion
+
+
+        #region Creation
 
         private void AddNewFoodIfNeed()
         {
+            if( NeedToAddFood() ) {
+                AddFood( RandomSuit() );
+            }
+        }
+
+        private bool NeedToAddFood()
+        {
+            return TimePermitsFoodCreation() && FoodCountPermitsFoodCreation();
+        }
+
+        private bool FoodCountPermitsFoodCreation()
+        {
+            return _foodManager.GetFoodCount() < MaxFoodCount;
+        }
+
+        private bool TimePermitsFoodCreation()
+        {
             if( _timer.CurrentTime - _lastTimeFoodAdded <= TimeSpan.FromSeconds( FoodCreationInterval ) ) {
-                return;
+                return false;
             }
             _lastTimeFoodAdded = _timer.CurrentTime;
+            return true;
+        }
 
-            _foodManager.AddFood( Suit.Blue, Point.RandomIn( _game.GetBounds() ), MinFoodSize );
-            _foodManager.AddFood( Suit.Red, Point.RandomIn( _game.GetBounds() ), MinFoodSize );
+        #endregion
+        
+        #region Eating
+
+        private void ProcCollisionFoodWithCell( Food food, Cell cell )
+        {
+            RemoveFeed( food );
+        }
+
+        #endregion
+
+
+        #region Utils
+
+        private static Suit RandomSuit()
+        {
+            return Random.Next( 2 ) == 0 ? Suit.Blue : Suit.Red;
+        }
+
+        private Food AddFood( Suit suit )
+        {
+            return _foodManager.AddFood( suit, Point.RandomIn( _game.GetBounds() ), MinFoodSize );
+        }
+
+        private void RemoveFeed( Food food )
+        {
+            _foodManager.RemoveFood( food );
         }
 
         #endregion

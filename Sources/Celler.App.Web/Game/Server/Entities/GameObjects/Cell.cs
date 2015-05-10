@@ -12,7 +12,8 @@ namespace Celler.App.Web.Game.Server.Entities.GameObjects
     {
         #region ICell
 
-        public ICell ICell {
+        public ICell ICell
+        {
             get { return this; }
         }
 
@@ -20,7 +21,6 @@ namespace Celler.App.Web.Game.Server.Entities.GameObjects
         string ICell.SightId { get; set; }
 
         #endregion
-
 
 
         #region Overrrides
@@ -35,6 +35,5 @@ namespace Celler.App.Web.Game.Server.Entities.GameObjects
         }
 
         #endregion
-
     }
 }

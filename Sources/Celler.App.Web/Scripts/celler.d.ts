@@ -1,19 +1,3 @@
-declare module Celler {
-    class App {
-        game: Phaser.Game;
-        server: ServerAdapter;
-        playerId: string;
-        playerSuit: Suit;
-        tickCount: Number;
-        constructor();
-        create(): void;
-        private init();
-        private createGame(width, height);
-        private onTickCountUpdated(count);
-    }
-    var app: App;
-    function initApp(): void;
-}
 declare module Celler.Assets {
     enum Type {
         CellBody = 0,
@@ -27,6 +11,59 @@ declare module Celler.Assets {
         static getKey(suit: Suit, assetType: Type): string;
         static load(suit: Suit, assetType: Assets.Type): void;
     }
+}
+declare module Celler {
+    class SuitSprite extends Phaser.Sprite {
+        suit: Suit;
+        constructor(game: Phaser.Game, suit: Suit, assetType: Assets.Type, size?: number);
+    }
+}
+declare module Celler {
+    class Food extends SuitSprite {
+        id: string;
+        constructor(game: Phaser.Game, model: FoodModel);
+    }
+}
+declare module Celler {
+    class SessionManager {
+        game: Phaser.Game;
+        id: string;
+        constructor(game: Phaser.Game);
+        private fromModel(model);
+        private createHomes(arr);
+        private createCells(arr);
+        private createSights(arr);
+        private createFoods(arr);
+        foods: Food[];
+        private addFood(model);
+        private onFoodAdded(model);
+        private onFoodRemoved(id);
+    }
+}
+declare module Celler {
+    class PlayState extends Phaser.State {
+        static background: string;
+        session: SessionManager;
+        constructor();
+        init(): void;
+        preload(): void;
+        create(): void;
+        update(): void;
+        private preloadSprites(suit);
+    }
+}
+declare module Celler {
+    class Home extends SuitSprite {
+        id: string;
+        constructor(game: Phaser.Game, model: HomeModel);
+    }
+}
+declare module Celler {
+    enum Suit {
+        Blue = 0,
+        Red = 1,
+    }
+    function toSuit(str: string): Suit;
 }
 declare module Celler {
     class Cell extends Phaser.Group {
@@ -46,24 +83,6 @@ declare module Celler {
         private lookAtSigtPoint();
         private calcEyeRate();
         private updateEyeSize();
-    }
-}
-declare module Celler {
-    class SuitSprite extends Phaser.Sprite {
-        suit: Suit;
-        constructor(game: Phaser.Game, suit: Suit, assetType: Assets.Type, size?: number);
-    }
-}
-declare module Celler {
-    class Food extends SuitSprite {
-        id: string;
-        constructor(game: Phaser.Game, model: FoodModel);
-    }
-}
-declare module Celler {
-    class Home extends SuitSprite {
-        id: string;
-        constructor(game: Phaser.Game, model: HomeModel);
     }
 }
 declare module Celler {
@@ -88,27 +107,23 @@ declare module Celler {
     }
 }
 declare module Celler {
-    enum Suit {
-        Blue = 0,
-        Red = 1,
-    }
-    function toSuit(str: string): Suit;
+    function modelToPoint(model: PointModel): Phaser.Point;
 }
 declare module Celler {
-    class SessionManager {
+    class App {
         game: Phaser.Game;
-        id: string;
-        constructor(game: Phaser.Game);
-        private fromModel(model);
-        private createHomes(arr);
-        private createCells(arr);
-        private createSights(arr);
-        private createFoods(arr);
-        foods: Food[];
-        private addFood(model);
-        private onFoodAdded(model);
-        private onFoodRemoved(id);
+        server: ServerAdapter;
+        playerId: string;
+        playerSuit: Suit;
+        tickCount: Number;
+        constructor();
+        create(): void;
+        private init();
+        private createGame(width, height);
+        private onTickCountUpdated(count);
     }
+    var app: App;
+    function initApp(): void;
 }
 declare module Celler {
     class ServerAdapter implements GameHubServer, GameHubClient {
@@ -137,19 +152,4 @@ declare module Celler {
         tickCountUpdated(count: number): void;
         foodRemoved(id: string): void;
     }
-}
-declare module Celler {
-    class PlayState extends Phaser.State {
-        static background: string;
-        session: SessionManager;
-        constructor();
-        init(): void;
-        preload(): void;
-        create(): void;
-        update(): void;
-        private preloadSprites(suit);
-    }
-}
-declare module Celler {
-    function modelToPoint(model: PointModel): Phaser.Point;
 }

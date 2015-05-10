@@ -1,6 +1,6 @@
 // Celler (c) 2015 Krokodev
 // Celler.App.Web
-// ISubLogic.cs
+// IAuxLogic.cs
 
 namespace Celler.App.Web.Game.Server.Logic
 {
