@@ -16,6 +16,7 @@ declare module Celler {
     class SuitSprite extends Phaser.Sprite {
         suit: Suit;
         constructor(game: Phaser.Game, suit: Suit, assetType: Assets.Type, size?: number);
+        resize(size: number): void;
     }
 }
 declare module Celler {
@@ -34,10 +35,14 @@ declare module Celler {
         private createCells(arr);
         private createSights(arr);
         private createFoods(arr);
-        foods: Food[];
+        foods: {
+            [id: string]: Food;
+        };
         private addFood(model);
         private onFoodAdded(model);
         private onFoodRemoved(id);
+        private onFoodsUpdated(models);
+        private updateFood(food, model);
     }
 }
 declare module Celler {

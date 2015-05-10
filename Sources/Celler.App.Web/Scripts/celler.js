@@ -43,9 +43,12 @@ var Celler;
             this.suit = suit;
             this.anchor.set(0.5);
             if (size !== 0) {
-                this.scale.set(size / this.width);
+                this.resize(size);
             }
         }
+        SuitSprite.prototype.resize = function (size) {
+            this.scale.set(size / this.texture.width);
+        };
         return SuitSprite;
     })(Phaser.Sprite);
     Celler.SuitSprite = SuitSprite;
@@ -69,13 +72,14 @@ var Celler;
     var SessionManager = (function () {
         function SessionManager(game) {
             var _this = this;
-            this.foods = new Array();
+            this.foods = {};
             this.game = game;
             Celler.app.server.getSession().done(function (sesion) {
                 _this.fromModel(sesion);
             });
             Celler.app.server.onFoodAdded.add(this.onFoodAdded, this);
             Celler.app.server.onFoodRemoved.add(this.onFoodRemoved, this);
+            Celler.app.server.onFoodsUpdated.add(this.onFoodsUpdated, this);
         }
         SessionManager.prototype.fromModel = function (model) {
             this.id = model.Id;
@@ -108,18 +112,25 @@ var Celler;
         };
         SessionManager.prototype.addFood = function (model) {
             var food = new Celler.Food(this.game, model);
-            this.foods.push(food);
+            this.foods[food.id] = food;
             this.game.add.existing(food);
         };
         SessionManager.prototype.onFoodAdded = function (model) {
             this.addFood(model);
         };
         SessionManager.prototype.onFoodRemoved = function (id) {
+            var food = this.foods[id];
+            this.game.world.remove(food);
+            food.destroy(true);
+        };
+        SessionManager.prototype.onFoodsUpdated = function (models) {
             var _this = this;
-            this.foods.filter(function (f) { return f.id === id; }).forEach(function (f) {
-                _this.game.world.remove(f);
-                f.destroy(true);
+            models.forEach(function (model) {
+                _this.updateFood(_this.foods[model.Base.Id], model);
             });
+        };
+        SessionManager.prototype.updateFood = function (food, model) {
+            food.resize(model.Base.Size);
         };
         return SessionManager;
     })();

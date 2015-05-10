@@ -12,6 +12,7 @@
             } );
             app.server.onFoodAdded.add( this.onFoodAdded, this );
             app.server.onFoodRemoved.add( this.onFoodRemoved, this );
+            app.server.onFoodsUpdated.add( this.onFoodsUpdated, this );
         }
 
         private fromModel( model: SessionModel ) {
@@ -35,27 +36,37 @@
         }
 
         private createFoods( arr: FoodModel[] ) {
-            arr.map( model => this.addFood(model) );
+            arr.map( model => this.addFood( model ) );
         }
 
 
-        foods = new Array<Food>();
+        foods: { [ id: string ]: Food; } = {};
 
         private addFood( model: FoodModel ) {
             var food = new Food( this.game, model );
-            this.foods.push(food);
+            this.foods[ food.id ] = food;
             this.game.add.existing( food );
         }
 
         private onFoodAdded( model: FoodModel ) {
-            this.addFood(model);
+            this.addFood( model );
         }
 
         private onFoodRemoved( id: string ) {
-            this.foods.filter(f=>f.id===id).forEach(f => {
-                this.game.world.remove( f );
-                f.destroy( true );
-            });
+            var food = this.foods[ id ];
+            this.game.world.remove( food );
+            food.destroy( true );
+        }
+
+        private onFoodsUpdated( models: FoodModel[] ) {
+            
+            models.forEach( model => {
+                this.updateFood(this.foods[model.Base.Id], model);
+            } );
+        }
+
+        private updateFood( food: Food, model: FoodModel ) {
+            food.resize( model.Base.Size );
         }
     }
 }

@@ -7,8 +7,12 @@ module Celler {
             this.suit = suit;
             this.anchor.set( 0.5 );
             if( size !== 0 ) {
-                this.scale.set( size / this.width );
+                this.resize(size);
             }
+        }
+
+        resize( size: number ) {
+            this.scale.set( size / this.texture.width );
         }
     }
 }
