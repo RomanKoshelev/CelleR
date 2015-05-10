@@ -12,9 +12,24 @@ namespace Celler.App.Web.Game.Server.Entities.Abstract
     public abstract class GameObject<T> : Entity< T >, IBody, ISuit
 
     {
+        #region Ctor
+        protected GameObject( Suit suit, Point position, double size )
+        {
+            ISuit.Suit = suit;
+            IBody.Position = position;
+            IBody.Size = size;
+        }
+
+        #endregion
+
+
         #region ISuit
 
-        public Suit Suit { get; set; }
+        protected ISuit ISuit
+        {
+            get { return this; }
+        }
+        Suit ISuit.Suit { get; set; }
 
         #endregion
 
@@ -26,8 +41,8 @@ namespace Celler.App.Web.Game.Server.Entities.Abstract
             get { return this; }
         }
 
-        public Point Position { get; set; }
-        public double Size { get; set; }
+        Point IBody.Position { get; set; }
+        double IBody.Size { get; set; }
 
         #endregion
 
@@ -38,7 +53,7 @@ namespace Celler.App.Web.Game.Server.Entities.Abstract
         {
             return new GameObjectModel {
                 Id = IIdentifiable.Id,
-                Suit = Suit.ToString(),
+                Suit = ISuit.Suit.ToString(),
                 Position = IBody.Position.Model,
                 Size = IBody.Size
             };

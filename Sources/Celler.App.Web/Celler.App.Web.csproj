@@ -195,12 +195,16 @@
     <Compile Include="Game\Server\Logic\FoodLogic.cs" />
     <Compile Include="Game\Server\Entities\Interfaces\IBody.cs" />
     <Compile Include="Game\Server\Logic\ICollisionLogic.cs" />
+    <Compile Include="Game\Server\Entities\Interfaces\IFood.cs" />
     <Compile Include="Game\Server\Managers\IBodyManager.cs" />
     <Compile Include="Game\Server\Entities\Interfaces\IIdentifiable.cs" />
+    <Compile Include="Game\Server\Managers\ICellManager.cs" />
     <Compile Include="Game\Server\Managers\IFoodManager.cs" />
     <Compile Include="Game\Server\Logic\ITimeLogic.cs" />
     <Compile Include="Game\Server\Logic\IAuxLogic.cs" />
     <Compile Include="Game\Server\Entities\Structs\Size.cs" />
+    <Compile Include="Game\Server\Managers\IHomeManager.cs" />
+    <Compile Include="Game\Server\Managers\ISightManager.cs" />
     <Compile Include="Game\Server\Models\FoodModel.cs" />
     <Compile Include="Game\Server\Models\SightModel.cs" />
     <Compile Include="Game\Server\Models\HomeModel.cs" />

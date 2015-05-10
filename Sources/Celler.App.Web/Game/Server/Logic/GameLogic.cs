@@ -58,7 +58,7 @@ namespace Celler.App.Web.Game.Server.Logic
         void IGameLogic.MoveCell( string id, PointModel position )
         {
             KeepPositionInBounds( position );
-            _sessionManager.MoveCell( id, position );
+            _sessionManager.ICellManager.MoveCell( id, position );
         }
 
         void IGameLogic.HintSightPosition( string id, PointModel position )
@@ -70,7 +70,7 @@ namespace Celler.App.Web.Game.Server.Logic
         void IGameLogic.MoveSight( string id, PointModel position )
         {
             KeepPositionInBounds( position );
-            _sessionManager.MoveSight( id, position );
+            _sessionManager.ISightManager.MoveSight( id, position );
         }
 
         SizeModel IGameLogic.GetBounds()
@@ -98,7 +98,7 @@ namespace Celler.App.Web.Game.Server.Logic
 
         #region Constants
 
-        private const int TickInterval = 1000;
+        private const int TickInterval = 100;
         private const double WorldWidth = 720;
         private const double WorldHeight = 720;
         private const double HomeSize = 150;
@@ -137,9 +137,9 @@ namespace Celler.App.Web.Game.Server.Logic
         private static void InitSessionSuit( SessionManager sessionManager, Suit suit )
         {
             var place = GetCornerCoords( suit, HomeSize/2 );
-            var home = sessionManager.AddHome( suit, place, HomeSize );
-            var cell = sessionManager.AddCell( suit, place, CellSize );
-            var sight = sessionManager.AddSight( suit, place, SightSize );
+            var home = sessionManager.IHomeManager.AddHome( suit, place, HomeSize );
+            var cell = sessionManager.ICellManager.AddCell( suit, place, CellSize );
+            var sight = sessionManager.ISightManager.AddSight( suit, place, SightSize );
             cell.ICell.HomeId = home.IIdentifiable.Id;
             cell.ICell.SightId = sight.IIdentifiable.Id;
             sight.ISight.CellId = cell.IIdentifiable.Id;

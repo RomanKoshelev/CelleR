@@ -15,7 +15,7 @@ using Celler.App.Web.Game.Server.Models;
 
 namespace Celler.App.Web.Game.Server.Managers
 {
-    public class SessionManager : Entity< SessionModel >, IFoodManager, IBodyManager
+    public class SessionManager : Entity< SessionModel >, IFoodManager, IBodyManager, ICellManager, IHomeManager, ISightManager
     {
         #region Constructor
 
@@ -27,63 +27,6 @@ namespace Celler.App.Web.Game.Server.Managers
             _sights = new List< Sight >();
             _foods = new List< Food >();
             _clients = clients;
-        }
-
-        #endregion
-
-
-        #region ICellManager
-
-        public Cell AddCell( Suit suit, Point position, double size )
-        {
-            var obj = new Cell {
-                Suit = suit,
-                Position = position,
-                Size = size
-            };
-            _cells.Add( obj );
-            return obj;
-        }
-
-        #endregion
-
-
-        #region IFoodManager
-
-        Food IFoodManager.AddFood( Suit suit, Point position, double size )
-        {
-            var food = new Food {
-                Suit = suit,
-                Position = position,
-                Size = size
-            };
-            _foods.Add( food );
-            _clients.FoodAdded( food.IModelled.Model );
-            return food;
-        }
-
-        void IFoodManager.RemoveFood( Food food )
-        {
-            _foods.RemoveAll( f => f.IIdentifiable.Id == food.IIdentifiable.Id );
-            _clients.FoodRemoved( food.IIdentifiable.Id );
-        }
-
-        int IFoodManager.GetFoodCount()
-        {
-            return _foods.Count();
-        }
-
-        #endregion
-
-
-        #region IBodyManager
-
-        IList< IBody > IBodyManager.GetBodies()
-        {
-            return _homes
-                .Concat< IBody >( _cells )
-                .Concat< IBody >( _foods )
-                .ToList();
         }
 
         #endregion
@@ -105,44 +48,105 @@ namespace Celler.App.Web.Game.Server.Managers
         #endregion
 
 
-        #region Public
-
-        public Home AddHome( Suit suit, Point position, double size )
+        #region ICellManager
+        public ICellManager ICellManager {
+            get { return this; }
+        }
+        Cell ICellManager.AddCell( Suit suit, Point position, double size )
         {
-            var obj = new Home {
-                Suit = suit,
-                Position = position,
-                Size = size
-            };
+            var cell = new Cell( suit, position, size );
+            _cells.Add( cell );
+            return cell;
+        }
+
+        void ICellManager.MoveCell( string id, PointModel position )
+        {
+            _cells.First( c => c.IIdentifiable.Id == id ).IBody.Position = new Point( position );
+            _clients.CellMoved( id, position );
+        }
+
+        #endregion
+
+
+        #region IFoodManager
+
+        public IFoodManager IFoodManager {
+            get { return this; }
+        }
+        Food IFoodManager.AddFood( Suit suit, Point position, double size )
+        {
+            var food = new Food( suit, position, size );
+            _foods.Add( food );
+            _clients.FoodAdded( food.IModelled.Model );
+            return food;
+        }
+
+        void IFoodManager.RemoveFood( Food food )
+        {
+            _foods.RemoveAll( f => f.IIdentifiable.Id == food.IIdentifiable.Id );
+            _clients.FoodRemoved( food.IIdentifiable.Id );
+        }
+
+        int IFoodManager.GetFoodCount()
+        {
+            return _foods.Count();
+        }
+
+        void IFoodManager.UpdateFoods( Action< Food > action )
+        {
+            _foods.ForEach( action );
+            // todo:> update foods on clients
+            //_clients.FoodsUpdated( foods.IIdentifiable.Id );
+        }
+
+        #endregion
+
+
+        #region IBodyManager
+
+        public IBodyManager IBodyManager {
+            get { return this; }
+        }
+        IList< IBody > IBodyManager.GetBodies()
+        {
+            return _homes
+                .Concat< IBody >( _cells )
+                .Concat< IBody >( _foods )
+                .ToList();
+        }
+
+        #endregion
+
+
+        #region IHomeManager
+
+        public IHomeManager IHomeManager {
+            get { return this; }
+        }
+        Home IHomeManager.AddHome( Suit suit, Point position, double size )
+        {
+            var obj = new Home( suit, position, size );
             _homes.Add( obj );
             return obj;
         }
 
-        public Sight AddSight( Suit suit, Point position, double size )
+        #endregion
+
+
+        #region ISightManager
+        public ISightManager ISightManager {
+            get { return this; }
+        }
+        Sight ISightManager.AddSight( Suit suit, Point position, double size )
         {
-            var obj = new Sight {
-                Suit = suit,
-                Position = position,
-                Size = size
-            };
+            var obj = new Sight ( suit, position, size);
             _sights.Add( obj );
             return obj;
         }
 
-        public void MoveCell( string id, PointModel position )
+        void ISightManager.MoveSight( string id, PointModel position )
         {
-            var cell = _cells.FirstOrDefault( c => c.IIdentifiable.Id == id );
-            if( cell == null ) {
-                // Todo: log error
-                return;
-            }
-            cell.Position = new Point( position );
-            _clients.CellMoved( id, position );
-        }
-
-        public void MoveSight( string id, PointModel position )
-        {
-            _sights.First( c => c.IIdentifiable.Id == id ).Position = new Point( position );
+            _sights.First( c => c.IIdentifiable.Id == id ).IBody.Position = new Point( position );
             _clients.SightMoved( id, position );
         }
 

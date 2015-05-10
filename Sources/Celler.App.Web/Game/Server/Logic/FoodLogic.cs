@@ -31,6 +31,7 @@ namespace Celler.App.Web.Game.Server.Logic
         void IAuxLogic.Update()
         {
             AddNewFoodIfNeed();
+            UpdateFood();
         }
 
         #endregion
@@ -38,7 +39,11 @@ namespace Celler.App.Web.Game.Server.Logic
 
         #region Constants
 
-        private const double MinFoodSize = 20;
+        private const double MinFoodCycleDuration = 1;
+        private const double MaxFoodCycleDuration = 10;
+        private const double MinFoodSize = 10;
+        private const double MaxFoodSize = 70;
+        private const double BaseFoodSize = 10;
         private const int FoodCreationInterval = 2;
         private const int MaxFoodCount = 5;
 
@@ -99,7 +104,8 @@ namespace Celler.App.Web.Game.Server.Logic
         }
 
         #endregion
-        
+
+
         #region Eating
 
         private void ProcCollisionFoodWithCell( Food food, Cell cell )
@@ -125,6 +131,24 @@ namespace Celler.App.Web.Game.Server.Logic
         private void RemoveFeed( Food food )
         {
             _foodManager.RemoveFood( food );
+        }
+
+        #endregion
+
+
+        #region Updating
+
+        private void UpdateFood()
+        {
+            _foodManager.UpdateFoods( FoodModificator );
+        }
+
+        private void FoodModificator( Food food )
+        {
+/*
+            food.IFood.Weight = CalcFoodWeight(food, _timer.CurrentTime);
+            food.Size = CalcFoodWeight(food, _timer.CurrentTime);
+*/
         }
 
         #endregion
