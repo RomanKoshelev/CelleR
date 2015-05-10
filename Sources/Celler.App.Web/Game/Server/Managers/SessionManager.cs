@@ -102,8 +102,7 @@ namespace Celler.App.Web.Game.Server.Managers
         {
             _foods.ForEach( action );
 
-            // todo:> update foods on clients
-            //_clients.FoodsUpdated( foods.IIdentifiable.Id );
+            _clients.FoodsUpdated( _foods.Select( f=>f.IModelled.Model ).ToArray() );
         }
 
         #endregion

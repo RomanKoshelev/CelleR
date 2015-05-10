@@ -2,6 +2,7 @@
 // Celler.App.Web
 // Food.cs
 
+using System;
 using Celler.App.Web.Game.Server.Entities.Abstract;
 using Celler.App.Web.Game.Server.Entities.Enums;
 using Celler.App.Web.Game.Server.Entities.Interfaces;
@@ -27,6 +28,10 @@ namespace Celler.App.Web.Game.Server.Entities.GameObjects
             get { return this; }
         }
 
+        DateTime IFood.CreationTime { get; set; }
+        double IFood.MaxValue { get; set; }
+        double IFood.OscillationFrequency { get; set; }
+
         #endregion
 
 
@@ -40,5 +45,6 @@ namespace Celler.App.Web.Game.Server.Entities.GameObjects
         }
 
         #endregion
+
     }
 }

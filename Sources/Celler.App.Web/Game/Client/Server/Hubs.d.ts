@@ -151,6 +151,14 @@ interface GameHubClient
       * @return {void}
       */
     foodRemoved : (id : string) => void;
+ 
+    /**
+      * Set this function with a "function(models : FoodModel[]){}" to receive the "foodsUpdated" message from the GameHub hub.
+      * Contract Documentation: ---
+      * @param models {FoodModel[]} 
+      * @return {void}
+      */
+    foodsUpdated : (models : FoodModel[]) => void;
 }
  
 //#endregion GameHub hub

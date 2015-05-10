@@ -14,5 +14,6 @@ namespace Celler.App.Web.Game.Server.Hub
         void TickCountUpdated( int tickCount );
         void FoodAdded( FoodModel foodModel );
         void FoodRemoved( string id );
+        void FoodsUpdated( FoodModel[] models );
     }
 }

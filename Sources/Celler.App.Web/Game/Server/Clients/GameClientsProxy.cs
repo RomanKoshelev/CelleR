@@ -43,6 +43,11 @@ namespace Celler.App.Web.Game.Server.Clients
             Clients.All.FoodRemoved( id );
         }
 
+        void IGameHubClient.FoodsUpdated( FoodModel[] models )
+        {
+            Clients.All.FoodsUpdated( models );
+        }
+
         #endregion
 
 

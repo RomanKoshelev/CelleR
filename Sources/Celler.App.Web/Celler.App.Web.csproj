@@ -198,6 +198,7 @@
     <Compile Include="Game\Server\Entities\Interfaces\IBody.cs" />
     <Compile Include="Game\Server\Logic\ICollisionLogic.cs" />
     <Compile Include="Game\Server\Entities\Interfaces\IFood.cs" />
+    <Compile Include="Game\Server\Utils\Calc.cs" />
     <Compile Include="Game\Server\Managers\IBodyManager.cs" />
     <Compile Include="Game\Server\Entities\Interfaces\IIdentifiable.cs" />
     <Compile Include="Game\Server\Managers\ICellManager.cs" />
@@ -352,7 +353,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1656</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:2008/</IISUrl>
+          <IISUrl>http://localhost:2009/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

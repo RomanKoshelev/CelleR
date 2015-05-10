@@ -8,6 +8,7 @@ using Celler.App.Web.Game.Server.Entities.GameObjects;
 using Celler.App.Web.Game.Server.Entities.Interfaces;
 using Celler.App.Web.Game.Server.Entities.Structs;
 using Celler.App.Web.Game.Server.Managers;
+using Celler.App.Web.Game.Server.Utils;
 
 namespace Celler.App.Web.Game.Server.Logic
 {
@@ -39,11 +40,8 @@ namespace Celler.App.Web.Game.Server.Logic
 
         #region Constants
 
-        private const double MinFoodCycleDuration = 1;
-        private const double MaxFoodCycleDuration = 10;
+        private const double MaxFoodValue = 1;
         private const double MinFoodSize = 10;
-        private const double MaxFoodSize = 70;
-        private const double BaseFoodSize = 10;
         private const int FoodCreationInterval = 2;
         private const int MaxFoodCount = 5;
 
@@ -116,6 +114,33 @@ namespace Celler.App.Web.Game.Server.Logic
         #endregion
 
 
+        #region Updating
+
+        private void UpdateFood()
+        {
+            _foodManager.UpdateFoods( FoodModificator );
+        }
+
+        private void FoodModificator( Food food )
+        {
+            food.IValuable.Value = CalcFoodValue( food, _timer.CurrentTime );
+            food.IBody.Size = CalcFoodSize( food );
+        }
+
+        private static double CalcFoodSize( Food food )
+        {
+            return Calc.Proportion( MinFoodSize, MaxFoodCount, food.IValuable.Value/MaxFoodValue );
+        }
+
+        private static double CalcFoodValue( Food food, DateTime currentTime )
+        {
+            var duration = currentTime - food.IFood.CreationTime;
+            return Calc.Harmonics( 0, food.IFood.MaxValue, duration.TotalSeconds, food.IFood.OscillationFrequency );
+        }
+
+        #endregion
+
+
         #region Utils
 
         private static Suit RandomSuit()
@@ -131,24 +156,6 @@ namespace Celler.App.Web.Game.Server.Logic
         private void RemoveFeed( Food food )
         {
             _foodManager.RemoveFood( food );
-        }
-
-        #endregion
-
-
-        #region Updating
-
-        private void UpdateFood()
-        {
-            _foodManager.UpdateFoods( FoodModificator );
-        }
-
-        private void FoodModificator( Food food )
-        {
-            /*
-            food.IFood.Value = CalcFoodWeight(food, _timer.CurrentTime);
-            food.Size = CalcFoodWeight(food, _timer.CurrentTime);
-*/
         }
 
         #endregion

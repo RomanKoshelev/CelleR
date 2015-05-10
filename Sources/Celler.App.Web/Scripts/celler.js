@@ -392,6 +392,7 @@ var Celler;
             this.onStarted = new Phaser.Signal();
             this.onFoodAdded = new Phaser.Signal();
             this.onFoodRemoved = new Phaser.Signal();
+            this.onFoodsUpdated = new Phaser.Signal();
             this.onTickCountUpdated = new Phaser.Signal();
             this.client = $.connection.gameHub.client;
             this.init();
@@ -434,6 +435,9 @@ var Celler;
             this.client.foodRemoved = function (id) {
                 _this.foodRemoved(id);
             };
+            this.client.foodsUpdated = function (models) {
+                _this.foodsUpdated(models);
+            };
             this.client.tickCountUpdated = function (count) {
                 _this.tickCountUpdated(count);
             };
@@ -458,6 +462,9 @@ var Celler;
         };
         ServerAdapter.prototype.foodRemoved = function (id) {
             this.onFoodRemoved.dispatch(id);
+        };
+        ServerAdapter.prototype.foodsUpdated = function (models) {
+            this.onFoodsUpdated.dispatch(models);
         };
         return ServerAdapter;
     })();

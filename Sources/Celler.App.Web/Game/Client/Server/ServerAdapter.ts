@@ -46,6 +46,7 @@
         onStarted = new Phaser.Signal();
         onFoodAdded = new Phaser.Signal();
         onFoodRemoved = new Phaser.Signal();
+        onFoodsUpdated = new Phaser.Signal();
         onTickCountUpdated = new Phaser.Signal();
 
         private client = $.connection.gameHub.client;
@@ -56,6 +57,7 @@
             this.client.sightMoved = ( id: string, position: PointModel ) => { this.sightMoved( id, position ); };
             this.client.foodAdded = ( food: FoodModel ) => { this.foodAdded( food ); };
             this.client.foodRemoved = ( id: string ) => { this.foodRemoved( id ); };
+            this.client.foodsUpdated = ( models: FoodModel[]) => { this.foodsUpdated( models ); };
             this.client.tickCountUpdated = ( count: number ) => { this.tickCountUpdated( count ); };
 
             $.connection.hub.start().done( () => { this.onStarted.dispatch() } );
@@ -83,6 +85,10 @@
 
         foodRemoved( id: string ): void {
             this.onFoodRemoved.dispatch( id );
+        }
+
+        foodsUpdated( models: FoodModel[] ): void {
+            this.onFoodsUpdated.dispatch( models );
         }
     }
 }

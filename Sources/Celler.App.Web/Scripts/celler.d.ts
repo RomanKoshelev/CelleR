@@ -142,6 +142,7 @@ declare module Celler {
         onStarted: Phaser.Signal;
         onFoodAdded: Phaser.Signal;
         onFoodRemoved: Phaser.Signal;
+        onFoodsUpdated: Phaser.Signal;
         onTickCountUpdated: Phaser.Signal;
         private client;
         private init();
@@ -151,5 +152,6 @@ declare module Celler {
         foodAdded(foodModel: FoodModel): void;
         tickCountUpdated(count: number): void;
         foodRemoved(id: string): void;
+        foodsUpdated(models: FoodModel[]): void;
     }
 }
