@@ -106,7 +106,7 @@ namespace Celler.App.Web.Game.Server.Logic
 
         private void AddFood( Suit suit )
         {
-            _foodManager.AddFood( suit, Point.RandomIn( _game.GetBounds() ), MinFoodSize, _timer.CurrentTime, MaxFoodValue, MinFoodFrequancy );
+            _foodManager.AddFood( suit, Point.RandomIn( _game.GetBounds() ), MinFoodSize, _timer.CurrentTime, MaxFoodValue, MaxFoodFrequancy );
         }
 
         #endregion
@@ -142,7 +142,9 @@ namespace Celler.App.Web.Game.Server.Logic
 
         private static double CalcFoodSize( Food food )
         {
-            return Calc.Proportion( MinFoodSize, MaxFoodSize, food.IValuable.Value/MaxFoodValue );
+            var square = food.IValuable.Value/MaxFoodValue;
+            var size = Math.Sqrt( square );
+            return Calc.Proportion( MinFoodSize, MaxFoodSize, size);
         }
 
         private static double CalcFoodValue( Food food, DateTime currentTime )

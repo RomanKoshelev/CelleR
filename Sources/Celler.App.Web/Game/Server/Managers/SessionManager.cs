@@ -5,14 +5,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using Celler.App.Web.Game.Server.Clients;
 using Celler.App.Web.Game.Server.Entities.Abstract;
 using Celler.App.Web.Game.Server.Entities.Enums;
 using Celler.App.Web.Game.Server.Entities.GameObjects;
 using Celler.App.Web.Game.Server.Entities.Interfaces;
 using Celler.App.Web.Game.Server.Entities.Structs;
-using Celler.App.Web.Game.Server.Logic;
 using Celler.App.Web.Game.Server.Models;
 
 namespace Celler.App.Web.Game.Server.Managers
@@ -81,9 +79,15 @@ namespace Celler.App.Web.Game.Server.Managers
             get { return this; }
         }
 
-        Food IFoodManager.AddFood( Suit suit, Point position, double size, DateTime time, double maxValue, double frequancy )
+        Food IFoodManager.AddFood(
+            Suit suit,
+            Point position,
+            double size,
+            DateTime time,
+            double maxValue,
+            double frequancy )
         {
-            var food = new Food( suit, position, size, time, maxValue, frequancy);
+            var food = new Food( suit, position, size, time, maxValue, frequancy );
             _foods.Add( food );
             _clients.FoodAdded( food.IModelled.Model );
             return food;
@@ -104,7 +108,7 @@ namespace Celler.App.Web.Game.Server.Managers
         {
             _foods.ForEach( action );
 
-            _clients.FoodsUpdated( _foods.Select( f=>f.IModelled.Model ).ToArray() );
+            _clients.FoodsUpdated( _foods.Select( f => f.IModelled.Model ).ToArray() );
         }
 
         #endregion
