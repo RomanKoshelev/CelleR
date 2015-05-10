@@ -40,11 +40,12 @@ namespace Celler.App.Web.Game.Server.Logic
 
         #region Constants
 
-        private const double MaxFoodValue = 1;
-        private const double MinFoodSize = 10;
-        private const double MaxFoodSize = 50;
-        private const double MaxFoodFrequancy = 1;
-        private const double MinFoodFrequancy = 0.1;
+        private const double MinFoodValue = 0.01;
+        private const double MaxFoodValue = 1.00;
+        private const double MinFoodSize = 5;
+        private const double MaxFoodSize = 100;
+        private const double MaxFoodFrequancy = 1/2.0;
+        private const double MinFoodFrequancy = 1/50.0;
         private const int FoodCreationInterval = 2;
         private const int MaxFoodCount = 5;
 
@@ -67,9 +68,9 @@ namespace Celler.App.Web.Game.Server.Logic
         private void onCollision( IBody a, IBody b )
         {
             if( a is Food && b is Cell ) {
-                ProcCollisionFoodWithCell( a as Food, b as Cell );
+                ProcCollisionFoodWithCell( a as Food );
             } else if( b is Food && a is Cell ) {
-                ProcCollisionFoodWithCell( b as Food, a as Cell );
+                ProcCollisionFoodWithCell( b as Food );
             }
         }
 
@@ -81,7 +82,11 @@ namespace Celler.App.Web.Game.Server.Logic
         private void AddNewFoodIfNeed()
         {
             if( NeedToAddFood() ) {
-                AddFood( RandomSuit() );
+                AddFood(
+                    suit : CalcRandomSuit(),
+                    position : CalcRandomPosition(),
+                    maxValue : CalcRandomMaxValue(),
+                    frequency : CalcRandomFrequency() );
             }
         }
 
@@ -104,9 +109,9 @@ namespace Celler.App.Web.Game.Server.Logic
             return true;
         }
 
-        private void AddFood( Suit suit )
+        private void AddFood( Suit suit, Point position, double maxValue, double frequency )
         {
-            _foodManager.AddFood( suit, Point.RandomIn( _game.GetBounds() ), MinFoodSize, _timer.CurrentTime, MaxFoodValue, MaxFoodFrequancy );
+            _foodManager.AddFood( suit, position, MinFoodSize, _timer.CurrentTime, maxValue, frequency );
         }
 
         #endregion
@@ -114,7 +119,7 @@ namespace Celler.App.Web.Game.Server.Logic
 
         #region Eating
 
-        private void ProcCollisionFoodWithCell( Food food, Cell cell )
+        private void ProcCollisionFoodWithCell( Food food )
         {
             RemoveFeed( food );
         }
@@ -144,7 +149,7 @@ namespace Celler.App.Web.Game.Server.Logic
         {
             var square = food.IValuable.Value/MaxFoodValue;
             var size = Math.Sqrt( square );
-            return Calc.Proportion( MinFoodSize, MaxFoodSize, size);
+            return Calc.Proportion( MinFoodSize, MaxFoodSize, size );
         }
 
         private static double CalcFoodValue( Food food, DateTime currentTime )
@@ -158,9 +163,24 @@ namespace Celler.App.Web.Game.Server.Logic
 
         #region Utils
 
-        private static Suit RandomSuit()
+        private static Suit CalcRandomSuit()
         {
             return Random.Next( 2 ) == 0 ? Suit.Blue : Suit.Red;
+        }
+
+        private static double CalcRandomFrequency()
+        {
+            return Calc.Proportion( MinFoodFrequancy, MaxFoodFrequancy, Random.NextDouble() );
+        }
+
+        private static double CalcRandomMaxValue()
+        {
+            return Calc.Proportion( MinFoodValue, MaxFoodValue, Random.NextDouble() );
+        }
+
+        private Point CalcRandomPosition()
+        {
+            return Point.RandomIn( _game.GetBounds() );
         }
 
         #endregion
