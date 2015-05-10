@@ -5,6 +5,7 @@ module Celler {
         id: string;
         cellId: string;
 
+        static minHintIntgerval = 100;
         static minHintDistance = 4;
         static shiftPerKeypoardClick = 10;
 
@@ -69,10 +70,15 @@ module Celler {
             };
         }
 
-        private prevHintPosition = new Phaser.Point( 0, 0 );
+        prevHintTime = app.game.time.now;
+        prevHintPosition= new Phaser.Point(0,0);
 
         private serverHintSightPosition() {
-            if( !this.inTweening && this.position.distance( this.prevHintPosition ) > Sight.minHintDistance ) {
+            if ( !this.inTweening
+                && ( app.game.time.now - this.prevHintTime ) > Sight.minHintIntgerval 
+                && Phaser.Point.distance(this.prevHintPosition, this.position ) > Sight.minHintDistance )
+            {
+                this.prevHintTime = app.game.time.now;
                 this.prevHintPosition = this.position.clone();
                 app.server.hintSightPosition( this.id, this.toPointModel() );
             }

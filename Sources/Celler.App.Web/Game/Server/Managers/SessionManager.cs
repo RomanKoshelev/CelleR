@@ -84,10 +84,11 @@ namespace Celler.App.Web.Game.Server.Managers
             Point position,
             double size,
             DateTime time,
+            double minValue,
             double maxValue,
-            double frequancy )
+            double period )
         {
-            var food = new Food( suit, position, size, time, maxValue, frequancy );
+            var food = new Food( suit, position, size, time, minValue, maxValue, period );
             _foods.Add( food );
             _clients.FoodAdded( food.IModelled.Model );
             return food;

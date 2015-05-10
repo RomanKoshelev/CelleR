@@ -98,7 +98,7 @@ namespace Celler.App.Web.Game.Server.Logic
 
         #region Constants
 
-        private const int TickInterval = 100;
+        private const int TickInterval = 2000;
         private const double WorldWidth = 720;
         private const double WorldHeight = 720;
         private const double HomeSize = 150;

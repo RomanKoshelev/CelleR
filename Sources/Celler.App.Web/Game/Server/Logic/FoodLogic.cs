@@ -40,14 +40,14 @@ namespace Celler.App.Web.Game.Server.Logic
 
         #region Constants
 
+        private const double MaxFoodPeriod = 10;
+        private const double MinFoodPeriod = 60;
         private const double MinFoodValue = 0.01;
         private const double MaxFoodValue = 1.00;
         private const double MinFoodSize = 5;
         private const double MaxFoodSize = 100;
-        private const double MaxFoodFrequancy = 1/2.0;
-        private const double MinFoodFrequancy = 1/50.0;
         private const int FoodCreationInterval = 2;
-        private const int MaxFoodCount = 5;
+        private const int MaxFoodCount = 7;
 
         #endregion
 
@@ -82,12 +82,27 @@ namespace Celler.App.Web.Game.Server.Logic
         private void AddNewFoodIfNeed()
         {
             if( NeedToAddFood() ) {
+                var maxValue = CalcRandomMaxValue();
+                var minValue = CalcRandomMinValue(maxValue);
                 AddFood(
                     suit : CalcRandomSuit(),
                     position : CalcRandomPosition(),
-                    maxValue : CalcRandomMaxValue(),
-                    frequency : CalcRandomFrequency() );
+                    minValue : minValue,
+                    maxValue : maxValue,
+                    period : CalcRandomPeriod() );
             }
+        }
+
+        private void AddFood( Suit suit, Point position, double minValue, double maxValue, double period )
+        {
+            _foodManager.AddFood(
+                suit : suit,
+                position : position,
+                size : CalcFoodSize( MinFoodValue ),
+                time : _timer.CurrentTime,
+                minValue : minValue,
+                maxValue : maxValue,
+                period : period );
         }
 
         private bool NeedToAddFood()
@@ -107,11 +122,6 @@ namespace Celler.App.Web.Game.Server.Logic
             }
             _lastTimeFoodAdded = _timer.CurrentTime;
             return true;
-        }
-
-        private void AddFood( Suit suit, Point position, double maxValue, double frequency )
-        {
-            _foodManager.AddFood( suit, position, MinFoodSize, _timer.CurrentTime, maxValue, frequency );
         }
 
         #endregion
@@ -145,19 +155,6 @@ namespace Celler.App.Web.Game.Server.Logic
             food.IBody.Size = CalcFoodSize( food );
         }
 
-        private static double CalcFoodSize( Food food )
-        {
-            var square = food.IValuable.Value/MaxFoodValue;
-            var size = Math.Sqrt( square );
-            return Calc.Proportion( MinFoodSize, MaxFoodSize, size );
-        }
-
-        private static double CalcFoodValue( Food food, DateTime currentTime )
-        {
-            var duration = currentTime - food.IFood.CreationTime;
-            return Calc.Harmonics( 0, food.IFood.MaxValue, duration.TotalSeconds, food.IFood.ValueFrequency );
-        }
-
         #endregion
 
 
@@ -168,14 +165,38 @@ namespace Celler.App.Web.Game.Server.Logic
             return Random.Next( 2 ) == 0 ? Suit.Blue : Suit.Red;
         }
 
-        private static double CalcRandomFrequency()
+        private static double CalcRandomPeriod()
         {
-            return Calc.Proportion( MinFoodFrequancy, MaxFoodFrequancy, Random.NextDouble() );
+            return Calc.Proportion( MinFoodPeriod, MaxFoodPeriod, Random.NextDouble() );
         }
 
         private static double CalcRandomMaxValue()
         {
             return Calc.Proportion( MinFoodValue, MaxFoodValue, Random.NextDouble() );
+        }
+
+        private static double CalcRandomMinValue(double maxValue)
+        {
+            return Calc.Proportion( MinFoodValue, maxValue, Random.NextDouble() );
+        }
+
+        
+        private static double CalcFoodSize( Food food )
+        {
+            return CalcFoodSize( food.IValuable.Value );
+        }
+
+        private static double CalcFoodSize( double value )
+        {
+            var square = value/MaxFoodValue;
+            var size = Math.Sqrt( square );
+            return Calc.Proportion( MinFoodSize, MaxFoodSize, size );
+        }
+
+        private static double CalcFoodValue( Food food, DateTime currentTime )
+        {
+            var duration = currentTime - food.IFood.CreationTime;
+            return Calc.Harmonics( 0, food.IFood.MaxValue, duration.TotalSeconds, 1/food.IFood.ValuePeriod );
         }
 
         private Point CalcRandomPosition()

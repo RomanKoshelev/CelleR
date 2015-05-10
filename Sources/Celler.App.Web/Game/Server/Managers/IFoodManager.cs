@@ -11,7 +11,7 @@ namespace Celler.App.Web.Game.Server.Managers
 {
     public interface IFoodManager
     {
-        Food AddFood( Suit suit, Point position, double size, DateTime time, double maxValue, double frequancy );
+        Food AddFood( Suit suit, Point position, double size, DateTime time, double minValue, double maxValue, double period );
         void RemoveFood( Food food );
         int GetFoodCount();
         void UpdateFoods( Action< Food > action );

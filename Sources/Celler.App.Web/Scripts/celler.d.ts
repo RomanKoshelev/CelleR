@@ -94,6 +94,7 @@ declare module Celler {
     class Sight extends SuitSprite {
         id: string;
         cellId: string;
+        static minHintIntgerval: number;
         static minHintDistance: number;
         static shiftPerKeypoardClick: number;
         constructor(game: Phaser.Game, model: SightModel);
@@ -106,7 +107,8 @@ declare module Celler {
         private stopAnimation();
         private onAnimationCompleete();
         private toPointModel();
-        private prevHintPosition;
+        prevHintTime: number;
+        prevHintPosition: Phaser.Point;
         private serverHintSightPosition();
         private doProcKeyboard();
     }

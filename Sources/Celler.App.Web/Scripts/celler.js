@@ -263,6 +263,7 @@ var Celler;
         function Sight(game, model) {
             _super.call(this, game, Celler.Suit[model.Base.Suit], 2 /* Sight */, model.Base.Size);
             this.inTweening = false;
+            this.prevHintTime = Celler.app.game.time.now;
             this.prevHintPosition = new Phaser.Point(0, 0);
             this.id = model.Base.Id;
             this.cellId = model.CellId;
@@ -309,7 +310,8 @@ var Celler;
             };
         };
         Sight.prototype.serverHintSightPosition = function () {
-            if (!this.inTweening && this.position.distance(this.prevHintPosition) > Sight.minHintDistance) {
+            if (!this.inTweening && (Celler.app.game.time.now - this.prevHintTime) > Sight.minHintIntgerval && Phaser.Point.distance(this.prevHintPosition, this.position) > Sight.minHintDistance) {
+                this.prevHintTime = Celler.app.game.time.now;
                 this.prevHintPosition = this.position.clone();
                 Celler.app.server.hintSightPosition(this.id, this.toPointModel());
             }
@@ -335,6 +337,7 @@ var Celler;
                 Celler.app.server.moveCell(this.cellId, this.toPointModel());
             }
         };
+        Sight.minHintIntgerval = 100;
         Sight.minHintDistance = 4;
         Sight.shiftPerKeypoardClick = 10;
         return Sight;

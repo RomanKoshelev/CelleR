@@ -9,6 +9,7 @@ namespace Celler.App.Web.Game.Server.Entities.Interfaces
     public interface IFood {
         DateTime CreationTime { get; set; }
         double MaxValue { get; set; }
-        double ValueFrequency { get; set; }
+        double ValuePeriod { get; set; }
+        double MinValue { get; set; }
     }
 }

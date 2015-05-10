@@ -15,12 +15,13 @@ namespace Celler.App.Web.Game.Server.Entities.GameObjects
     {
         #region Ctor
 
-        public Food( Suit suit, Point position, double size, DateTime time, double maxValue, double frequancy )
+        public Food( Suit suit, Point position, double size, DateTime time, double minValue, double maxValue, double period )
             : base( suit, position, size, value : 0 )
         {
             IFood.CreationTime = time;
+            IFood.MinValue = minValue;
             IFood.MaxValue = maxValue;
-            IFood.ValueFrequency = frequancy;
+            IFood.ValuePeriod = period;
         }
 
         #endregion
@@ -35,7 +36,8 @@ namespace Celler.App.Web.Game.Server.Entities.GameObjects
 
         DateTime IFood.CreationTime { get; set; }
         double IFood.MaxValue { get; set; }
-        double IFood.ValueFrequency { get; set; }
+        double IFood.ValuePeriod { get; set; }
+        double IFood.MinValue { get; set; }
 
         #endregion
 
