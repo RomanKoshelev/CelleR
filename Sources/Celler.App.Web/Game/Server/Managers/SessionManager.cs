@@ -15,7 +15,8 @@ using Celler.App.Web.Game.Server.Models;
 
 namespace Celler.App.Web.Game.Server.Managers
 {
-    public class SessionManager : Entity< SessionModel >, IFoodManager, IBodyManager, ICellManager, IHomeManager, ISightManager
+    public class SessionManager : Entity< SessionModel >, IFoodManager, IBodyManager, ICellManager, IHomeManager,
+        ISightManager
     {
         #region Constructor
 
@@ -49,9 +50,12 @@ namespace Celler.App.Web.Game.Server.Managers
 
 
         #region ICellManager
-        public ICellManager ICellManager {
+
+        public ICellManager ICellManager
+        {
             get { return this; }
         }
+
         Cell ICellManager.AddCell( Suit suit, Point position, double size )
         {
             var cell = new Cell( suit, position, size );
@@ -70,9 +74,11 @@ namespace Celler.App.Web.Game.Server.Managers
 
         #region IFoodManager
 
-        public IFoodManager IFoodManager {
+        public IFoodManager IFoodManager
+        {
             get { return this; }
         }
+
         Food IFoodManager.AddFood( Suit suit, Point position, double size )
         {
             var food = new Food( suit, position, size );
@@ -95,6 +101,7 @@ namespace Celler.App.Web.Game.Server.Managers
         void IFoodManager.UpdateFoods( Action< Food > action )
         {
             _foods.ForEach( action );
+
             // todo:> update foods on clients
             //_clients.FoodsUpdated( foods.IIdentifiable.Id );
         }
@@ -104,9 +111,11 @@ namespace Celler.App.Web.Game.Server.Managers
 
         #region IBodyManager
 
-        public IBodyManager IBodyManager {
+        public IBodyManager IBodyManager
+        {
             get { return this; }
         }
+
         IList< IBody > IBodyManager.GetBodies()
         {
             return _homes
@@ -120,9 +129,11 @@ namespace Celler.App.Web.Game.Server.Managers
 
         #region IHomeManager
 
-        public IHomeManager IHomeManager {
+        public IHomeManager IHomeManager
+        {
             get { return this; }
         }
+
         Home IHomeManager.AddHome( Suit suit, Point position, double size )
         {
             var obj = new Home( suit, position, size );
@@ -134,12 +145,15 @@ namespace Celler.App.Web.Game.Server.Managers
 
 
         #region ISightManager
-        public ISightManager ISightManager {
+
+        public ISightManager ISightManager
+        {
             get { return this; }
         }
+
         Sight ISightManager.AddSight( Suit suit, Point position, double size )
         {
-            var obj = new Sight ( suit, position, size);
+            var obj = new Sight( suit, position, size );
             _sights.Add( obj );
             return obj;
         }

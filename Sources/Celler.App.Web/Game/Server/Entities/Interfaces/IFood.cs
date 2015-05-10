@@ -4,7 +4,5 @@
 
 namespace Celler.App.Web.Game.Server.Entities.Interfaces
 {
-    public interface IFood
-    {
-    }
+    public interface IFood {}
 }

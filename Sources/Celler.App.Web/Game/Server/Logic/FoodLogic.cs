@@ -145,7 +145,7 @@ namespace Celler.App.Web.Game.Server.Logic
 
         private void FoodModificator( Food food )
         {
-/*
+            /*
             food.IFood.Value = CalcFoodWeight(food, _timer.CurrentTime);
             food.Size = CalcFoodWeight(food, _timer.CurrentTime);
 */

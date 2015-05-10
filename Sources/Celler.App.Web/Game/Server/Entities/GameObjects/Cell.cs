@@ -2,7 +2,6 @@
 // Celler.App.Web
 // Cell.cs
 
-using System;
 using Celler.App.Web.Game.Server.Entities.Abstract;
 using Celler.App.Web.Game.Server.Entities.Enums;
 using Celler.App.Web.Game.Server.Entities.Interfaces;
@@ -16,9 +15,7 @@ namespace Celler.App.Web.Game.Server.Entities.GameObjects
         #region Ctor
 
         public Cell( Suit suit, Point position, double size, double value = 0 )
-            :base(suit, position, size, value  )
-        {
-        }
+            : base( suit, position, size, value ) {}
 
         #endregion
 
