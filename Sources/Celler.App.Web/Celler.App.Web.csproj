@@ -183,6 +183,8 @@
     <Compile Include="Game\Server\Clients\GameClientsProxy.cs" />
     <Compile Include="Game\Server\App\GameApplication.cs" />
     <Compile Include="Game\Server\Entities\Abstract\Entity.cs" />
+    <Compile Include="Game\Server\Entities\Abstract\ValuableGameObject.cs" />
+    <Compile Include="Game\Server\Entities\Interfaces\IValuable.cs" />
     <Compile Include="Game\Server\Entities\GameObjects\Food.cs" />
     <Compile Include="Game\Server\Entities\Interfaces\ISight.cs" />
     <Compile Include="Game\Server\Entities\Interfaces\ICell.cs" />

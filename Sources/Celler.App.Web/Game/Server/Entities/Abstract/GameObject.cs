@@ -10,10 +10,9 @@ using Celler.App.Web.Game.Server.Models;
 namespace Celler.App.Web.Game.Server.Entities.Abstract
 {
     public abstract class GameObject<T> : Entity< T >, IBody, ISuit
-
     {
         #region Ctor
-        protected GameObject( Suit suit, Point position, double size )
+        protected GameObject( Suit suit, Point position, double size)
         {
             ISuit.Suit = suit;
             IBody.Position = position;
@@ -60,5 +59,6 @@ namespace Celler.App.Web.Game.Server.Entities.Abstract
         }
 
         #endregion
+
     }
 }

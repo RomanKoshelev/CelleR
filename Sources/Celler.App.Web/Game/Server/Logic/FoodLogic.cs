@@ -123,9 +123,9 @@ namespace Celler.App.Web.Game.Server.Logic
             return Random.Next( 2 ) == 0 ? Suit.Blue : Suit.Red;
         }
 
-        private Food AddFood( Suit suit )
+        private void AddFood( Suit suit )
         {
-            return _foodManager.AddFood( suit, Point.RandomIn( _game.GetBounds() ), MinFoodSize );
+            _foodManager.AddFood( suit, Point.RandomIn( _game.GetBounds() ), MinFoodSize );
         }
 
         private void RemoveFeed( Food food )
@@ -146,7 +146,7 @@ namespace Celler.App.Web.Game.Server.Logic
         private void FoodModificator( Food food )
         {
 /*
-            food.IFood.Weight = CalcFoodWeight(food, _timer.CurrentTime);
+            food.IFood.Value = CalcFoodWeight(food, _timer.CurrentTime);
             food.Size = CalcFoodWeight(food, _timer.CurrentTime);
 */
         }

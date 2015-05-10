@@ -10,12 +10,12 @@ using Celler.App.Web.Game.Server.Models;
 
 namespace Celler.App.Web.Game.Server.Entities.GameObjects
 {
-    public class Food : GameObject< FoodModel >, IFood
+    public class Food : ValuableGameObject< FoodModel >, IFood
     {
         #region Ctor
 
-        public Food( Suit suit, Point position, double size )
-            : base( suit, position, size ) {}
+        public Food( Suit suit, Point position, double size, double value = 0 )
+            : base( suit, position, size, value ) {}
 
         #endregion
 
@@ -26,8 +26,6 @@ namespace Celler.App.Web.Game.Server.Entities.GameObjects
         {
             get { return this; }
         }
-
-        double IFood.Weight { get; set; }
 
         #endregion
 

@@ -11,12 +11,12 @@ using Celler.App.Web.Game.Server.Models;
 
 namespace Celler.App.Web.Game.Server.Entities.GameObjects
 {
-    public class Cell : GameObject< CellModel >, ICell
+    public class Cell : ValuableGameObject< CellModel >, ICell
     {
         #region Ctor
 
-        public Cell( Suit suit, Point position, double size )
-            :base(suit, position, size )
+        public Cell( Suit suit, Point position, double size, double value = 0 )
+            :base(suit, position, size, value  )
         {
         }
 

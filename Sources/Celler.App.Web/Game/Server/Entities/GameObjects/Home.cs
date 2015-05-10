@@ -9,12 +9,12 @@ using Celler.App.Web.Game.Server.Models;
 
 namespace Celler.App.Web.Game.Server.Entities.GameObjects
 {
-    public class Home : GameObject< HomeModel >
+    public class Home : ValuableGameObject< HomeModel >
     {
         #region Ctor
 
-        public Home( Suit suit, Point position, double size )
-            : base( suit, position, size ) {}
+        public Home( Suit suit, Point position, double size, double value = 0 )
+            : base( suit, position, size, value ) {}
 
         #endregion
 
