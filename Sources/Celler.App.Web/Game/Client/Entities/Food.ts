@@ -10,5 +10,10 @@ module Celler {
             this.id = model.Base.Id;
             this.position = modelToPoint( model.Base.Position );
         }
+
+        setSize( size: number ) {
+            this.resize( size );
+            // Todo:> Animate!
+        }
     }
 }

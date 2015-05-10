@@ -66,7 +66,7 @@
         }
 
         private updateFood( food: Food, model: FoodModel ) {
-            food.resize( model.Base.Size );
+            food.setSize( model.Base.Size );
         }
     }
 }
