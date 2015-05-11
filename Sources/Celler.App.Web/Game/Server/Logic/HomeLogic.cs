@@ -2,6 +2,7 @@
 // Celler.App.Web
 // HomeLogic.cs
 
+using System;
 using Celler.App.Web.Game.Server.Config;
 using Celler.App.Web.Game.Server.Entities.Enums;
 using Celler.App.Web.Game.Server.Entities.GameObjects;
@@ -39,13 +40,16 @@ namespace Celler.App.Web.Game.Server.Logic
         {
             _homeManager.UpdateHomes(
                 condition : home => home.ISuitable.Suit == suit,
-                modificator : home => home.IValuable.Value += loot
-                );
+                modificator : home => {
+                    home.IValuable.Value += loot;
+                    home.IValuable.Value = Math.Max( home.IValuable.Value, 0 );
+                    home.IValuable.Value = Math.Min( home.IValuable.Value, home.IValuable.MaxValue );
+                } );
         }
 
         Home IHomeLogic.AddHome( Suit suit )
         {
-            return _homeManager.AddHome( suit, GetCornerCoords(suit), HomeSize, HomeIniLoot, HomeMaxLoot);
+            return _homeManager.AddHome( suit, GetCornerCoords( suit ), HomeSize, HomeIniLoot, HomeMaxLoot );
         }
 
         #endregion
@@ -55,7 +59,6 @@ namespace Celler.App.Web.Game.Server.Logic
 
         private const double HomeIniLoot = Settings.Loot.Home.Init;
         private const double HomeMaxLoot = Settings.Loot.Home.Max;
-
         private const double HomeSize = Settings.World.Home.Size;
 
         #endregion
@@ -86,6 +89,5 @@ namespace Celler.App.Web.Game.Server.Logic
         }
 
         #endregion
-
     }
 }

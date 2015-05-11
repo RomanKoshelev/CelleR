@@ -214,9 +214,9 @@ var Celler;
             this.loot.position = this.calcLootPosition();
         };
         Home.prototype.calcLootScale = function () {
-            var square = this.calcScale() * this.calcLootRate();
-            //return square;
-            return Math.sqrt(square);
+            var square = this.calcLootRate();
+            return square;
+            //return Math.sqrt( square );
         };
         Home.prototype.calcLootRate = function () {
             return this.lootVolume / this.lootMaxVolume;

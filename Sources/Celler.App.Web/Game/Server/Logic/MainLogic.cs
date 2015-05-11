@@ -36,7 +36,7 @@ namespace Celler.App.Web.Game.Server.Logic
 
         DateTime ITimeLogic.LastTime { get; set; }
 
-        int ITimeLogic.GetUpdateInterval()
+        double ITimeLogic.GetUpdateInterval()
         {
             return UpdateInterval;
         }
@@ -90,7 +90,7 @@ namespace Celler.App.Web.Game.Server.Logic
 
         #region Constants
 
-        private const int UpdateInterval = Settings.Dynamic.Game.UpdateInterval;
+        private const double UpdateInterval = Settings.Dynamic.Game.Update.Interval;
         private const double WorldWidth = Settings.World.Width;
         private const double WorldHeight = Settings.World.Height;
         private const double SightSize = Settings.World.Sight.Size;

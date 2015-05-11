@@ -40,9 +40,9 @@ module Celler {
 
 
         private calcLootScale(): number {
-            var square = this.calcScale() * this.calcLootRate();
-            //return square;
-            return Math.sqrt( square );
+            var square = this.calcLootRate();
+            return square;
+            //return Math.sqrt( square );
         }
 
         private calcLootRate(): number {

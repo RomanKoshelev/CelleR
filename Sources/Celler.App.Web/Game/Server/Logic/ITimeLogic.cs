@@ -10,6 +10,6 @@ namespace Celler.App.Web.Game.Server.Logic
     {
         DateTime LastTime { get; set; }
         DateTime CurrentTime { get; set; }
-        int GetUpdateInterval();
+        double GetUpdateInterval();
     }
 }
