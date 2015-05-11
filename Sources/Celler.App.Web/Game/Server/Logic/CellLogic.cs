@@ -2,7 +2,7 @@
 // Celler.App.Web
 // CellLogic.cs
 
-using System;
+using Celler.App.Web.Game.Server.Entities.Enums;
 using Celler.App.Web.Game.Server.Entities.GameObjects;
 using Celler.App.Web.Game.Server.Entities.Interfaces;
 using Celler.App.Web.Game.Server.Managers;
@@ -25,9 +25,9 @@ namespace Celler.App.Web.Game.Server.Logic
 
         private void onCollision( IBody a, IBody b )
         {
-            var cell = TypeTools.WhoIs<Cell>( a, b );
-            var food = TypeTools.WhoIs<Food>( a, b );
-            var cell2 = TypeTools.WhoElseIs<Cell>( cell, a, b );
+            var cell = TypeTools.WhoIs< Cell >( a, b );
+            var food = TypeTools.WhoIs< Food >( a, b );
+            var cell2 = TypeTools.WhoElseIs< Cell >( cell, a, b );
 
             if( cell != null && food != null ) {
                 procCellFoodCollision( cell, food );
@@ -35,7 +35,6 @@ namespace Celler.App.Web.Game.Server.Logic
             if( cell != null && cell2 != null ) {
                 procCellCellCollision( cell, cell2 );
             }
-
         }
 
         #endregion
@@ -48,7 +47,12 @@ namespace Celler.App.Web.Game.Server.Logic
             // Do nothing
         }
 
-        public void MoveCell( string id, PointModel position )
+        #endregion
+
+
+        #region ICellLogic
+
+        void ICellLogic.MoveCell( string id, PointModel position )
         {
             var bounds = _game.GetBounds();
             ModelToos.KeepPointInBounds( position, 0, 0, bounds.Width, bounds.Height );
@@ -62,7 +66,7 @@ namespace Celler.App.Web.Game.Server.Logic
 
         private readonly ICellManager _cellManager;
         private readonly IGameLogic _game;
-        private IHomeLogic _homeLogic;
+        private readonly IHomeLogic _homeLogic;
 
         #endregion
 
@@ -76,10 +80,16 @@ namespace Celler.App.Web.Game.Server.Logic
 
         private void procCellFoodCollision( Cell cell, Food food )
         {
-            // Todo:> Cell food collision 
+            var cellSuit = cell.ISuitable.Suit;
+            var loot = GetLootValue( cellSuit, food );
+            _homeLogic.ReceiveLoot( cellSuit, loot );
+        }
+
+        private static double GetLootValue( Suit suit, Food food )
+        {
+            return food.IValuable.Value*( food.ISuitable.Suit == suit ? 1 : -1 );
         }
 
         #endregion
-
     }
 }

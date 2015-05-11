@@ -4,12 +4,13 @@
 
 using Celler.App.Web.Game.Server.Entities.Abstract;
 using Celler.App.Web.Game.Server.Entities.Enums;
+using Celler.App.Web.Game.Server.Entities.Interfaces;
 using Celler.App.Web.Game.Server.Entities.Structs;
 using Celler.App.Web.Game.Server.Models;
 
 namespace Celler.App.Web.Game.Server.Entities.GameObjects
 {
-    public class Home : ValuableGameObject< HomeModel >
+    public class Home : ValuableGameObject< HomeModel >, IHome
     {
         #region Ctor
 
@@ -19,11 +20,22 @@ namespace Celler.App.Web.Game.Server.Entities.GameObjects
         #endregion
 
 
+        #region IHome
+
+        public IHome IHome
+        {
+            get { return this; }
+        }
+
+        #endregion
+
+
         #region Overrides
 
         protected override HomeModel ToModel()
         {
             return new HomeModel {
+                Loot = IValuable.Value,
                 Base = ToGameObjectModel()
             };
         }

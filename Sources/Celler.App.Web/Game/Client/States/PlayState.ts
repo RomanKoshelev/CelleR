@@ -26,7 +26,8 @@
         }
 
         private preloadSprites( suit: Suit ) {
-            Assets.Sprites.load( suit, Assets.Type.Home );
+            Assets.Sprites.load( suit, Assets.Type.House );
+            Assets.Sprites.load( suit, Assets.Type.Loot );
             Assets.Sprites.load( suit, Assets.Type.CellBody );
             Assets.Sprites.load( suit, Assets.Type.CellEye );
             Assets.Sprites.load( suit, Assets.Type.Sight );

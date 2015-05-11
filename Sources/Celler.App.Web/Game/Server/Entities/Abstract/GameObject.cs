@@ -15,7 +15,7 @@ namespace Celler.App.Web.Game.Server.Entities.Abstract
 
         protected GameObject( Suit suit, Point position, double size )
         {
-            ISuit.Suit = suit;
+            ISuitable.Suit = suit;
             IBody.Position = position;
             IBody.Size = size;
         }
@@ -23,9 +23,9 @@ namespace Celler.App.Web.Game.Server.Entities.Abstract
         #endregion
 
 
-        #region ISuit
+        #region ISuitable
 
-        protected ISuit ISuit
+        public ISuit ISuitable
         {
             get { return this; }
         }
@@ -54,7 +54,7 @@ namespace Celler.App.Web.Game.Server.Entities.Abstract
         {
             return new GameObjectModel {
                 Id = IIdentifiable.Id,
-                Suit = ISuit.Suit.ToString(),
+                Suit = ISuitable.Suit.ToString(),
                 Position = IBody.Position.Model,
                 Size = IBody.Size
             };

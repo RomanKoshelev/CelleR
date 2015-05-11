@@ -184,6 +184,7 @@
     <Compile Include="Game\Server\App\GameApplication.cs" />
     <Compile Include="Game\Server\Entities\Abstract\Entity.cs" />
     <Compile Include="Game\Server\Entities\Abstract\ValuableGameObject.cs" />
+    <Compile Include="Game\Server\Entities\Interfaces\IHome.cs" />
     <Compile Include="Game\Server\Entities\Interfaces\IValuable.cs" />
     <Compile Include="Game\Server\Entities\GameObjects\Food.cs" />
     <Compile Include="Game\Server\Entities\Interfaces\ISight.cs" />
@@ -244,11 +245,11 @@
     <Content Include="Game\Client\Assets\Sprites\blue\cellbody.png" />
     <Content Include="Game\Client\Assets\Sprites\blue\food.png" />
     <Content Include="Game\Client\Assets\Sprites\blue\celleye.png" />
-    <Content Include="Game\Client\Assets\Sprites\blue\home.png" />
+    <Content Include="Game\Client\Assets\Sprites\blue\house.png" />
     <Content Include="Game\Client\Assets\Sprites\blue\loot.png" />
     <Content Include="Game\Client\Assets\Sprites\blue\sight.png" />
     <Content Include="Game\Client\Assets\Sprites\red\food.png" />
-    <Content Include="Game\Client\Assets\Sprites\red\home.png" />
+    <Content Include="Game\Client\Assets\Sprites\red\house.png" />
     <Content Include="Game\Client\Assets\Sprites\red\loot.png" />
     <Content Include="Game\Client\Assets\Sprites\red\sight.png" />
     <Content Include="Game\Client\Assets\Sprites\red\celleye.png" />

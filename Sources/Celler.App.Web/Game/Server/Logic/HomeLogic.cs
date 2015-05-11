@@ -2,6 +2,7 @@
 // Celler.App.Web
 // HomeLogic.cs
 
+using Celler.App.Web.Game.Server.Entities.Enums;
 using Celler.App.Web.Game.Server.Managers;
 
 namespace Celler.App.Web.Game.Server.Logic
@@ -10,9 +11,8 @@ namespace Celler.App.Web.Game.Server.Logic
     {
         #region Ctor
 
-        public HomeLogic( IGameLogic game, IHomeManager homeManager )
+        public HomeLogic( IHomeManager homeManager )
         {
-            _game = game;
             _homeManager = homeManager;
         }
 
@@ -29,10 +29,22 @@ namespace Celler.App.Web.Game.Server.Logic
         #endregion
 
 
-        #region Fileds
+        #region IHomeLogic
 
-        private IGameLogic _game;
-        private IHomeManager _homeManager;
+        void IHomeLogic.ReceiveLoot( Suit suit, double loot )
+        {
+            _homeManager.UpdateHomes(
+                condition : home => home.ISuitable.Suit == suit,
+                modificator : home => home.IValuable.Value += loot
+                );
+        }
+
+        #endregion
+
+
+        #region Fields
+
+        private readonly IHomeManager _homeManager;
 
         #endregion
     }

@@ -81,16 +81,17 @@ namespace Celler.App.Web.Game.Server.Logic
 
         private void AddNewFoodIfNeed()
         {
-            if( NeedToAddFood() ) {
-                var maxValue = CalcRandomMaxValue();
-                var minValue = CalcRandomMinValue(maxValue);
-                AddFood(
-                    suit : CalcRandomSuit(),
-                    position : CalcRandomPosition(),
-                    minValue : minValue,
-                    maxValue : maxValue,
-                    period : CalcRandomPeriod() );
+            if( !NeedToAddFood() ) {
+                return;
             }
+            var maxValue = CalcRandomMaxValue();
+            var minValue = CalcRandomMinValue(maxValue);
+            AddFood(
+                suit : CalcRandomSuit(),
+                position : CalcRandomPosition(),
+                minValue : minValue,
+                maxValue : maxValue,
+                period : CalcRandomPeriod() );
         }
 
         private void AddFood( Suit suit, Point position, double minValue, double maxValue, double period )

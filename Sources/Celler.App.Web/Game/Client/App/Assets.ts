@@ -4,8 +4,9 @@
         CellBody,
         CellEye,
         Sight,
-        Home,
-        Food
+        Food,
+        House,
+        Loot
     }
 
     export class Sprites {

@@ -12,6 +12,7 @@ using Celler.App.Web.Game.Server.Entities.GameObjects;
 using Celler.App.Web.Game.Server.Entities.Interfaces;
 using Celler.App.Web.Game.Server.Entities.Structs;
 using Celler.App.Web.Game.Server.Models;
+using MoreLinq;
 
 namespace Celler.App.Web.Game.Server.Managers
 {
@@ -146,6 +147,14 @@ namespace Celler.App.Web.Game.Server.Managers
             var obj = new Home( suit, position, size );
             _homes.Add( obj );
             return obj;
+        }
+
+        public void UpdateHomes( Func< Home, bool > condition, Action< Home > modificator )
+        {
+            var updatedHomes = _homes.Where( condition ).ToArray();
+            updatedHomes.ForEach( modificator );
+            var homeModels = updatedHomes.Select( h => h.IModelled.Model ).ToArray();
+            _clients.HomesUpdated( homeModels );
         }
 
         #endregion

@@ -159,6 +159,14 @@ interface GameHubClient
       * @return {void}
       */
     foodsUpdated : (models : FoodModel[]) => void;
+ 
+    /**
+      * Set this function with a "function(models : HomeModel[]){}" to receive the "homesUpdated" message from the GameHub hub.
+      * Contract Documentation: ---
+      * @param models {HomeModel[]} 
+      * @return {void}
+      */
+    homesUpdated : (models : HomeModel[]) => void;
 }
  
 //#endregion GameHub hub
@@ -174,10 +182,11 @@ interface GameHubClient
  
  
 /**
-  * Data contract for Celler.App.Web.Game.Server.Models.FoodModel
+  * Data contract for Celler.App.Web.Game.Server.Models.HomeModel
   */
-interface FoodModel {
+interface HomeModel {
     Base : GameObjectModel;
+    Loot : number;
 }
  
  
@@ -189,6 +198,14 @@ interface GameObjectModel {
     Suit : string;
     Position : PointModel;
     Size : number;
+}
+ 
+ 
+/**
+  * Data contract for Celler.App.Web.Game.Server.Models.FoodModel
+  */
+interface FoodModel {
+    Base : GameObjectModel;
 }
  
  
@@ -210,14 +227,6 @@ interface SessionModel {
 interface SightModel {
     Base : GameObjectModel;
     CellId : string;
-}
- 
- 
-/**
-  * Data contract for Celler.App.Web.Game.Server.Models.HomeModel
-  */
-interface HomeModel {
-    Base : GameObjectModel;
 }
  
  

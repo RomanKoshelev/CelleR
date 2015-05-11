@@ -1,6 +1,6 @@
 // Celler (c) 2015 Krokodev
 // Celler.App.Web
-// ISuit.cs
+// ISuitable.cs
 
 using Celler.App.Web.Game.Server.Entities.Enums;
 

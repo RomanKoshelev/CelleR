@@ -15,5 +15,6 @@ namespace Celler.App.Web.Game.Server.Hub
         void FoodAdded( FoodModel foodModel );
         void FoodRemoved( string id );
         void FoodsUpdated( FoodModel[] models );
+        void HomesUpdated( HomeModel[] models );
     }
 }

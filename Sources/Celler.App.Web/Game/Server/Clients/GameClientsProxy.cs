@@ -48,6 +48,11 @@ namespace Celler.App.Web.Game.Server.Clients
             Clients.All.FoodsUpdated( models );
         }
 
+        public void HomesUpdated( HomeModel[] models )
+        {
+            Clients.All.HomesUpdated( models );
+        }
+
         #endregion
 
 

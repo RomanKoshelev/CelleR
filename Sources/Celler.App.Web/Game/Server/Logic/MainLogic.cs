@@ -124,7 +124,6 @@ namespace Celler.App.Web.Game.Server.Logic
                 collider : collisionLogic,
                 foodManager : _sessionManager );
             var homeLogic = new HomeLogic(
-                game : this,
                 homeManager : _sessionManager );
             _cellLogic = new CellLogic(
                 game : this,
