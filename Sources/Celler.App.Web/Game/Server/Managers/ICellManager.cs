@@ -11,7 +11,7 @@ namespace Celler.App.Web.Game.Server.Managers
 {
     public interface ICellManager
     {
-        void MoveCell( string id, PointModel position );
+        void MoveCell( string id, Point position );
         Cell AddCell( Suit suit, Point position, double size );
     }
 }

@@ -5,8 +5,8 @@
 using System;
 using System.Collections.Generic;
 using Celler.App.Web.Game.Server.Clients;
+using Celler.App.Web.Game.Server.Config;
 using Celler.App.Web.Game.Server.Entities.Enums;
-using Celler.App.Web.Game.Server.Entities.Structs;
 using Celler.App.Web.Game.Server.Managers;
 using Celler.App.Web.Game.Server.Models;
 using Celler.App.Web.Game.Server.Utils;
@@ -36,9 +36,9 @@ namespace Celler.App.Web.Game.Server.Logic
 
         DateTime ITimeLogic.LastTime { get; set; }
 
-        int ITimeLogic.GetTickInterval()
+        int ITimeLogic.GetUpdateInterval()
         {
-            return TickInterval;
+            return UpdateInterval;
         }
 
         DateTime ITimeLogic.CurrentTime { get; set; }
@@ -65,7 +65,7 @@ namespace Celler.App.Web.Game.Server.Logic
             _sessionManager.ISightManager.MoveSight( id, position );
         }
 
-        SizeModel IGameLogic.GetBounds()
+        SizeModel IGameLogic.GetWorldBounds()
         {
             return new SizeModel {
                 Width = WorldWidth,
@@ -90,24 +90,21 @@ namespace Celler.App.Web.Game.Server.Logic
 
         #region Constants
 
-        private const int TickInterval = 2000;
-        private const double WorldWidth = 720;
-        private const double WorldHeight = 720;
-        private const double HomeSize = 150;
-        private const double HomeIniLoot = 1;
-        private const double HomeMaxLoot = 10;
-        private const double CellSize = 65;
-        private const double SightSize = 100;
+        private const int UpdateInterval = Settings.Dynamic.Game.UpdateInterval;
+        private const double WorldWidth = Settings.World.Width;
+        private const double WorldHeight = Settings.World.Height;
+        private const double SightSize = Settings.World.Sight.Size;
 
         #endregion
 
 
         #region Fields
 
+        private ICellLogic _cellLogic;
+        private IHomeLogic _homeLogic;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IGameClient _clients;
         private readonly SessionManager _sessionManager;
-        private ICellLogic _cellLogic;
         private readonly List< IAuxLogic > _auxLlogics = new List< IAuxLogic >();
         private int _tickCount;
 
@@ -125,17 +122,18 @@ namespace Celler.App.Web.Game.Server.Logic
                 timer : this,
                 collider : collisionLogic,
                 foodManager : _sessionManager );
-            var homeLogic = new HomeLogic(
+            _homeLogic = new HomeLogic(
+                game : this,
                 homeManager : _sessionManager );
             _cellLogic = new CellLogic(
                 game : this,
-                homeLogic : homeLogic,
-                collider: collisionLogic,
+                homeLogic : _homeLogic,
+                collider : collisionLogic,
                 cellManager : _sessionManager );
 
             _auxLlogics.Add( collisionLogic );
             _auxLlogics.Add( foodLogic );
-            _auxLlogics.Add( homeLogic );
+            _auxLlogics.Add( _homeLogic );
             _auxLlogics.Add( _cellLogic );
         }
 
@@ -152,27 +150,16 @@ namespace Celler.App.Web.Game.Server.Logic
             InitSessionSuit( _sessionManager, Suit.Red );
         }
 
-        private static void InitSessionSuit( SessionManager sessionManager, Suit suit )
+        private void InitSessionSuit( SessionManager sessionManager, Suit suit )
         {
-            var place = GetCornerCoords( suit, HomeSize/2 );
-            // Todo:> Use Logics to initiate Homes and Cells
-            var home = sessionManager.IHomeManager.AddHome( suit, place, HomeSize, HomeIniLoot, HomeMaxLoot);
-            var cell = sessionManager.ICellManager.AddCell( suit, place, CellSize );
-            var sight = sessionManager.ISightManager.AddSight( suit, place, SightSize );
+            var home = _homeLogic.AddHome( suit );
+            var cell = _cellLogic.AddCell( suit, home.IBody.Position);
+
+            var sight = sessionManager.ISightManager.AddSight( suit, cell.IBody.Position, SightSize );
+
             cell.ICell.HomeId = home.IIdentifiable.Id;
             cell.ICell.SightId = sight.IIdentifiable.Id;
             sight.ISight.CellId = cell.IIdentifiable.Id;
-        }
-
-        private static Point GetCornerCoords( Suit suit, double margin )
-        {
-            switch( suit ) {
-                case Suit.Blue :
-                    return new Point( margin, WorldWidth - margin );
-                case Suit.Red :
-                    return new Point( WorldHeight - margin, margin );
-            }
-            return new Point();
         }
 
         #endregion

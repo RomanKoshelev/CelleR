@@ -161,7 +161,7 @@ declare module Celler {
         moveCell(id: string, position: PointModel): JQueryPromise<void>;
         moveSight(id: string, position: PointModel): JQueryPromise<void>;
         getPlayerId(): JQueryPromise<string>;
-        getBounds(): JQueryPromise<SizeModel>;
+        getWorldBounds(): JQueryPromise<SizeModel>;
         getSession(): JQueryPromise<SessionModel>;
         update(): JQueryPromise<void>;
         onSightPositionHinted: Phaser.Signal;

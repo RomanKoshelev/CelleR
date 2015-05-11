@@ -2,9 +2,11 @@
 // Celler.App.Web
 // CellLogic.cs
 
+using Celler.App.Web.Game.Server.Config;
 using Celler.App.Web.Game.Server.Entities.Enums;
 using Celler.App.Web.Game.Server.Entities.GameObjects;
 using Celler.App.Web.Game.Server.Entities.Interfaces;
+using Celler.App.Web.Game.Server.Entities.Structs;
 using Celler.App.Web.Game.Server.Managers;
 using Celler.App.Web.Game.Server.Models;
 using Celler.App.Web.Game.Server.Utils;
@@ -52,12 +54,24 @@ namespace Celler.App.Web.Game.Server.Logic
 
         #region ICellLogic
 
-        void ICellLogic.MoveCell( string id, PointModel position )
+        void ICellLogic.MoveCell( string id, Point position )
         {
-            var bounds = _game.GetBounds();
-            ModelToos.KeepPointInBounds( position, 0, 0, bounds.Width, bounds.Height );
+            var bounds = _game.GetWorldBounds();
+            position = EntityToos.KeepPointInBounds( position, 0, 0, bounds.Width, bounds.Height );
             _cellManager.MoveCell( id, position );
         }
+
+        Cell ICellLogic.AddCell( Suit suit, Point position )
+        {
+            return _cellManager.AddCell( suit, position, CellSize );
+        }
+
+        #endregion
+
+
+        #region Consts
+
+        private const double CellSize = Settings.World.Cell.Size;
 
         #endregion
 
@@ -82,7 +96,7 @@ namespace Celler.App.Web.Game.Server.Logic
         {
             var cellSuit = cell.ISuitable.Suit;
             var loot = GetLootValue( cellSuit, food );
-            _homeLogic.ReceiveLoot( cellSuit, loot );
+            _homeLogic.ReceiveLootToHome( cellSuit, loot );
         }
 
         private static double GetLootValue( Suit suit, Food food )

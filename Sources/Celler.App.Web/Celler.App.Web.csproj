@@ -182,6 +182,7 @@
     <Compile Include="Controllers\LogController.cs" />
     <Compile Include="Game\Server\Clients\GameClientsProxy.cs" />
     <Compile Include="Game\Server\App\GameApplication.cs" />
+    <Compile Include="Game\Server\Config\Settings.cs" />
     <Compile Include="Game\Server\Entities\Abstract\Entity.cs" />
     <Compile Include="Game\Server\Entities\Abstract\ValuableGameObject.cs" />
     <Compile Include="Game\Server\Entities\Interfaces\IHome.cs" />
@@ -196,6 +197,7 @@
     <Compile Include="Game\Server\Entities\GameObjects\Cell.cs" />
     <Compile Include="Game\Server\Logic\CellLogic.cs" />
     <Compile Include="Game\Server\Logic\CollisionLogic.cs" />
+    <Compile Include="Game\Server\Utils\EntityTools.cs" />
     <Compile Include="Game\Server\Utils\TypeTools.cs" />
     <Compile Include="Game\Server\Logic\FoodLogic.cs" />
     <Compile Include="Game\Server\Entities\Interfaces\IBody.cs" />
@@ -360,7 +362,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1656</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:2011/</IISUrl>
+          <IISUrl>http://localhost:2012/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

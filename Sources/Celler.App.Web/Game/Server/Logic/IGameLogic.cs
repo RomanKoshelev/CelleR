@@ -11,7 +11,7 @@ namespace Celler.App.Web.Game.Server.Logic
         void MoveCell( string id, PointModel position );
         void MoveSight( string id, PointModel position );
         void HintSightPosition( string id, PointModel position );
-        SizeModel GetBounds();
+        SizeModel GetWorldBounds();
         SessionModel GetSession();
         void Update();
     }

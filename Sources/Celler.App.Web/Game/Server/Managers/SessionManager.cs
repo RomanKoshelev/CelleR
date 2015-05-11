@@ -16,8 +16,8 @@ using MoreLinq;
 
 namespace Celler.App.Web.Game.Server.Managers
 {
-    public class SessionManager : Entity< SessionModel >, IFoodManager, IBodyManager, ICellManager, IHomeManager,
-        ISightManager
+    public class SessionManager : Entity< SessionModel >, 
+        IFoodManager, IBodyManager, ICellManager, IHomeManager, ISightManager
     {
         #region Constructor
 
@@ -64,11 +64,11 @@ namespace Celler.App.Web.Game.Server.Managers
             return cell;
         }
 
-        void ICellManager.MoveCell( string id, PointModel position )
+        void ICellManager.MoveCell( string id, Point position )
         {
             // Todo:> Use Dictionary, use try-catch
-            _cells.First( c => c.IIdentifiable.Id == id ).IBody.Position = new Point( position );
-            _clients.CellMoved( id, position );
+            _cells.First( c => c.IIdentifiable.Id == id ).IBody.Position = position;
+            _clients.CellMoved( id, position.Model );
         }
 
         #endregion

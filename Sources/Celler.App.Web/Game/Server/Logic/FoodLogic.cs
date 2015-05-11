@@ -3,6 +3,7 @@
 // FoodLogic.cs
 
 using System;
+using Celler.App.Web.Game.Server.Config;
 using Celler.App.Web.Game.Server.Entities.Enums;
 using Celler.App.Web.Game.Server.Entities.GameObjects;
 using Celler.App.Web.Game.Server.Entities.Interfaces;
@@ -40,14 +41,15 @@ namespace Celler.App.Web.Game.Server.Logic
 
         #region Constants
 
-        private const double MaxFoodPeriod = 10;
-        private const double MinFoodPeriod = 60;
-        private const double MinFoodValue = 0.01;
-        private const double MaxFoodValue = 1.00;
-        private const double MinFoodSize = 5;
-        private const double MaxFoodSize = 100;
-        private const int FoodCreationInterval = 2;
-        private const int MaxFoodCount = 7;
+        private const double MaxFoodPeriod = Settings.Dynamic.Food.Ocscilation.MaxPeriod;
+        private const double MinFoodPeriod = Settings.Dynamic.Food.Ocscilation.MinPeriod;
+        private const double MinFoodValue = Settings.Loot.Food.Min;
+        private const double MaxFoodValue = Settings.Loot.Food.Max;
+        private const int FoodCreationInterval = Settings.Dynamic.Food.Creation.Interval;
+        private const int MaxFoodCount = Settings.Dynamic.Food.Creation.MaxCount;
+        
+        private const double MinFoodSize = Settings.World.Food.MinSize;
+        private const double MaxFoodSize = Settings.World.Food.MaxSize;
 
         #endregion
 
@@ -85,7 +87,7 @@ namespace Celler.App.Web.Game.Server.Logic
                 return;
             }
             var maxValue = CalcRandomMaxValue();
-            var minValue = CalcRandomMinValue(maxValue);
+            var minValue = CalcRandomMinValue( maxValue );
             AddFood(
                 suit : CalcRandomSuit(),
                 position : CalcRandomPosition(),
@@ -176,12 +178,11 @@ namespace Celler.App.Web.Game.Server.Logic
             return Calc.Proportion( MinFoodValue, MaxFoodValue, Random.NextDouble() );
         }
 
-        private static double CalcRandomMinValue(double maxValue)
+        private static double CalcRandomMinValue( double maxValue )
         {
             return Calc.Proportion( MinFoodValue, maxValue, Random.NextDouble() );
         }
 
-        
         private static double CalcFoodSize( Food food )
         {
             return CalcFoodSize( food.IValuable.Value );
@@ -202,7 +203,7 @@ namespace Celler.App.Web.Game.Server.Logic
 
         private Point CalcRandomPosition()
         {
-            return Point.RandomIn( _game.GetBounds() );
+            return Point.RandomIn( _game.GetWorldBounds() );
         }
 
         #endregion

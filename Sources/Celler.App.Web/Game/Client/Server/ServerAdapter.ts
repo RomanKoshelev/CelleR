@@ -26,8 +26,8 @@
             return this.server.getPlayerId();
         }
 
-        getBounds(): JQueryPromise<SizeModel> {
-            return this.server.getBounds();
+        getWorldBounds(): JQueryPromise<SizeModel> {
+            return this.server.getWorldBounds();
         }
 
         getSession(): JQueryPromise<SessionModel> {

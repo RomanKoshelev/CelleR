@@ -73,7 +73,8 @@ namespace Celler.App.Web.Game.Server.App
 
         private void CreateTickTimer()
         {
-            _tickTimer = new Timer( onTickTimer, null, 0, ( TimeLogic.GetTickInterval() ) );
+            var interval = TimeLogic.GetUpdateInterval()*1000;
+            _tickTimer = new Timer( onTickTimer, null, 0, ( interval ) );
         }
 
         private void onTickTimer( object _ )

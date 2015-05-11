@@ -23,7 +23,7 @@
                 this.playerId = id;
             } );
 
-            this.server.getBounds().done( ( bounds: SizeModel ) => {
+            this.server.getWorldBounds().done( ( bounds: SizeModel ) => {
                 this.createGame( bounds.Width, bounds.Height );
             } );
         }

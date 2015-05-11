@@ -2,7 +2,10 @@
 // Celler.App.Web
 // HomeLogic.cs
 
+using Celler.App.Web.Game.Server.Config;
 using Celler.App.Web.Game.Server.Entities.Enums;
+using Celler.App.Web.Game.Server.Entities.GameObjects;
+using Celler.App.Web.Game.Server.Entities.Structs;
 using Celler.App.Web.Game.Server.Managers;
 
 namespace Celler.App.Web.Game.Server.Logic
@@ -11,8 +14,9 @@ namespace Celler.App.Web.Game.Server.Logic
     {
         #region Ctor
 
-        public HomeLogic( IHomeManager homeManager )
+        public HomeLogic( IGameLogic game, IHomeManager homeManager )
         {
+            _game = game;
             _homeManager = homeManager;
         }
 
@@ -31,7 +35,7 @@ namespace Celler.App.Web.Game.Server.Logic
 
         #region IHomeLogic
 
-        void IHomeLogic.ReceiveLoot( Suit suit, double loot )
+        void IHomeLogic.ReceiveLootToHome( Suit suit, double loot )
         {
             _homeManager.UpdateHomes(
                 condition : home => home.ISuitable.Suit == suit,
@@ -39,13 +43,49 @@ namespace Celler.App.Web.Game.Server.Logic
                 );
         }
 
+        Home IHomeLogic.AddHome( Suit suit )
+        {
+            return _homeManager.AddHome( suit, GetCornerCoords(suit), HomeSize, HomeIniLoot, HomeMaxLoot);
+        }
+
+        #endregion
+
+
+        #region Consts
+
+        private const double HomeIniLoot = Settings.Loot.Home.Init;
+        private const double HomeMaxLoot = Settings.Loot.Home.Max;
+
+        private const double HomeSize = Settings.World.Home.Size;
+
         #endregion
 
 
         #region Fields
 
         private readonly IHomeManager _homeManager;
+        private readonly IGameLogic _game;
 
         #endregion
+
+
+        #region Utils
+
+        private Point GetCornerCoords( Suit suit )
+        {
+            var world = _game.GetWorldBounds();
+
+            const double margin = HomeSize/2;
+            switch( suit ) {
+                case Suit.Blue :
+                    return new Point( margin, world.Width - margin );
+                case Suit.Red :
+                    return new Point( world.Height - margin, margin );
+            }
+            return new Point();
+        }
+
+        #endregion
+
     }
 }

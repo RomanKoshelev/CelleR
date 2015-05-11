@@ -40,9 +40,9 @@ namespace Celler.App.Web.Game.Server.Hub
             _gameLogic.MoveSight( id, position );
         }
 
-        public SizeModel GetBounds()
+        public SizeModel GetWorldBounds()
         {
-            return _gameLogic.GetBounds();
+            return _gameLogic.GetWorldBounds();
         }
 
         public SessionModel GetSession()

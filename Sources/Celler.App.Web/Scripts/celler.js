@@ -437,7 +437,7 @@ var Celler;
             this.server.getPlayerId().done(function (id) {
                 _this.playerId = id;
             });
-            this.server.getBounds().done(function (bounds) {
+            this.server.getWorldBounds().done(function (bounds) {
                 _this.createGame(bounds.Width, bounds.Height);
             });
         };
@@ -492,8 +492,8 @@ var Celler;
         ServerAdapter.prototype.getPlayerId = function () {
             return this.server.getPlayerId();
         };
-        ServerAdapter.prototype.getBounds = function () {
-            return this.server.getBounds();
+        ServerAdapter.prototype.getWorldBounds = function () {
+            return this.server.getWorldBounds();
         };
         ServerAdapter.prototype.getSession = function () {
             return this.server.getSession();

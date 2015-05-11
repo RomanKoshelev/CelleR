@@ -77,11 +77,11 @@ interface GameHubServer {
     moveSight(id : string, position : PointModel) : JQueryPromise<void>;
  
     /** 
-      * Sends a "getBounds" message to the GameHub hub.
+      * Sends a "getWorldBounds" message to the GameHub hub.
       * Contract Documentation: ---
       * @return {JQueryPromise of SizeModel}
       */
-    getBounds() : JQueryPromise<SizeModel>;
+    getWorldBounds() : JQueryPromise<SizeModel>;
  
     /** 
       * Sends a "getSession" message to the GameHub hub.
