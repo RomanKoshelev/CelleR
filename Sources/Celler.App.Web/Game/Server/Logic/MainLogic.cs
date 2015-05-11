@@ -1,6 +1,6 @@
 // Celler (c) 2015 Krokodev
 // Celler.App.Web
-// GameLogic.cs
+// MainLogic.cs
 
 using System;
 using System.Collections.Generic;
@@ -9,30 +9,23 @@ using Celler.App.Web.Game.Server.Entities.Enums;
 using Celler.App.Web.Game.Server.Entities.Structs;
 using Celler.App.Web.Game.Server.Managers;
 using Celler.App.Web.Game.Server.Models;
+using Celler.App.Web.Game.Server.Utils;
 using NLog;
 
 namespace Celler.App.Web.Game.Server.Logic
 {
-    public class GameLogic : IGameLogic, ITimeLogic
+    public class MainLogic : IGameLogic, ITimeLogic
     {
         #region Ctor
 
-        public GameLogic( IGameClient clients )
+        public MainLogic( IGameClient clients )
         {
-            Logger.Trace( "GameLogic" );
+            Logger.Trace( "MainLogic" );
 
             _clients = clients;
             _sessionManager = new SessionManager( clients : _clients );
 
-            var collisionLogic = new CollisionLogic( bodyManager : _sessionManager );
-            _auxLlogics.Add( collisionLogic );
-
-            _auxLlogics.Add( new FoodLogic(
-                game : this,
-                timer : this,
-                collider : collisionLogic,
-                foodManager : _sessionManager ) );
-
+            CreateAuxLogics();
             InitSessionManager();
         }
 
@@ -57,19 +50,18 @@ namespace Celler.App.Web.Game.Server.Logic
 
         void IGameLogic.MoveCell( string id, PointModel position )
         {
-            KeepPositionInBounds( position );
-            _sessionManager.ICellManager.MoveCell( id, position );
+            _cellLogic.MoveCell( id, position );
         }
 
         void IGameLogic.HintSightPosition( string id, PointModel position )
         {
-            KeepPositionInBounds( position );
+            ModelToos.KeepPointInBounds( position, 0, 0, WorldWidth, WorldHeight );
             _clients.SightPositionHinted( id, position );
         }
 
         void IGameLogic.MoveSight( string id, PointModel position )
         {
-            KeepPositionInBounds( position );
+            ModelToos.KeepPointInBounds( position, 0, 0, WorldWidth, WorldHeight );
             _sessionManager.ISightManager.MoveSight( id, position );
         }
 
@@ -113,13 +105,38 @@ namespace Celler.App.Web.Game.Server.Logic
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IGameClient _clients;
         private readonly SessionManager _sessionManager;
+        private ICellLogic _cellLogic;
         private readonly List< IAuxLogic > _auxLlogics = new List< IAuxLogic >();
         private int _tickCount;
 
         #endregion
 
 
-        #region Methods
+        #region Utils
+
+        private void CreateAuxLogics()
+        {
+            var collisionLogic = new CollisionLogic(
+                bodyManager : _sessionManager );
+            var foodLogic = new FoodLogic(
+                game : this,
+                timer : this,
+                collider : collisionLogic,
+                foodManager : _sessionManager );
+            var homeLogic = new HomeLogic(
+                game : this,
+                homeManager : _sessionManager );
+            _cellLogic = new CellLogic(
+                game : this,
+                homeLogic : homeLogic,
+                collider: collisionLogic,
+                cellManager : _sessionManager );
+
+            _auxLlogics.Add( collisionLogic );
+            _auxLlogics.Add( foodLogic );
+            _auxLlogics.Add( homeLogic );
+            _auxLlogics.Add( _cellLogic );
+        }
 
         private void UpdateTime()
         {
@@ -143,14 +160,6 @@ namespace Celler.App.Web.Game.Server.Logic
             cell.ICell.HomeId = home.IIdentifiable.Id;
             cell.ICell.SightId = sight.IIdentifiable.Id;
             sight.ISight.CellId = cell.IIdentifiable.Id;
-        }
-
-        private static void KeepPositionInBounds( PointModel position )
-        {
-            position.X = Math.Max( position.X, 0 );
-            position.Y = Math.Max( position.Y, 0 );
-            position.X = Math.Min( position.X, WorldWidth );
-            position.Y = Math.Min( position.Y, WorldHeight );
         }
 
         private static Point GetCornerCoords( Suit suit, double margin )

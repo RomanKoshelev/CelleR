@@ -193,11 +193,17 @@
     <Compile Include="Game\Server\Entities\GameObjects\Sight.cs" />
     <Compile Include="Game\Server\Entities\GameObjects\Home.cs" />
     <Compile Include="Game\Server\Entities\GameObjects\Cell.cs" />
+    <Compile Include="Game\Server\Logic\CellLogic.cs" />
     <Compile Include="Game\Server\Logic\CollisionLogic.cs" />
+    <Compile Include="Game\Server\Utils\TypeTools.cs" />
     <Compile Include="Game\Server\Logic\FoodLogic.cs" />
     <Compile Include="Game\Server\Entities\Interfaces\IBody.cs" />
+    <Compile Include="Game\Server\Logic\HomeLogic.cs" />
+    <Compile Include="Game\Server\Logic\ICellLogic.cs" />
     <Compile Include="Game\Server\Logic\ICollisionLogic.cs" />
     <Compile Include="Game\Server\Entities\Interfaces\IFood.cs" />
+    <Compile Include="Game\Server\Logic\IHomeLogic.cs" />
+    <Compile Include="Game\Server\Utils\ModelToos.cs" />
     <Compile Include="Game\Server\Utils\Calc.cs" />
     <Compile Include="Game\Server\Managers\IBodyManager.cs" />
     <Compile Include="Game\Server\Entities\Interfaces\IIdentifiable.cs" />
@@ -215,7 +221,7 @@
     <Compile Include="Game\Server\Managers\SessionManager.cs" />
     <Compile Include="Game\Server\Entities\Enums\Suit.cs" />
     <Compile Include="Game\Server\Entities\Abstract\GameObject.cs" />
-    <Compile Include="Game\Server\Logic\GameLogic.cs" />
+    <Compile Include="Game\Server\Logic\MainLogic.cs" />
     <Compile Include="Game\Server\Clients\IGameClient.cs" />
     <Compile Include="Game\Server\Logic\IGameLogic.cs" />
     <Compile Include="Game\Server\Models\GameObjectModel.cs" />

@@ -40,7 +40,8 @@ namespace Celler.App.Web.Game.Server.App
 
         public IGameLogic GameLogic
         {
-            get { return _gameLogic ?? ( _gameLogic = new GameLogic( GameClients ) ); }
+            // Todo:> Use Unity to fabricate IGameLogic
+            get { return _gameLogic ?? ( _gameLogic = new MainLogic( GameClients ) ); }
         }
 
         #endregion
@@ -48,7 +49,7 @@ namespace Celler.App.Web.Game.Server.App
 
         #region Private properties
 
-        private GameLogic _gameLogic;
+        private IGameLogic _gameLogic;
 
         private IGameClient GameClients
         {

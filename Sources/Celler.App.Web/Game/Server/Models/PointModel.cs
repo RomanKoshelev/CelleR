@@ -9,4 +9,5 @@ namespace Celler.App.Web.Game.Server.Models
         public double X { get; set; }
         public double Y { get; set; }
     }
+
 }

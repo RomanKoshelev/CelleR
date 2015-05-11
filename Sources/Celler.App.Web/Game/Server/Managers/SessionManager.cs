@@ -65,6 +65,7 @@ namespace Celler.App.Web.Game.Server.Managers
 
         void ICellManager.MoveCell( string id, PointModel position )
         {
+            // Todo:> Use Dictionary, use try-catch
             _cells.First( c => c.IIdentifiable.Id == id ).IBody.Position = new Point( position );
             _clients.CellMoved( id, position );
         }

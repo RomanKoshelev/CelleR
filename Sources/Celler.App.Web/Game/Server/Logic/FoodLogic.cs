@@ -68,9 +68,9 @@ namespace Celler.App.Web.Game.Server.Logic
         private void onCollision( IBody a, IBody b )
         {
             if( a is Food && b is Cell ) {
-                ProcCollisionFoodWithCell( a as Food );
+                FoodCollidesCell( a as Food );
             } else if( b is Food && a is Cell ) {
-                ProcCollisionFoodWithCell( b as Food );
+                FoodCollidesCell( b as Food );
             }
         }
 
@@ -129,7 +129,7 @@ namespace Celler.App.Web.Game.Server.Logic
 
         #region Eating
 
-        private void ProcCollisionFoodWithCell( Food food )
+        private void FoodCollidesCell( Food food )
         {
             RemoveFeed( food );
         }
