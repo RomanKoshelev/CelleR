@@ -23,7 +23,7 @@ namespace Celler.App.Web.Game.Server.Logic
             Logger.Trace( "MainLogic" );
 
             _clients = clients;
-            _sessionManager = new SessionManager( clients : _clients );
+            _sessionManager = new SessionManager( timer: this, clients : _clients );
 
             CreateAuxLogics();
             InitSessionManager();
@@ -36,9 +36,9 @@ namespace Celler.App.Web.Game.Server.Logic
 
         DateTime ITimeLogic.LastTime { get; set; }
 
-        double ITimeLogic.GetUpdateInterval()
+        int ITimeLogic.GetUpdateInterval()
         {
-            return UpdateInterval;
+            return (int)(UpdateInterval*1000);
         }
 
         DateTime ITimeLogic.CurrentTime { get; set; }

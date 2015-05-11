@@ -11,6 +11,7 @@ using Celler.App.Web.Game.Server.Entities.Enums;
 using Celler.App.Web.Game.Server.Entities.GameObjects;
 using Celler.App.Web.Game.Server.Entities.Interfaces;
 using Celler.App.Web.Game.Server.Entities.Structs;
+using Celler.App.Web.Game.Server.Logic;
 using Celler.App.Web.Game.Server.Models;
 using MoreLinq;
 
@@ -21,7 +22,7 @@ namespace Celler.App.Web.Game.Server.Managers
     {
         #region Constructor
 
-        public SessionManager( IGameClient clients )
+        public SessionManager( ITimeLogic timer, IGameClient clients )
         {
             _id = Guid.NewGuid().ToString();
             _cells = new List< Cell >();
@@ -29,17 +30,19 @@ namespace Celler.App.Web.Game.Server.Managers
             _sights = new List< Sight >();
             _foods = new List< Food >();
             _clients = clients;
+            _timer = timer;
         }
 
         #endregion
 
 
-        #region IEntity
+        #region Overrides
 
         protected override SessionModel ToModel()
         {
             return new SessionModel {
                 Id = _id,
+                UpdateInterval = _timer.GetUpdateInterval(),
                 Cells = _cells.Select( o => o.IModelled.Model ).ToArray(),
                 Homes = _homes.Select( o => o.IModelled.Model ).ToArray(),
                 Sights = _sights.Select( o => o.IModelled.Model ).ToArray(),
@@ -191,6 +194,7 @@ namespace Celler.App.Web.Game.Server.Managers
         private readonly List< Sight > _sights;
         private readonly List< Food > _foods;
         private readonly IGameClient _clients;
+        private readonly ITimeLogic _timer;
 
         #endregion
     }

@@ -41,8 +41,7 @@ module Celler {
 
         private calcLootScale(): number {
             var square = this.calcLootRate();
-            return square;
-            //return Math.sqrt( square );
+            return Math.sqrt( square );
         }
 
         private calcLootRate(): number {

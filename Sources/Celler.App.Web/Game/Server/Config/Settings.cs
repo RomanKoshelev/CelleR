@@ -16,7 +16,7 @@ namespace Celler.App.Web.Game.Server.Config
 
             public static class Food
             {
-                public const double Min =  10;
+                public const double Min =  1;
                 public const double Max = 10;
             }
         }
@@ -35,8 +35,8 @@ namespace Celler.App.Web.Game.Server.Config
             {
                 public static class Ocscilation
                 {
-                    public const double MinPeriod = 10;
-                    public const double MaxPeriod = 10;// 60;
+                    public const double MinPeriod = 4;
+                    public const double MaxPeriod = 16;
                 }
 
                 public static class Creation

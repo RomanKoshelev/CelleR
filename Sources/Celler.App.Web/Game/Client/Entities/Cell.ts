@@ -15,8 +15,8 @@
         }
 
         update() {
-            this.lookAtSigtPoint();
             super.update();
+            this.lookAtSigtPoint();
         }
 
         private body: SuitSprite;

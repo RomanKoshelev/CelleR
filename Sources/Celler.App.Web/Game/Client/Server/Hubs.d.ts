@@ -219,6 +219,7 @@ interface SessionModel {
     Homes : HomeModel[];
     Sights : SightModel[];
     Foods : FoodModel[];
+    UpdateInterval : number;
 }
  
  

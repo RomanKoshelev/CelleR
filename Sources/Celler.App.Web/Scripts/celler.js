@@ -63,10 +63,15 @@ var Celler;
             _super.call(this, game, Celler.Suit[model.Base.Suit], 3 /* Food */, model.Base.Size);
             this.id = model.Base.Id;
             this.position = Celler.modelToPoint(model.Base.Position);
+            this.size = 0;
+            this.update();
         }
-        Food.prototype.setSize = function (size) {
-            this.resize(size);
-            // Todo:> Animate!
+        Food.prototype.update = function () {
+            _super.prototype.update.call(this);
+            this.resize(this.size);
+        };
+        Food.prototype.setSize = function (size, foodUpdateInterval) {
+            this.game.add.tween(this).to({ size: size }, foodUpdateInterval, Phaser.Easing.Linear.None, true);
         };
         return Food;
     })(Celler.SuitSprite);
@@ -90,6 +95,7 @@ var Celler;
         }
         SessionManager.prototype.fromModel = function (model) {
             this.id = model.Id;
+            this.serverUpdateInterval = model.UpdateInterval;
             this.createHomes(model.Homes);
             this.createCells(model.Cells);
             this.createSights(model.Sights);
@@ -135,7 +141,7 @@ var Celler;
             });
         };
         SessionManager.prototype.updateFood = function (food, model) {
-            food.setSize(model.Base.Size);
+            food.setSize(model.Base.Size, this.serverUpdateInterval);
         };
         SessionManager.prototype.addHome = function (model) {
             var home = new Celler.Home(this.game, model);
@@ -215,8 +221,7 @@ var Celler;
         };
         Home.prototype.calcLootScale = function () {
             var square = this.calcLootRate();
-            return square;
-            //return Math.sqrt( square );
+            return Math.sqrt(square);
         };
         Home.prototype.calcLootRate = function () {
             return this.lootVolume / this.lootMaxVolume;
@@ -273,8 +278,8 @@ var Celler;
             Celler.app.server.onSightPositionHinted.add(this.onSightPositionHinted, this);
         }
         Cell.prototype.update = function () {
-            this.lookAtSigtPoint();
             _super.prototype.update.call(this);
+            this.lookAtSigtPoint();
         };
         Cell.prototype.init = function (model) {
             this.id = model.Base.Id;

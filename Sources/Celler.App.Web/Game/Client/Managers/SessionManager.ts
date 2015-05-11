@@ -16,8 +16,13 @@
             app.server.onHomesUpdated.add( this.onHomesUpdated, this );
         }
 
+        private serverUpdateInterval: number;
+        private foods: { [ id: string ]: Food; } = {};
+        private homes: { [id: string]: Home; } = {};
+
         private fromModel( model: SessionModel ) {
             this.id = model.Id;
+            this.serverUpdateInterval = model.UpdateInterval;
             this.createHomes( model.Homes );
             this.createCells( model.Cells );
             this.createSights( model.Sights );
@@ -39,10 +44,6 @@
         private createFoods( arr: FoodModel[] ) {
             arr.map( model => this.addFood( model ) );
         }
-
-
-        foods: { [ id: string ]: Food; } = {};
-        homes: { [ id: string ]: Home; } = {};
 
         private addFood( model: FoodModel ) {
             var food = new Food( this.game, model );
@@ -68,10 +69,10 @@
         }
 
         private updateFood( food: Food, model: FoodModel ) {
-            food.setSize( model.Base.Size );
+            food.setSize( model.Base.Size, this.serverUpdateInterval );
         }
 
-        addHome( model: HomeModel ) {
+        private addHome( model: HomeModel ) {
             var home = new Home( this.game, model );
             this.homes[ home.id ] = home;
             this.game.add.existing( home );

@@ -11,5 +11,6 @@ namespace Celler.App.Web.Game.Server.Models
         public HomeModel[] Homes { get; set; }
         public SightModel[] Sights { get; set; }
         public FoodModel[] Foods { get; set; }
+        public double UpdateInterval { get; set; }
     }
 }

@@ -23,8 +23,10 @@ declare module Celler {
 declare module Celler {
     class Food extends SuitSprite {
         id: string;
+        size: number;
         constructor(game: Phaser.Game, model: FoodModel);
-        setSize(size: number): void;
+        update(): void;
+        setSize(size: number, foodUpdateInterval: number): void;
     }
 }
 declare module Celler {
@@ -32,23 +34,20 @@ declare module Celler {
         game: Phaser.Game;
         id: string;
         constructor(game: Phaser.Game);
+        private serverUpdateInterval;
+        private foods;
+        private homes;
         private fromModel(model);
         private createHomes(arr);
         private createCells(arr);
         private createSights(arr);
         private createFoods(arr);
-        foods: {
-            [id: string]: Food;
-        };
-        homes: {
-            [id: string]: Home;
-        };
         private addFood(model);
         private onFoodAdded(model);
         private onFoodRemoved(id);
         private onFoodsUpdated(models);
         private updateFood(food, model);
-        addHome(model: HomeModel): void;
+        private addHome(model);
         private onHomesUpdated(models);
         private updateHome(home, model);
     }
