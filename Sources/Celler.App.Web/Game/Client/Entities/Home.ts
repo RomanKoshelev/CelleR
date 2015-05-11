@@ -4,8 +4,8 @@ module Celler {
 
         id: string;
         suit: Suit;
-        lootValue: number;
-        maxLootValue: number;
+        lootVolume : number;
+        lootMaxVolume : number;
         size: number;
 
         constructor( game: Phaser.Game, model: HomeModel ) {
@@ -21,8 +21,8 @@ module Celler {
             this.id = model.Base.Id;
             this.suit = Suit[ model.Base.Suit ];
             this.size = model.Base.Size;
-            this.lootValue = model.Value;
-            this.maxLootValue = model.MaxValue;
+            this.lootVolume = model.Value;
+            this.lootMaxVolume = model.MaxValue;
 
             this.addChild( this.house = new SuitSprite( this.game, this.suit, Assets.Type.House ) );
             this.addChild( this.loot = new SuitSprite( this.game, this.suit, Assets.Type.Loot ) );
@@ -30,10 +30,10 @@ module Celler {
             this.scale.set( this.calcScale() );
             this.position = modelToPoint( model.Base.Position );
 
-            this.updateLoot();
+            this.updateLootPresentation();
         }
 
-        private updateLoot() {
+        private updateLootPresentation() {
             this.loot.scale.set( this.calcLootScale() );
             this.loot.position = this.calcLootPosition();
         }
@@ -46,7 +46,7 @@ module Celler {
         }
 
         private calcLootRate(): number {
-            return this.lootValue / this.maxLootValue;
+            return this.lootVolume / this.lootMaxVolume;
         }
 
         private calcScale(): number {
@@ -71,6 +71,11 @@ module Celler {
             }
 
             return pos;
+        }
+
+        setLoot( volume: number ) {
+            this.lootVolume = volume;
+            this.updateLootPresentation();
         }
     }
 }

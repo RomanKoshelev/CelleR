@@ -78,6 +78,7 @@ var Celler;
         function SessionManager(game) {
             var _this = this;
             this.foods = {};
+            this.homes = {};
             this.game = game;
             Celler.app.server.getSession().done(function (sesion) {
                 _this.fromModel(sesion);
@@ -85,6 +86,7 @@ var Celler;
             Celler.app.server.onFoodAdded.add(this.onFoodAdded, this);
             Celler.app.server.onFoodRemoved.add(this.onFoodRemoved, this);
             Celler.app.server.onFoodsUpdated.add(this.onFoodsUpdated, this);
+            Celler.app.server.onHomesUpdated.add(this.onHomesUpdated, this);
         }
         SessionManager.prototype.fromModel = function (model) {
             this.id = model.Id;
@@ -95,9 +97,7 @@ var Celler;
         };
         SessionManager.prototype.createHomes = function (arr) {
             var _this = this;
-            arr.map(function (model) {
-                _this.game.add.existing(new Celler.Home(_this.game, model));
-            });
+            arr.map(function (model) { return _this.addHome(model); });
         };
         SessionManager.prototype.createCells = function (arr) {
             var _this = this;
@@ -136,6 +136,20 @@ var Celler;
         };
         SessionManager.prototype.updateFood = function (food, model) {
             food.setSize(model.Base.Size);
+        };
+        SessionManager.prototype.addHome = function (model) {
+            var home = new Celler.Home(this.game, model);
+            this.homes[home.id] = home;
+            this.game.add.existing(home);
+        };
+        SessionManager.prototype.onHomesUpdated = function (models) {
+            var _this = this;
+            models.forEach(function (model) {
+                _this.updateHome(_this.homes[model.Base.Id], model);
+            });
+        };
+        SessionManager.prototype.updateHome = function (home, model) {
+            home.setLoot(model.Value);
         };
         return SessionManager;
     })();
@@ -187,15 +201,15 @@ var Celler;
             this.id = model.Base.Id;
             this.suit = Celler.Suit[model.Base.Suit];
             this.size = model.Base.Size;
-            this.lootValue = model.Value;
-            this.maxLootValue = model.MaxValue;
+            this.lootVolume = model.Value;
+            this.lootMaxVolume = model.MaxValue;
             this.addChild(this.house = new Celler.SuitSprite(this.game, this.suit, 4 /* House */));
             this.addChild(this.loot = new Celler.SuitSprite(this.game, this.suit, 5 /* Loot */));
             this.scale.set(this.calcScale());
             this.position = Celler.modelToPoint(model.Base.Position);
-            this.updateLoot();
+            this.updateLootPresentation();
         };
-        Home.prototype.updateLoot = function () {
+        Home.prototype.updateLootPresentation = function () {
             this.loot.scale.set(this.calcLootScale());
             this.loot.position = this.calcLootPosition();
         };
@@ -205,7 +219,7 @@ var Celler;
             return Math.sqrt(square);
         };
         Home.prototype.calcLootRate = function () {
-            return this.lootValue / this.maxLootValue;
+            return this.lootVolume / this.lootMaxVolume;
         };
         Home.prototype.calcScale = function () {
             return this.size / this.house.texture.width;
@@ -227,6 +241,10 @@ var Celler;
                     break;
             }
             return pos;
+        };
+        Home.prototype.setLoot = function (volume) {
+            this.lootVolume = volume;
+            this.updateLootPresentation();
         };
         return Home;
     })(Phaser.Group);

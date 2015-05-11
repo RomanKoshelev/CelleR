@@ -40,11 +40,17 @@ declare module Celler {
         foods: {
             [id: string]: Food;
         };
+        homes: {
+            [id: string]: Home;
+        };
         private addFood(model);
         private onFoodAdded(model);
         private onFoodRemoved(id);
         private onFoodsUpdated(models);
         private updateFood(food, model);
+        addHome(model: HomeModel): void;
+        private onHomesUpdated(models);
+        private updateHome(home, model);
     }
 }
 declare module Celler {
@@ -63,18 +69,19 @@ declare module Celler {
     class Home extends Phaser.Group {
         id: string;
         suit: Suit;
-        lootValue: number;
-        maxLootValue: number;
+        lootVolume: number;
+        lootMaxVolume: number;
         size: number;
         constructor(game: Phaser.Game, model: HomeModel);
         private house;
         private loot;
         private init(model);
-        private updateLoot();
+        private updateLootPresentation();
         private calcLootScale();
         private calcLootRate();
         private calcScale();
         private calcLootPosition();
+        setLoot(volume: number): void;
     }
 }
 declare module Celler {

@@ -13,6 +13,7 @@
             app.server.onFoodAdded.add( this.onFoodAdded, this );
             app.server.onFoodRemoved.add( this.onFoodRemoved, this );
             app.server.onFoodsUpdated.add( this.onFoodsUpdated, this );
+            app.server.onHomesUpdated.add( this.onHomesUpdated, this );
         }
 
         private fromModel( model: SessionModel ) {
@@ -24,7 +25,7 @@
         }
 
         private createHomes( arr: HomeModel[] ) {
-            arr.map( model => { this.game.add.existing( new Home( this.game, model ) ); } );
+            arr.map( model => this.addHome(model) );
         }
 
         private createCells( arr: CellModel[] ) {
@@ -41,6 +42,7 @@
 
 
         foods: { [ id: string ]: Food; } = {};
+        homes: { [ id: string ]: Home; } = {};
 
         private addFood( model: FoodModel ) {
             var food = new Food( this.game, model );
@@ -67,6 +69,23 @@
 
         private updateFood( food: Food, model: FoodModel ) {
             food.setSize( model.Base.Size );
+        }
+
+        addHome( model: HomeModel ) {
+            var home = new Home( this.game, model );
+            this.homes[ home.id ] = home;
+            this.game.add.existing( home );
+        }
+
+        private onHomesUpdated( models: HomeModel[] ) {
+            
+            models.forEach( model => {
+                this.updateHome(this.homes[model.Base.Id], model);
+            } );
+        }
+
+        private updateHome( home: Home, model: HomeModel ) {
+            home.setLoot( model.Value );
         }
     }
 }
