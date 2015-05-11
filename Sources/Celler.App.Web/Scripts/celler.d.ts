@@ -33,23 +33,31 @@ declare module Celler {
     class SessionManager {
         game: Phaser.Game;
         id: string;
+        foodLevel: Phaser.Group;
+        homeLevel: Phaser.Group;
+        cellLevel: Phaser.Group;
+        sightLevel: Phaser.Group;
         constructor(game: Phaser.Game);
         private serverUpdateInterval;
+        private cells;
+        private sights;
         private foods;
         private homes;
         private fromModel(model);
-        private createHomes(arr);
-        private createCells(arr);
-        private createSights(arr);
-        private createFoods(arr);
-        private addFood(model);
         private onFoodAdded(model);
         private onFoodRemoved(id);
         private onFoodsUpdated(models);
         private updateFood(food, model);
-        private addHome(model);
         private onHomesUpdated(models);
         private updateHome(home, model);
+        private createHomes(arr);
+        private createCells(arr);
+        private createSights(arr);
+        private createFoods(arr);
+        private addHome(model);
+        private addFood(model);
+        private addSight(model);
+        private addCell(model);
     }
 }
 declare module Celler {

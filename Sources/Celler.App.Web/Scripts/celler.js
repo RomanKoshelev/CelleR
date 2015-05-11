@@ -82,12 +82,18 @@ var Celler;
     var SessionManager = (function () {
         function SessionManager(game) {
             var _this = this;
+            this.cells = {};
+            this.sights = {};
             this.foods = {};
             this.homes = {};
             this.game = game;
             Celler.app.server.getSession().done(function (sesion) {
                 _this.fromModel(sesion);
             });
+            this.homeLevel = this.game.add.group();
+            this.foodLevel = this.game.add.group();
+            this.cellLevel = this.game.add.group();
+            this.sightLevel = this.game.add.group();
             Celler.app.server.onFoodAdded.add(this.onFoodAdded, this);
             Celler.app.server.onFoodRemoved.add(this.onFoodRemoved, this);
             Celler.app.server.onFoodsUpdated.add(this.onFoodsUpdated, this);
@@ -101,37 +107,11 @@ var Celler;
             this.createSights(model.Sights);
             this.createFoods(model.Foods);
         };
-        SessionManager.prototype.createHomes = function (arr) {
-            var _this = this;
-            arr.map(function (model) { return _this.addHome(model); });
-        };
-        SessionManager.prototype.createCells = function (arr) {
-            var _this = this;
-            arr.map(function (model) {
-                _this.game.add.existing(new Celler.Cell(_this.game, model));
-            });
-        };
-        SessionManager.prototype.createSights = function (arr) {
-            var _this = this;
-            arr.map(function (model) {
-                _this.game.add.existing(new Celler.Sight(_this.game, model));
-            });
-        };
-        SessionManager.prototype.createFoods = function (arr) {
-            var _this = this;
-            arr.map(function (model) { return _this.addFood(model); });
-        };
-        SessionManager.prototype.addFood = function (model) {
-            var food = new Celler.Food(this.game, model);
-            this.foods[food.id] = food;
-            this.game.add.existing(food);
-        };
         SessionManager.prototype.onFoodAdded = function (model) {
             this.addFood(model);
         };
         SessionManager.prototype.onFoodRemoved = function (id) {
             var food = this.foods[id];
-            this.game.world.remove(food);
             food.destroy(true);
         };
         SessionManager.prototype.onFoodsUpdated = function (models) {
@@ -143,11 +123,6 @@ var Celler;
         SessionManager.prototype.updateFood = function (food, model) {
             food.setSize(model.Base.Size, this.serverUpdateInterval);
         };
-        SessionManager.prototype.addHome = function (model) {
-            var home = new Celler.Home(this.game, model);
-            this.homes[home.id] = home;
-            this.game.add.existing(home);
-        };
         SessionManager.prototype.onHomesUpdated = function (models) {
             var _this = this;
             models.forEach(function (model) {
@@ -156,6 +131,42 @@ var Celler;
         };
         SessionManager.prototype.updateHome = function (home, model) {
             home.setLoot(model.Value);
+        };
+        SessionManager.prototype.createHomes = function (arr) {
+            var _this = this;
+            arr.map(function (model) { return _this.addHome(model); });
+        };
+        SessionManager.prototype.createCells = function (arr) {
+            var _this = this;
+            arr.map(function (model) { return _this.addCell(model); });
+        };
+        SessionManager.prototype.createSights = function (arr) {
+            var _this = this;
+            arr.map(function (model) { return _this.addSight(model); });
+        };
+        SessionManager.prototype.createFoods = function (arr) {
+            var _this = this;
+            arr.map(function (model) { return _this.addFood(model); });
+        };
+        SessionManager.prototype.addHome = function (model) {
+            var home = new Celler.Home(this.game, model);
+            this.homes[home.id] = home;
+            this.homeLevel.add(home);
+        };
+        SessionManager.prototype.addFood = function (model) {
+            var food = new Celler.Food(this.game, model);
+            this.foods[food.id] = food;
+            this.foodLevel.add(food);
+        };
+        SessionManager.prototype.addSight = function (model) {
+            var sight = new Celler.Sight(this.game, model);
+            this.sights[sight.id] = sight;
+            this.sightLevel.add(sight);
+        };
+        SessionManager.prototype.addCell = function (model) {
+            var cell = new Celler.Cell(this.game, model);
+            this.cells[cell.id] = cell;
+            this.cellLevel.add(cell);
         };
         return SessionManager;
     })();
