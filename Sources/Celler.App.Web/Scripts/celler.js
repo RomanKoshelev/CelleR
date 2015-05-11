@@ -187,7 +187,8 @@ var Celler;
             this.id = model.Base.Id;
             this.suit = Celler.Suit[model.Base.Suit];
             this.size = model.Base.Size;
-            this.value = model.Loot;
+            this.lootValue = model.Value;
+            this.maxLootValue = model.MaxValue;
             this.addChild(this.house = new Celler.SuitSprite(this.game, this.suit, 4 /* House */));
             this.addChild(this.loot = new Celler.SuitSprite(this.game, this.suit, 5 /* Loot */));
             this.scale.set(this.calcScale());
@@ -195,12 +196,16 @@ var Celler;
             this.updateLoot();
         };
         Home.prototype.updateLoot = function () {
-            this.lootRate = this.calcLootRate();
-            this.loot.scale.set(this.calcScale() * this.lootRate);
+            this.loot.scale.set(this.calcLootScale());
             this.loot.position = this.calcLootPosition();
         };
+        Home.prototype.calcLootScale = function () {
+            var square = this.calcScale() * this.calcLootRate();
+            //return square;
+            return Math.sqrt(square);
+        };
         Home.prototype.calcLootRate = function () {
-            return 0.175;
+            return this.lootValue / this.maxLootValue;
         };
         Home.prototype.calcScale = function () {
             return this.size / this.house.texture.width;

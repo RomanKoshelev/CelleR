@@ -94,6 +94,8 @@ namespace Celler.App.Web.Game.Server.Logic
         private const double WorldWidth = 720;
         private const double WorldHeight = 720;
         private const double HomeSize = 150;
+        private const double HomeIniLoot = 1;
+        private const double HomeMaxLoot = 10;
         private const double CellSize = 65;
         private const double SightSize = 100;
 
@@ -153,7 +155,8 @@ namespace Celler.App.Web.Game.Server.Logic
         private static void InitSessionSuit( SessionManager sessionManager, Suit suit )
         {
             var place = GetCornerCoords( suit, HomeSize/2 );
-            var home = sessionManager.IHomeManager.AddHome( suit, place, HomeSize );
+            // Todo:> Use Logics to initiate Homes and Cells
+            var home = sessionManager.IHomeManager.AddHome( suit, place, HomeSize, HomeIniLoot, HomeMaxLoot);
             var cell = sessionManager.ICellManager.AddCell( suit, place, CellSize );
             var sight = sessionManager.ISightManager.AddSight( suit, place, SightSize );
             cell.ICell.HomeId = home.IIdentifiable.Id;

@@ -186,7 +186,8 @@ interface GameHubClient
   */
 interface HomeModel {
     Base : GameObjectModel;
-    Loot : number;
+    Value : number;
+    MaxValue : number;
 }
  
  

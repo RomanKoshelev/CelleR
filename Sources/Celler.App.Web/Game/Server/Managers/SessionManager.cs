@@ -142,9 +142,9 @@ namespace Celler.App.Web.Game.Server.Managers
             get { return this; }
         }
 
-        Home IHomeManager.AddHome( Suit suit, Point position, double size )
+        Home IHomeManager.AddHome( Suit suit, Point position, double size, double value, double maxValue )
         {
-            var obj = new Home( suit, position, size );
+            var obj = new Home( suit, position, size, value, maxValue );
             _homes.Add( obj );
             return obj;
         }

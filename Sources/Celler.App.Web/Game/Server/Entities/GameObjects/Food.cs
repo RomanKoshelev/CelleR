@@ -16,7 +16,7 @@ namespace Celler.App.Web.Game.Server.Entities.GameObjects
         #region Ctor
 
         public Food( Suit suit, Point position, double size, DateTime time, double minValue, double maxValue, double period )
-            : base( suit, position, size, value : 0 )
+            : base( suit, position, size, value : 0, maxValue: int.MaxValue )
         {
             IFood.CreationTime = time;
             IFood.MinValue = minValue;

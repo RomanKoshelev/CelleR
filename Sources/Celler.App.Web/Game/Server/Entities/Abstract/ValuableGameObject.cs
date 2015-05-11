@@ -13,10 +13,11 @@ namespace Celler.App.Web.Game.Server.Entities.Abstract
     {
         #region Ctor
 
-        protected ValuableGameObject( Suit suit, Point position, double size, double value )
+        protected ValuableGameObject( Suit suit, Point position, double size, double value, double maxValue )
             : base( suit, position, size )
         {
             IValuable.Value = value;
+            IValuable.MaxValue = maxValue;
         }
 
         #endregion
@@ -30,6 +31,7 @@ namespace Celler.App.Web.Game.Server.Entities.Abstract
         }
 
         double IValuable.Value { get; set; }
+        double IValuable.MaxValue { get; set; }
 
         #endregion
     }

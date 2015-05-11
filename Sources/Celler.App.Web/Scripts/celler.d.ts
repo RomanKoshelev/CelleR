@@ -63,14 +63,15 @@ declare module Celler {
     class Home extends Phaser.Group {
         id: string;
         suit: Suit;
-        value: number;
+        lootValue: number;
+        maxLootValue: number;
         size: number;
         constructor(game: Phaser.Game, model: HomeModel);
         private house;
         private loot;
-        private lootRate;
         private init(model);
         private updateLoot();
+        private calcLootScale();
         private calcLootRate();
         private calcScale();
         private calcLootPosition();
