@@ -8,7 +8,6 @@ using Celler.App.Web.Game.Server.Entities.GameObjects;
 using Celler.App.Web.Game.Server.Entities.Interfaces;
 using Celler.App.Web.Game.Server.Entities.Structs;
 using Celler.App.Web.Game.Server.Managers;
-using Celler.App.Web.Game.Server.Models;
 using Celler.App.Web.Game.Server.Utils;
 
 namespace Celler.App.Web.Game.Server.Logic
@@ -29,13 +28,13 @@ namespace Celler.App.Web.Game.Server.Logic
         {
             var cell = TypeTools.WhoIs< Cell >( a, b );
             var food = TypeTools.WhoIs< Food >( a, b );
-            var cell2 = TypeTools.WhoElseIs< Cell >( cell, a, b );
+            var cell2 = TypeTools.GetAnother( cell, a, b );
 
             if( cell != null && food != null ) {
-                procCellFoodCollision( cell, food );
+                procCollision( cell, food );
             }
             if( cell != null && cell2 != null ) {
-                procCellCellCollision( cell, cell2 );
+                procCollision( cell, cell2 );
             }
         }
 
@@ -87,12 +86,12 @@ namespace Celler.App.Web.Game.Server.Logic
 
         #region Collision procedures
 
-        private void procCellCellCollision( Cell cell, Cell cell2 )
+        private void procCollision( Cell cell, Cell cell2 )
         {
             // Todo:> Cell cell collision 
         }
 
-        private void procCellFoodCollision( Cell cell, Food food )
+        private void procCollision( Cell cell, Food food )
         {
             var cellSuit = cell.ISuitable.Suit;
             var loot = GetLootValue( cellSuit, food );

@@ -17,37 +17,32 @@ using MoreLinq;
 
 namespace Celler.App.Web.Game.Server.Managers
 {
-    public class SessionManager : Entity< SessionModel >, 
-        IFoodManager, IBodyManager, ICellManager, IHomeManager, ISightManager
+    public class SessionManager : Entity< SessionModel >,
+        IFoodManager, IBodyManager, ICellManager, IHomeManager, ISightManager, ISession
     {
         #region Constructor
 
         public SessionManager( ITimeLogic timer, IGameClient clients )
         {
             _id = Guid.NewGuid().ToString();
-            _cells = new List< Cell >();
-            _homes = new List< Home >();
-            _sights = new List< Sight >();
-            _foods = new List< Food >();
             _clients = clients;
             _timer = timer;
+            DoReset();
         }
 
         #endregion
 
 
-        #region Overrides
+        #region ISession
 
-        protected override SessionModel ToModel()
+        public ISession ISession
         {
-            return new SessionModel {
-                Id = _id,
-                UpdateInterval = _timer.GetUpdateInterval(),
-                Cells = _cells.Select( o => o.IModelled.Model ).ToArray(),
-                Homes = _homes.Select( o => o.IModelled.Model ).ToArray(),
-                Sights = _sights.Select( o => o.IModelled.Model ).ToArray(),
-                Foods = _foods.Select( o => o.IModelled.Model ).ToArray()
-            };
+            get { return this; }
+        }
+
+        void ISession.Reset()
+        {
+            DoReset();
         }
 
         #endregion
@@ -189,12 +184,42 @@ namespace Celler.App.Web.Game.Server.Managers
         #region Fields
 
         private readonly string _id;
-        private readonly List< Cell > _cells;
-        private readonly List< Home > _homes;
-        private readonly List< Sight > _sights;
-        private readonly List< Food > _foods;
+        private List< Cell > _cells;
+        private List< Home > _homes;
+        private List< Sight > _sights;
+        private List< Food > _foods;
         private readonly IGameClient _clients;
         private readonly ITimeLogic _timer;
+
+        #endregion
+
+
+        #region Overrides
+
+        protected override SessionModel ToModel()
+        {
+            return new SessionModel {
+                Id = _id,
+                UpdateInterval = _timer.GetUpdateInterval(),
+                Cells = _cells.Select( o => o.IModelled.Model ).ToArray(),
+                Homes = _homes.Select( o => o.IModelled.Model ).ToArray(),
+                Sights = _sights.Select( o => o.IModelled.Model ).ToArray(),
+                Foods = _foods.Select( o => o.IModelled.Model ).ToArray()
+            };
+        }
+
+        #endregion
+
+
+        #region Utils
+
+        private void DoReset()
+        {
+            _cells = new List< Cell >();
+            _homes = new List< Home >();
+            _sights = new List< Sight >();
+            _foods = new List< Food >();
+        }
 
         #endregion
     }

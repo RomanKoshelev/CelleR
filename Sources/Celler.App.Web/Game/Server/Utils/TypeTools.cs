@@ -13,7 +13,7 @@ namespace Celler.App.Web.Game.Server.Utils
             return objects.OfType< T >().FirstOrDefault();
         }
 
-        public static T WhoElseIs<T>( T first, params object[] objects ) where T : class
+        public static T GetAnother<T>( T first, params object[] objects ) where T : class
         {
             return objects.OfType< T >().FirstOrDefault(o => o!=first);
         }

@@ -197,6 +197,7 @@
     <Compile Include="Game\Server\Entities\GameObjects\Cell.cs" />
     <Compile Include="Game\Server\Logic\CellLogic.cs" />
     <Compile Include="Game\Server\Logic\CollisionLogic.cs" />
+    <Compile Include="Game\Server\Entities\Interfaces\ISession.cs" />
     <Compile Include="Game\Server\Utils\EntityTools.cs" />
     <Compile Include="Game\Server\Utils\TypeTools.cs" />
     <Compile Include="Game\Server\Logic\FoodLogic.cs" />

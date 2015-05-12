@@ -38,6 +38,10 @@
             return this.server.update();
         }
 
+        resetSession(): JQueryPromise<void> {
+             return this.server.resetSession();
+        }
+
         // --------------------------------------------------------[]
         // Client
         onSightPositionHinted = new Phaser.Signal();
@@ -48,6 +52,7 @@
         onFoodRemoved = new Phaser.Signal();
         onFoodsUpdated = new Phaser.Signal();
         onHomesUpdated = new Phaser.Signal();
+        onSessionUpdated = new Phaser.Signal();
         onTickCountUpdated = new Phaser.Signal();
 
         private client = $.connection.gameHub.client;
@@ -70,6 +75,7 @@
             this.client.foodsUpdated = ( models: FoodModel[] ) => { this.foodsUpdated( models ); };
             this.client.homesUpdated = ( models: HomeModel[] ) => { this.homesUpdated( models ); };
             this.client.tickCountUpdated = ( count: number ) => { this.tickCountUpdated( count ); };
+            this.client.sessionUpdated = ( model: SessionModel ) => { this.sessionUpdated( model ); };
         }
 
         sightPositionHinted( id: string, position: PointModel ) {
@@ -102,6 +108,10 @@
 
         homesUpdated( models: HomeModel[] ): void {
             this.onHomesUpdated.dispatch( models );
+        }
+
+        sessionUpdated( model: SessionModel ): void {
+            this.onSessionUpdated.dispatch( model );
         }
     }
 }

@@ -53,6 +53,11 @@ namespace Celler.App.Web.Game.Server.Clients
             Clients.All.HomesUpdated( models );
         }
 
+        void IGameHubClient.SessionUpdated( SessionModel model )
+        {
+            Clients.All.SessionUpdated( model );
+        }
+
         #endregion
 
 

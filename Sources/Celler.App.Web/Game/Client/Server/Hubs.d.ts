@@ -91,6 +91,13 @@ interface GameHubServer {
     getSession() : JQueryPromise<SessionModel>;
  
     /** 
+      * Sends a "resetSession" message to the GameHub hub.
+      * Contract Documentation: ---
+      * @return {JQueryPromise of void}
+      */
+    resetSession() : JQueryPromise<void>;
+ 
+    /** 
       * Sends a "update" message to the GameHub hub.
       * Contract Documentation: ---
       * @return {JQueryPromise of void}
@@ -167,6 +174,14 @@ interface GameHubClient
       * @return {void}
       */
     homesUpdated : (models : HomeModel[]) => void;
+ 
+    /**
+      * Set this function with a "function(model : SessionModel){}" to receive the "sessionUpdated" message from the GameHub hub.
+      * Contract Documentation: ---
+      * @param model {SessionModel} 
+      * @return {void}
+      */
+    sessionUpdated : (model : SessionModel) => void;
 }
  
 //#endregion GameHub hub

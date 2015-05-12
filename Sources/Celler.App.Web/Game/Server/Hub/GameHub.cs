@@ -50,6 +50,11 @@ namespace Celler.App.Web.Game.Server.Hub
             return _gameLogic.GetSession();
         }
 
+        public void ResetSession( )
+        {
+            _gameLogic.ResetSession();
+        }
+
         public void Update()
         {
             // Ignore client's invocation

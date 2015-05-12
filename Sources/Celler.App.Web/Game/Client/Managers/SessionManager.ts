@@ -11,19 +11,15 @@
         constructor( game: Phaser.Game ) {
             this.game = game;
 
-            app.server.getSession().done( ( sesion: SessionModel ) => {
-                this.fromModel( sesion );
+            app.server.getSession().done( ( model: SessionModel ) => {
+                this.fromModel( model );
             });
-
-            this.homeLevel = this.game.add.group();
-            this.foodLevel = this.game.add.group();
-            this.cellLevel = this.game.add.group();
-            this.sightLevel = this.game.add.group();
 
             app.server.onFoodAdded.add( this.onFoodAdded, this );
             app.server.onFoodRemoved.add( this.onFoodRemoved, this );
             app.server.onFoodsUpdated.add( this.onFoodsUpdated, this );
             app.server.onHomesUpdated.add( this.onHomesUpdated, this );
+            app.server.onSessionUpdated.add( this.onSessionUpdated, this );
         }
 
         private serverUpdateInterval: number;
@@ -32,13 +28,37 @@
         private foods: { [ id: string ]: Food; } = {};
         private homes: { [ id: string ]: Home; } = {};
 
+        private createLevels() {
+            this.homeLevel = this.game.add.group();
+            this.foodLevel = this.game.add.group();
+            this.cellLevel = this.game.add.group();
+            this.sightLevel = this.game.add.group();
+        }
+     
+        private destroyLevels() {
+            this.homeLevel.destroy();
+            this.foodLevel.destroy();
+            this.cellLevel.destroy();
+            this.sightLevel.destroy();
+        }
+
         private fromModel( model: SessionModel ) {
             this.id = model.Id;
             this.serverUpdateInterval = model.UpdateInterval;
+            this.createLevels();
             this.createHomes( model.Homes );
             this.createCells( model.Cells );
             this.createSights( model.Sights );
             this.createFoods( model.Foods );
+        }
+
+        private onSessionUpdated( model: SessionModel ) {
+            this.destroyAll();
+            this.fromModel( model );
+        }
+
+        private destroyAll() {
+            this.destroyLevels();
         }
 
         private onFoodAdded( model: FoodModel ) {
@@ -51,7 +71,6 @@
         }
 
         private onFoodsUpdated( models: FoodModel[] ) {
-
             models.forEach( model => {
                 this.updateFood( this.foods[ model.Base.Id ], model );
             } );
@@ -62,7 +81,6 @@
         }
 
         private onHomesUpdated( models: HomeModel[] ) {
-
             models.forEach( model => {
                 this.updateHome( this.homes[ model.Base.Id ], model );
             } );

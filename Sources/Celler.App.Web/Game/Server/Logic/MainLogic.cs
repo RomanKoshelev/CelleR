@@ -23,7 +23,7 @@ namespace Celler.App.Web.Game.Server.Logic
             Logger.Trace( "MainLogic" );
 
             _clients = clients;
-            _sessionManager = new SessionManager( timer: this, clients : _clients );
+            _session = new SessionManager( timer: this, clients : _clients );
 
             CreateAuxLogics();
             InitSessionManager();
@@ -62,7 +62,7 @@ namespace Celler.App.Web.Game.Server.Logic
         void IGameLogic.MoveSight( string id, PointModel position )
         {
             ModelToos.KeepPointInBounds( position, 0, 0, WorldWidth, WorldHeight );
-            _sessionManager.ISightManager.MoveSight( id, position );
+            _session.ISightManager.MoveSight( id, position );
         }
 
         SizeModel IGameLogic.GetWorldBounds()
@@ -75,7 +75,15 @@ namespace Celler.App.Web.Game.Server.Logic
 
         SessionModel IGameLogic.GetSession()
         {
-            return _sessionManager.IModelled.Model;
+            return _session.IModelled.Model;
+        }
+
+        void IGameLogic.ResetSession()
+        {
+            Logger.Trace( "ResetSession" );
+            _session.ISession.Reset();
+            InitSessionManager();
+            _clients.SessionUpdated( _session.IModelled.Model );
         }
 
         void IGameLogic.Update()
@@ -104,7 +112,7 @@ namespace Celler.App.Web.Game.Server.Logic
         private IHomeLogic _homeLogic;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IGameClient _clients;
-        private readonly SessionManager _sessionManager;
+        private readonly SessionManager _session;
         private readonly List< IAuxLogic > _auxLlogics = new List< IAuxLogic >();
         private int _tickCount;
 
@@ -116,20 +124,20 @@ namespace Celler.App.Web.Game.Server.Logic
         private void CreateAuxLogics()
         {
             var collisionLogic = new CollisionLogic(
-                bodyManager : _sessionManager );
+                bodyManager : _session );
             var foodLogic = new FoodLogic(
                 game : this,
                 timer : this,
                 collider : collisionLogic,
-                foodManager : _sessionManager );
+                foodManager : _session );
             _homeLogic = new HomeLogic(
                 game : this,
-                homeManager : _sessionManager );
+                homeManager : _session );
             _cellLogic = new CellLogic(
                 game : this,
                 homeLogic : _homeLogic,
                 collider : collisionLogic,
-                cellManager : _sessionManager );
+                cellManager : _session );
 
             _auxLlogics.Add( collisionLogic );
             _auxLlogics.Add( foodLogic );
@@ -146,8 +154,8 @@ namespace Celler.App.Web.Game.Server.Logic
 
         private void InitSessionManager()
         {
-            InitSessionSuit( _sessionManager, Suit.Blue );
-            InitSessionSuit( _sessionManager, Suit.Red );
+            InitSessionSuit( _session, Suit.Blue );
+            InitSessionSuit( _session, Suit.Red );
         }
 
         private void InitSessionSuit( SessionManager sessionManager, Suit suit )

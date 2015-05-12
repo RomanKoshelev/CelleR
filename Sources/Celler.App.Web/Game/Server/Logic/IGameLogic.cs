@@ -13,6 +13,7 @@ namespace Celler.App.Web.Game.Server.Logic
         void HintSightPosition( string id, PointModel position );
         SizeModel GetWorldBounds();
         SessionModel GetSession();
+        void ResetSession();
         void Update();
     }
 }

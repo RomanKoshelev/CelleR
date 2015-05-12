@@ -25,7 +25,11 @@
 
             this.server.getWorldBounds().done( ( bounds: SizeModel ) => {
                 this.createGame( bounds.Width, bounds.Height );
-            } );
+            });
+
+            document.getElementById("celler-reset-session").onclick = () => {
+                this.server.resetSession();
+            }
         }
 
         private createGame( width: number, height: number ) {
